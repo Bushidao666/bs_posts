@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detecção de Padrões Sistemática</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        .patterns-scope {
+            --bg-dark: #0a0a0a;
+            --bg-pattern: #1a1a1a;
+            --bg-card: #2a2a2a;
+            --magenta: #ff00ff;
+            --magenta-dark: #cc00cc;
+            --magenta-light: #ff66ff;
+            --gold: #ffd700;
+            --gold-dark: #ccaa00;
+            --white: #ffffff;
+            --gray: #808080;
+            --gray-light: #a0a0a0;
+            --red: #ff4444;
+            --green: #44ff44;
+        }
+
+        .patterns-scope * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .patterns-scope {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-dark);
+            color: var(--white);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .patterns-scope .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .patterns-scope .visual-header {
+            text-align: center;
+            padding: 60px 20px;
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(255,0,255,0.05) 10px,
+                    rgba(255,0,255,0.05) 20px
+                ),
+                linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-pattern) 100%);
+            border: 3px solid var(--magenta);
+            border-radius: 15px;
+            margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .patterns-scope .visual-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255,215,0,0.1) 50%, 
+                transparent 100%);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(50%); }
+        }
+
+        .patterns-scope .visual-header h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--magenta) 0%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 1;
+        }
+
+        .patterns-scope .intro-visual {
+            background: var(--bg-pattern);
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 50px;
+            border: 2px solid var(--gold);
+            box-shadow: 0 0 30px rgba(255,215,0,0.2);
+        }
+
+        .patterns-scope .pattern-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .patterns-scope .pattern-card {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .patterns-scope .pattern-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--magenta) 0%, var(--gold) 100%);
+        }
+
+        .patterns-scope .pattern-card:hover {
+            border-color: var(--magenta);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255,0,255,0.3);
+        }
+
+        .patterns-scope .pattern-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .patterns-scope .pattern-card h3 {
+            color: var(--gold);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .patterns-scope .anti-pattern-section {
+            background: rgba(255,68,68,0.1);
+            padding: 40px;
+            border-radius: 15px;
+            margin: 50px 0;
+            border: 3px solid var(--red);
+        }
+
+        .patterns-scope .anti-pattern-section h2 {
+            color: var(--red);
+            font-size: 2rem;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .patterns-scope .anti-pattern-box {
+            background: var(--bg-dark);
+            padding: 30px;
+            margin: 25px 0;
+            border-radius: 10px;
+            border-left: 5px solid var(--red);
+        }
+
+        .patterns-scope .anti-pattern-box h3 {
+            color: var(--magenta-light);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .patterns-scope .symptoms {
+            background: rgba(255,68,68,0.1);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .patterns-scope .symptoms h4 {
+            color: var(--red);
+            margin-bottom: 10px;
+        }
+
+        .patterns-scope .symptoms ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .patterns-scope .symptoms li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .patterns-scope .symptoms li::before {
+            content: '⚠️';
+            position: absolute;
+            left: 0;
+        }
+
+        .patterns-scope .solution {
+            background: rgba(68,255,68,0.1);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-left: 5px solid var(--green);
+        }
+
+        .patterns-scope .solution h4 {
+            color: var(--green);
+            margin-bottom: 10px;
+        }
+
+        .patterns-scope .code-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .patterns-scope .code-bad {
+            background: rgba(255,68,68,0.1);
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid var(--red);
+        }
+
+        .patterns-scope .code-good {
+            background: rgba(68,255,68,0.1);
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid var(--green);
+        }
+
+        .patterns-scope .code-label {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .patterns-scope .code-bad .code-label {
+            color: var(--red);
+        }
+
+        .patterns-scope .code-good .code-label {
+            color: var(--green);
+        }
+
+        .patterns-scope pre {
+            background: var(--bg-dark);
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .patterns-scope .detection-framework {
+            background: var(--bg-pattern);
+            padding: 40px;
+            border-radius: 15px;
+            margin: 50px 0;
+            border: 3px solid var(--gold);
+        }
+
+        .patterns-scope .detection-framework h2 {
+            color: var(--gold);
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        .patterns-scope .mermaid-container {
+            background: var(--bg-dark);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            border: 2px solid var(--magenta);
+            text-align: center;
+            overflow-x: auto;
+        }
+
+        .patterns-scope .metrics-table {
+            width: 100%;
+            margin: 30px 0;
+            border-collapse: collapse;
+            background: var(--bg-dark);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .patterns-scope .metrics-table th {
+            background: linear-gradient(135deg, var(--magenta) 0%, var(--gold) 100%);
+            color: var(--bg-dark);
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .patterns-scope .metrics-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--bg-card);
+        }
+
+        .patterns-scope .metrics-table tr:hover {
+            background: var(--bg-card);
+        }
+
+        .patterns-scope .checklist {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+            border: 2px solid var(--magenta);
+        }
+
+        .patterns-scope .checklist h3 {
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .patterns-scope .checklist ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .patterns-scope .checklist li {
+            padding: 12px 0;
+            padding-left: 35px;
+            position: relative;
+            font-size: 1.1rem;
+        }
+
+        .patterns-scope .checklist li::before {
+            content: '☐';
+            position: absolute;
+            left: 0;
+            color: var(--magenta);
+            font-size: 1.3rem;
+        }
+
+        .patterns-scope .footer-nav {
+            margin-top: 60px;
+            padding: 40px;
+            background: var(--bg-pattern);
+            border-radius: 15px;
+            border-top: 3px solid var(--gold);
+        }
+
+        .patterns-scope .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .patterns-scope .tag {
+            background: linear-gradient(135deg, var(--magenta-dark) 0%, var(--magenta) 100%);
+            color: var(--white);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .patterns-scope .pattern-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .patterns-scope .code-comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .patterns-scope .metrics-table {
+                font-size: 0.85rem;
+            }
+
+            .patterns-scope .metrics-table th,
+            .patterns-scope .metrics-table td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body class="patterns-scope">
+    <div class="container">
+        <header class="visual-header">
+            <h1>🔍 Detecção de Padrões Sistemática</h1>
+            <p style="font-size: 1.2rem; color: var(--gray-light); position: relative; z-index: 1;">Reconhecimento Visual de Patterns e Anti-Patterns</p>
+        </header>
+
+        <section class="intro-visual">
+            <h2 style="color: var(--gold); font-size: 2rem; margin-bottom: 20px;">Introdução</h2>
+            <p style="font-size: 1.1rem;">Reconhecer padrões = Resolver problemas 10x mais rápido. Este guia ensina como detectar patterns e anti-patterns sistematicamente.</p>
+        </section>
+
+        <section>
+            <h2 style="color: var(--magenta); font-size: 2.2rem; margin-bottom: 40px; text-align: center;">Tipos de Padrões</h2>
+
+            <div class="mermaid-container">
+                <pre class="mermaid">
+graph TD
+    P[Padrões] --> D[Design Patterns]
+    P --> A[Anti-Patterns]
+    P --> Arq[Arquiteturais]
+    P --> C[Code Smells]
+    
+    D --> D1[Singleton]
+    D --> D2[Factory]
+    D --> D3[Observer]
+    
+    A --> A1[God Object]
+    A --> A2[Spaghetti Code]
+    A --> A3[Copy-Paste]
+    
+    Arq --> Arq1[Microservices]
+    Arq --> Arq2[Event-Driven]
+    Arq --> Arq3[Layered]
+    
+    C --> C1[Long Method]
+    C --> C2[Large Class]
+    C --> C3[Duplicação]
+    style P fill:#ff00ff,stroke:#ffd700,color:#fff
+                </pre>
+            </div>
+
+            <div class="pattern-grid">
+                <div class="pattern-card">
+                    <span class="pattern-icon">🎨</span>
+                    <h3>Design Patterns</h3>
+                    <p>Soluções testadas e comprovadas para problemas recorrentes de design de software.</p>
+                </div>
+
+                <div class="pattern-card">
+                    <span class="pattern-icon">⚠️</span>
+                    <h3>Anti-Patterns</h3>
+                    <p>Soluções que parecem boas mas causam mais problemas do que resolvem.</p>
+                </div>
+
+                <div class="pattern-card">
+                    <span class="pattern-icon">🏗️</span>
+                    <h3>Padrões Arquiteturais</h3>
+                    <p>Estruturas de alto nível para organizar sistemas complexos.</p>
+                </div>
+
+                <div class="pattern-card">
+                    <span class="pattern-icon">👃</span>
+                    <h3>Code Smells</h3>
+                    <p>Indicadores de possíveis problemas profundos no código.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="anti-pattern-section">
+            <h2>❌ Anti-Patterns Comuns</h2>
+
+            <div class="anti-pattern-box">
+                <h3>1. God Object (Objeto Deus)</h3>
+                
+                <div class="symptoms">
+                    <h4>Sintomas:</h4>
+                    <ul>
+                        <li>Classe com 1000+ linhas</li>
+                        <li>50+ métodos</li>
+                        <li>Múltiplas responsabilidades</li>
+                    </ul>
+                </div>
+
+                <div style="background: var(--bg-dark); padding: 20px; margin: 20px 0; border-radius: 8px;">
+                    <h4 style="color: var(--magenta-light); margin-bottom: 15px;">Detecção:</h4>
+                    <pre style="margin: 0;">find . -name "*.js" -exec wc -l {} \; | sort -rn | head -10</pre>
+                </div>
+
+                <div class="solution">
+                    <h4>✅ Solução: Single Responsibility Principle</h4>
+                    <p>Divida a classe em múltiplas classes menores, cada uma com uma única responsabilidade.</p>
+                </div>
+            </div>
+
+            <div class="anti-pattern-box">
+                <h3>2. Query N+1</h3>
+
+                <div class="mermaid-container">
+                    <pre class="mermaid">
+sequenceDiagram
+    participant App
+    participant DB
+    
+    Note over App,DB: ❌ Anti-Pattern (N+1)
+    App->>DB: SELECT * FROM users
+    loop Para cada user
+        App->>DB: SELECT * FROM orders WHERE user_id = ?
+    end
+    
+    Note over App,DB: ✅ Pattern Correto (JOIN)
+    App->>DB: SELECT u.*, o.* FROM users u LEFT JOIN orders o
+                    </pre>
+                </div>
+            </div>
+
+            <div class="anti-pattern-box">
+                <h3>3. Callback Hell</h3>
+
+                <div class="code-comparison">
+                    <div class="code-bad">
+                        <div class="code-label">❌ Anti-Pattern</div>
+                        <pre>getData(function(a){
+  getMoreData(a, function(b){
+    getEvenMore(b, function(c){ 
+      // ...hell
+    });
+  });
+});</pre>
+                    </div>
+
+                    <div class="code-good">
+                        <div class="code-label">✅ Pattern Correto</div>
+                        <pre>const a = await getData();
+const b = await getMoreData(a);
+const c = await getEvenMore(b);</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="detection-framework">
+            <h2>Framework de Detecção</h2>
+
+            <div class="mermaid-container">
+                <pre class="mermaid">
+flowchart LR
+    A[Código] --> B{Métricas}
+    B -->|Complexidade| C[>10?]
+    B -->|Duplicação| D[>5%?]
+    B -->|Tamanho| E[>200 linhas?]
+    
+    C -->|Sim| F[Anti-Pattern Detectado]
+    D -->|Sim| F
+    E -->|Sim| F
+    
+    F --> G[Catalogar]
+    G --> H[Priorizar]
+    H --> I[Refatorar]
+    style A fill:#ff00ff,stroke:#ffd700,color:#fff
+    style F fill:#ff4444,stroke:#fff,color:#fff
+    style I fill:#44ff44,stroke:#fff,color:#000
+                </pre>
+            </div>
+
+            <h3 style="color: var(--magenta-light); margin: 40px 0 20px 0;">Heurísticas de Detecção</h3>
+
+            <table class="metrics-table">
+                <thead>
+                    <tr>
+                        <th>Heurística</th>
+                        <th>Threshold</th>
+                        <th>Ferramenta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Complexidade Ciclomática</td>
+                        <td>>10</td>
+                        <td>ESLint, SonarQube</td>
+                    </tr>
+                    <tr>
+                        <td>Duplicação de Código</td>
+                        <td>>5%</td>
+                        <td>PMD, CPD</td>
+                    </tr>
+                    <tr>
+                        <td>Tamanho de Função</td>
+                        <td>>50 linhas</td>
+                        <td>Custom script</td>
+                    </tr>
+                    <tr>
+                        <td>Profundidade de Herança</td>
+                        <td>>4 níveis</td>
+                        <td>Metrics tool</td>
+                    </tr>
+                    <tr>
+                        <td>Acoplamento</td>
+                        <td>>10 dependências</td>
+                        <td>Dependency graph</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="checklist">
+            <h3>Checklist de Padrões para Code Review</h3>
+            <ul>
+                <li>God Objects? (classes >500 linhas)</li>
+                <li>Long Methods? (funções >50 linhas)</li>
+                <li>Duplicação? (DRY violado)</li>
+                <li>Query N+1? (loops com DB calls)</li>
+                <li>Callback Hell? (pyramids of doom)</li>
+                <li>Magic Numbers? (hardcoded values)</li>
+                <li>Dead Code? (unused functions)</li>
+            </ul>
+        </section>
+
+        <footer class="footer-nav">
+            <h3 style="color: var(--gold); margin-bottom: 20px;">Relacionados:</h3>
+            <p><a href="./01-metodologias-analise-profunda.html" style="color: var(--magenta-light); text-decoration: none;">→ Metodologias de Análise Profunda</a></p>
+            <p><a href="./03-decomposicao-problemas-complexos.html" style="color: var(--magenta-light); text-decoration: none;">→ Decomposição de Problemas Complexos</a></p>
+            <p><a href="../5-meta/03-documentacao-aprendizados.html" style="color: var(--magenta-light); text-decoration: none;">→ Documentação de Aprendizados</a></p>
+            <p><a href="./00-INDEX.html" style="color: var(--gold); text-decoration: none;">← Voltar ao Índice</a></p>
+
+            <div class="tags">
+                <span class="tag">#patterns</span>
+                <span class="tag">#anti-patterns</span>
+                <span class="tag">#detection</span>
+                <span class="tag">#heuristics</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            themeVariables: {
+                primaryColor: '#ff00ff',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#ffd700',
+                lineColor: '#ffd700',
+                secondaryColor: '#ffd700',
+                tertiaryColor: '#1a1a1a',
+                background: '#0a0a0a'
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metodologias de Análise Profunda</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        .metodologias-scope {
+            --bg-dark: #0a0a0a;
+            --bg-paper: #1a1a1a;
+            --bg-highlight: #2a2a2a;
+            --magenta: #ff00ff;
+            --magenta-dark: #cc00cc;
+            --magenta-light: #ff66ff;
+            --gold: #ffd700;
+            --gold-dark: #ccaa00;
+            --white: #ffffff;
+            --gray: #808080;
+            --gray-light: #b0b0b0;
+        }
+
+        .metodologias-scope * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .metodologias-scope {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: var(--bg-dark);
+            color: var(--white);
+            min-height: 100vh;
+            padding: 40px 20px;
+            line-height: 1.8;
+        }
+
+        .metodologias-scope .paper-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--bg-paper);
+            padding: 60px;
+            box-shadow: 0 0 60px rgba(255,0,255,0.2);
+            border: 1px solid var(--magenta-dark);
+        }
+
+        .metodologias-scope .paper-header {
+            text-align: center;
+            padding-bottom: 40px;
+            border-bottom: 3px double var(--gold);
+            margin-bottom: 50px;
+        }
+
+        .metodologias-scope .paper-header h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 30px;
+            color: var(--gold);
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .metodologias-scope .metadata {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            color: var(--gray-light);
+            font-size: 0.9rem;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .metodologias-scope .metadata-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .metodologias-scope .metadata-item strong {
+            color: var(--magenta);
+        }
+
+        .metodologias-scope .abstract {
+            background: var(--bg-highlight);
+            padding: 30px;
+            margin: 40px 0;
+            border-left: 5px solid var(--magenta);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .metodologias-scope .abstract h2 {
+            color: var(--magenta);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .metodologias-scope .section {
+            margin: 50px 0;
+        }
+
+        .metodologias-scope .section h2 {
+            color: var(--gold);
+            font-size: clamp(1.6rem, 3vw, 2rem);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--magenta-dark);
+        }
+
+        .metodologias-scope .section h3 {
+            color: var(--magenta-light);
+            font-size: clamp(1.3rem, 2.5vw, 1.6rem);
+            margin: 35px 0 20px 0;
+        }
+
+        .metodologias-scope .framework-box {
+            background: var(--bg-highlight);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+            border: 2px solid var(--magenta-dark);
+        }
+
+        .metodologias-scope .framework-label {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--magenta) 0%, var(--gold) 100%);
+            color: var(--bg-dark);
+            padding: 8px 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .metodologias-scope .when-to-use {
+            background: rgba(255,215,0,0.1);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-left: 4px solid var(--gold);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .metodologias-scope .when-to-use strong {
+            color: var(--gold);
+        }
+
+        .metodologias-scope .mermaid-container {
+            background: var(--bg-dark);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+            border: 2px solid var(--magenta);
+            text-align: center;
+            overflow-x: auto;
+        }
+
+        .metodologias-scope .code-block {
+            background: var(--bg-dark);
+            padding: 25px;
+            margin: 25px 0;
+            border-left: 5px solid var(--gold);
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+
+        .metodologias-scope .example-box {
+            background: rgba(255,0,255,0.05);
+            padding: 25px;
+            margin: 25px 0;
+            border: 2px dashed var(--magenta);
+            border-radius: 8px;
+        }
+
+        .metodologias-scope .example-title {
+            color: var(--magenta-light);
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .metodologias-scope .citation {
+            background: var(--bg-highlight);
+            padding: 20px;
+            margin: 30px 0;
+            border-left: 4px solid var(--gold);
+            font-style: italic;
+            color: var(--gray-light);
+        }
+
+        .metodologias-scope .footer-nav {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 3px double var(--gold);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .metodologias-scope .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .metodologias-scope .tag {
+            background: linear-gradient(135deg, var(--magenta-dark) 0%, var(--magenta) 100%);
+            color: var(--white);
+            padding: 6px 14px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .metodologias-scope .related-links {
+            margin-top: 30px;
+        }
+
+        .metodologias-scope .related-links h3 {
+            color: var(--gold);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .metodologias-scope .related-links a {
+            color: var(--magenta-light);
+            text-decoration: none;
+            display: block;
+            margin: 10px 0;
+            transition: color 0.3s ease;
+        }
+
+        .metodologias-scope .related-links a:hover {
+            color: var(--gold);
+        }
+
+        @media (max-width: 768px) {
+            .metodologias-scope .paper-container {
+                padding: 30px 20px;
+            }
+
+            .metodologias-scope .metadata {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .metodologias-scope .code-block {
+                font-size: 0.85rem;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body class="metodologias-scope">
+    <div class="paper-container">
+        <header class="paper-header">
+            <h1>🔬 Metodologias de Análise Profunda</h1>
+            <div class="metadata">
+                <div class="metadata-item">
+                    <strong>Layer:</strong> 3-Thinking
+                </div>
+                <div class="metadata-item">
+                    <strong>Version:</strong> 1.0.0
+                </div>
+                <div class="metadata-item">
+                    <strong>Updated:</strong> 2025-11-06
+                </div>
+            </div>
+        </header>
+
+        <section class="abstract">
+            <h2>Abstract</h2>
+            <p>Análise superficial vê sintomas. Análise profunda encontra causas raiz. Este guia apresenta frameworks sistemáticos para análise em múltiplas camadas, incluindo First Principles, 5 Whys, análise multi-perspectiva e SWOT técnico.</p>
+        </section>
+
+        <section class="section">
+            <h2>Framework 1: First Principles (Primeiros Princípios)</h2>
+            
+            <div class="framework-box">
+                <div class="framework-label">FRAMEWORK FUNDAMENTAL</div>
+                
+                <div class="when-to-use">
+                    <strong>Quando usar:</strong> Problemas complexos onde soluções convencionais falharam.
+                </div>
+
+                <div class="mermaid-container">
+                    <pre class="mermaid">
+graph TD
+    A[Problema Complexo] --> B[Quebrar em Fundamentos]
+    B --> C[Questionar Suposições]
+    C --> D[Reconstruir do Zero]
+    D --> E[Solução Inovadora]
+    style A fill:#ff00ff,stroke:#ffd700,color:#fff
+    style E fill:#ffd700,stroke:#ff00ff,color:#000
+                    </pre>
+                </div>
+
+                <div class="example-box">
+                    <div class="example-title">Exemplo Prático:</div>
+                    <div class="code-block">
+Problema: "Sistema de cache está lento"
+
+Análise Convencional:
+  → "Adicione mais RAM"
+
+First Principles:
+1. Por quê precisamos de cache? → Reduzir latência de DB
+2. Por quê DB é lento? → Queries sem índice
+3. Por quê não indexar? → Suposição: "índices custam muito"
+4. Validar suposição → Teste: índices custam 5% espaço, ganham 10x speed
+5. Solução real: Índices estratégicos (não mais cache)
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Framework 2: 5 Whys (5 Porquês)</h2>
+            
+            <div class="framework-box">
+                <div class="framework-label">ANÁLISE DE CAUSA RAIZ</div>
+
+                <div class="mermaid-container">
+                    <pre class="mermaid">
+graph LR
+    P[Problema] -->|Por quê?| C1[Causa 1]
+    C1 -->|Por quê?| C2[Causa 2]
+    C2 -->|Por quê?| C3[Causa 3]
+    C3 -->|Por quê?| C4[Causa 4]
+    C4 -->|Por quê?| R[Causa Raiz]
+    style P fill:#ff00ff,stroke:#ffd700,color:#fff
+    style R fill:#ffd700,stroke:#ff00ff,color:#000
+                    </pre>
+                </div>
+
+                <div class="example-box">
+                    <div class="example-title">Template:</div>
+                    <div class="code-block">
+Problema: [sintoma observado]
+Por quê 1? → [resposta]
+Por quê 2? → [resposta]
+Por quê 3? → [resposta]
+Por quê 4? → [resposta]
+Por quê 5? → [causa raiz]
+Solução: [atacar causa raiz, não sintoma]
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Framework 3: Análise Multi-Perspectiva</h2>
+            
+            <div class="framework-box">
+                <div class="framework-label">VISÃO 360°</div>
+
+                <div class="mermaid-container">
+                    <pre class="mermaid">
+mindmap
+  root((Problema))
+    Dev
+      Implementação
+      Testes
+      Debug
+    Arquiteto
+      Design
+      Escalabilidade
+      Trade-offs
+    Ops
+      Deploy
+      Monitoramento
+      Custos
+    Negócio
+      Valor
+      ROI
+      Timeline
+    Usuário
+      UX
+      Performance
+      Confiabilidade
+                    </pre>
+                </div>
+
+                <p><strong>Aplicação:</strong> Analise o mesmo problema de 5 perspectivas diferentes para obter uma compreensão completa.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Framework 4: SWOT Técnico</h2>
+            
+            <div class="framework-box">
+                <div class="framework-label">ANÁLISE ESTRATÉGICA</div>
+
+                <div class="mermaid-container">
+                    <pre class="mermaid">
+quadrantChart
+    title SWOT Técnico
+    x-axis Interno --> Externo
+    y-axis Negativo --> Positivo
+    quadrant-1 Oportunidades
+    quadrant-2 Forças
+    quadrant-3 Fraquezas
+    quadrant-4 Ameaças
+    Stack Moderno: [0.7, 0.8]
+    Time Experiente: [0.8, 0.7]
+    Dívida Técnica: [0.3, 0.2]
+    Dependências Antigas: [0.2, 0.3]
+    Cloud Native: [0.6, 0.6]
+    Competição: [0.4, 0.1]
+                    </pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Combinando Metodologias</h2>
+            
+            <div class="citation">
+                "A verdadeira análise profunda não usa uma metodologia isolada, mas combina frameworks complementares para uma visão holística do problema."
+            </div>
+
+            <div class="mermaid-container">
+                <pre class="mermaid">
+flowchart TD
+    Start[Problema Complexo] --> A[First Principles]
+    A --> B[Identificar Fundamentos]
+    B --> C[5 Whys]
+    C --> D[Encontrar Causa Raiz]
+    D --> E[Multi-Perspectiva]
+    E --> F[Validar Solução]
+    F --> G[SWOT Técnico]
+    G --> H[Avaliar Viabilidade]
+    H --> End[Solução Validada]
+    style Start fill:#ff00ff,stroke:#ffd700,color:#fff
+    style End fill:#ffd700,stroke:#ff00ff,color:#000
+                </pre>
+            </div>
+        </section>
+
+        <footer class="footer-nav">
+            <div class="related-links">
+                <h3>Relacionados:</h3>
+                <a href="./02-deteccao-padroes-sistematica.html">→ Detecção de Padrões Sistemática</a>
+                <a href="../4-workflows/01-workflow-analise-problemas.html">→ Workflow de Análise de Problemas</a>
+                <a href="./00-INDEX.html">← Voltar ao Índice</a>
+            </div>
+
+            <div class="tags">
+                <span class="tag">#metodologias</span>
+                <span class="tag">#first-principles</span>
+                <span class="tag">#5-whys</span>
+                <span class="tag">#analise-profunda</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            themeVariables: {
+                primaryColor: '#ff00ff',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#ffd700',
+                lineColor: '#ffd700',
+                secondaryColor: '#ffd700',
+                tertiaryColor: '#1a1a1a',
+                background: '#0a0a0a',
+                mainBkg: '#1a1a1a',
+                secondBkg: '#2a2a2a'
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layer 5: Meta-Learning - Índice</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div id="kb-guide-wrapper" style="all: initial; * { all: unset; }">
+        <style>
+            #kb-guide-wrapper {
+                --color-bg: #000000;
+                --color-surface: #0a0a0a;
+                --color-surface-elevated: #111111;
+                --color-border: #1a1a1a;
+                --color-text: #ffffff;
+                --color-text-secondary: #a3a3a3;
+                --color-text-tertiary: #737373;
+                --color-magenta: #ff0080;
+                --color-magenta-dim: #8b0046;
+                --color-gold: #ffd700;
+                --color-gold-dim: #8b7500;
+                --color-success: #00ff88;
+                --color-error: #ff3366;
+
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                background: var(--color-bg);
+                color: var(--color-text);
+                line-height: 1.7;
+                font-size: 16px;
+            }
+
+            #kb-guide-wrapper .kb-container {
+                max-width: 900px;
+                margin: 0 auto;
+                padding: 80px 24px;
+            }
+
+            #kb-guide-wrapper .kb-header {
+                margin-bottom: 64px;
+                padding-bottom: 32px;
+                border-bottom: 1px solid var(--color-border);
+            }
+
+            #kb-guide-wrapper .kb-title {
+                font-size: 48px;
+                font-weight: 800;
+                line-height: 1.1;
+                margin-bottom: 24px;
+                background: linear-gradient(135deg, var(--color-text) 0%, var(--color-text-secondary) 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                letter-spacing: -0.02em;
+            }
+
+            #kb-guide-wrapper .kb-emoji {
+                display: inline-block;
+                font-size: 56px;
+                margin-right: 16px;
+                vertical-align: middle;
+            }
+
+            #kb-guide-wrapper .kb-lead {
+                font-size: 20px;
+                line-height: 1.6;
+                color: var(--color-text-secondary);
+                margin-top: 16px;
+            }
+
+            #kb-guide-wrapper h2 {
+                font-size: 36px;
+                font-weight: 700;
+                margin: 64px 0 24px 0;
+                letter-spacing: -0.01em;
+                color: var(--color-text);
+            }
+
+            #kb-guide-wrapper h3 {
+                font-size: 24px;
+                font-weight: 600;
+                margin: 48px 0 16px 0;
+                color: var(--color-text);
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            #kb-guide-wrapper h3::before {
+                content: '';
+                width: 4px;
+                height: 24px;
+                background: linear-gradient(180deg, var(--color-magenta) 0%, var(--color-magenta-dim) 100%);
+                border-radius: 2px;
+            }
+
+            #kb-guide-wrapper p {
+                margin: 16px 0;
+                color: var(--color-text-secondary);
+                font-size: 17px;
+            }
+
+            #kb-guide-wrapper strong {
+                color: var(--color-text);
+                font-weight: 600;
+            }
+
+            #kb-guide-wrapper ul, #kb-guide-wrapper ol {
+                margin: 16px 0;
+                padding-left: 24px;
+                color: var(--color-text-secondary);
+            }
+
+            #kb-guide-wrapper li {
+                margin: 8px 0;
+                padding-left: 8px;
+            }
+
+            #kb-guide-wrapper .kb-code-block {
+                background: var(--color-surface);
+                border: 1px solid var(--color-border);
+                border-radius: 8px;
+                padding: 20px;
+                margin: 20px 0;
+                overflow-x: auto;
+                font-family: 'Fira Code', 'Courier New', monospace;
+                font-size: 14px;
+                line-height: 1.6;
+                color: var(--color-text-secondary);
+            }
+
+            #kb-guide-wrapper .kb-code-block code {
+                color: var(--color-text-secondary);
+                white-space: pre-wrap;
+                word-wrap: break-word;
+            }
+
+            #kb-guide-wrapper .kb-inline-code {
+                background: var(--color-surface-elevated);
+                color: var(--color-magenta);
+                padding: 2px 8px;
+                border-radius: 4px;
+                font-family: 'Fira Code', monospace;
+                font-size: 14px;
+            }
+
+            #kb-guide-wrapper .kb-footer {
+                margin-top: 80px;
+                padding-top: 32px;
+                border-top: 1px solid var(--color-border);
+            }
+
+            #kb-guide-wrapper .kb-tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin-top: 24px;
+            }
+
+            #kb-guide-wrapper .kb-tag {
+                background: var(--color-surface-elevated);
+                color: var(--color-text-secondary);
+                padding: 6px 12px;
+                border-radius: 6px;
+                font-size: 13px;
+                border: 1px solid var(--color-border);
+            }
+
+            #kb-guide-wrapper .mermaid {
+                background: var(--color-surface-elevated);
+                border: 1px solid var(--color-border);
+                border-radius: 12px;
+                padding: 32px;
+                margin: 32px 0;
+            }
+
+            @media (max-width: 768px) {
+                #kb-guide-wrapper .kb-container {
+                    padding: 40px 20px;
+                }
+
+                #kb-guide-wrapper .kb-title {
+                    font-size: 36px;
+                }
+
+                #kb-guide-wrapper h2 {
+                    font-size: 28px;
+                }
+            }
+        </style>
+
+        <div class="kb-container">
+            <header class="kb-header">
+                <h1 class="kb-title">
+                    <span class="kb-emoji">�</span>
+                    Layer 5: Meta-Learning - Índice
+                </h1>
+                <p class="kb-lead">Bem-vindo à camada de **meta-aprendizado**! Aqui você aprende **como aprender melhor**, **evoluir suas técnicas** e **construir seu sistema pessoal**.</p>
+            </header>
+
+            <main>
+                <p>---</p>
+<p>guide_id: "meta-index"</p>
+<p>version: 1.0.0</p>
+<p>status: complete</p>
+<p>updated: 2025-11-06</p>
+<p>layer: 5-meta</p>
+<p>tags: [index, meta-learning, evolucao, reflexao]</p>
+<p>---</p>
+
+<h1>🧠 Layer 5: Meta-Learning - Índice</h1>
+
+<p>Bem-vindo à camada de <strong>meta-aprendizado</strong>! Aqui você aprende <strong>como aprender melhor</strong>, <strong>evoluir suas técnicas</strong> e <strong>construir seu sistema pessoal</strong>.</p>
+
+<h2>O Que é Meta-Learning?</h2>
+
+<p>Meta-learning é <strong>aprender sobre como você aprende</strong>. É o nível mais alto de maestria.</p>
+
+<p>``<span class="kb-inline-code">mermaid</p>
+<p>pyramid</p>
+<p>    title Pirâmide do Conhecimento</p>
+<p>    "Meta-Learning" : 10</p>
+<p>    "Workflows" : 20</p>
+<p>    "Advanced Thinking" : 30</p>
+<p>    "Engineering" : 40</p>
+<p>    "Fundamentals" : 50</p>
+<p></span>``</p>
+
+<h2>📚 Guias Disponíveis</h2>
+
+<h3>1. <strong>[Reflexão sobre Processo](./01-reflexao-processo.md)</strong></h3>
+<p>Como analisar e melhorar seu próprio processo de trabalho</p>
+
+<h3>2. <strong>[Evolução de Técnicas](./02-evolucao-tecnicas.md)</strong></h3>
+<p>Como suas técnicas evoluem com prática e feedback</p>
+
+<h3>3. <strong>[Documentação de Aprendizados](./03-documentacao-aprendizados.md)</strong></h3>
+<p>Como capturar e organizar conhecimento</p>
+
+<h3>4. <strong>[Construção de Sistema Pessoal](./04-construcao-sistema-pessoal.md)</strong></h3>
+<p>Como criar seu próprio sistema customizado</p>
+
+<p>---</p>
+
+<p><strong>Tags:</strong> #meta-learning #evolucao #reflexao #sistema-pessoal</p>
+
+            </main>
+
+            <footer class="kb-footer">
+                
+                <div class="kb-tags">
+                    <span class="kb-tag">#meta-learning</span>
+                    <span class="kb-tag">#evolucao</span>
+                    <span class="kb-tag">#reflexao</span>
+                    <span class="kb-tag">#sistema-pessoal</span>
+                </div>
+                
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Mermaid for diagrams
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            themeVariables: {
+                primaryColor: '#ff0080',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#ff0080',
+                lineColor: '#ffd700',
+                secondaryColor: '#ffd700',
+                tertiaryColor: '#0a0a0a'
+            }
+        });
+    </script>
+</body>
+</html>

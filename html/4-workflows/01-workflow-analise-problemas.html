@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workflow: Análise de Problemas</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div id="kb-guide-wrapper" style="all: initial; * { all: unset; }">
+        <style>
+            #kb-guide-wrapper {
+                --color-bg: #000000;
+                --color-surface: #0a0a0a;
+                --color-surface-elevated: #111111;
+                --color-border: #1a1a1a;
+                --color-text: #ffffff;
+                --color-text-secondary: #a3a3a3;
+                --color-text-tertiary: #737373;
+                --color-magenta: #ff0080;
+                --color-magenta-dim: #8b0046;
+                --color-gold: #ffd700;
+                --color-gold-dim: #8b7500;
+                --color-success: #00ff88;
+                --color-error: #ff3366;
+
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                background: var(--color-bg);
+                color: var(--color-text);
+                line-height: 1.7;
+                font-size: 16px;
+            }
+
+            #kb-guide-wrapper .kb-container {
+                max-width: 900px;
+                margin: 0 auto;
+                padding: 80px 24px;
+            }
+
+            #kb-guide-wrapper .kb-header {
+                margin-bottom: 64px;
+                padding-bottom: 32px;
+                border-bottom: 1px solid var(--color-border);
+            }
+
+            #kb-guide-wrapper .kb-title {
+                font-size: 48px;
+                font-weight: 800;
+                line-height: 1.1;
+                margin-bottom: 24px;
+                background: linear-gradient(135deg, var(--color-text) 0%, var(--color-text-secondary) 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                letter-spacing: -0.02em;
+            }
+
+            #kb-guide-wrapper .kb-emoji {
+                display: inline-block;
+                font-size: 56px;
+                margin-right: 16px;
+                vertical-align: middle;
+            }
+
+            #kb-guide-wrapper .kb-lead {
+                font-size: 20px;
+                line-height: 1.6;
+                color: var(--color-text-secondary);
+                margin-top: 16px;
+            }
+
+            #kb-guide-wrapper h2 {
+                font-size: 36px;
+                font-weight: 700;
+                margin: 64px 0 24px 0;
+                letter-spacing: -0.01em;
+                color: var(--color-text);
+            }
+
+            #kb-guide-wrapper h3 {
+                font-size: 24px;
+                font-weight: 600;
+                margin: 48px 0 16px 0;
+                color: var(--color-text);
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            #kb-guide-wrapper h3::before {
+                content: '';
+                width: 4px;
+                height: 24px;
+                background: linear-gradient(180deg, var(--color-magenta) 0%, var(--color-magenta-dim) 100%);
+                border-radius: 2px;
+            }
+
+            #kb-guide-wrapper p {
+                margin: 16px 0;
+                color: var(--color-text-secondary);
+                font-size: 17px;
+            }
+
+            #kb-guide-wrapper strong {
+                color: var(--color-text);
+                font-weight: 600;
+            }
+
+            #kb-guide-wrapper ul, #kb-guide-wrapper ol {
+                margin: 16px 0;
+                padding-left: 24px;
+                color: var(--color-text-secondary);
+            }
+
+            #kb-guide-wrapper li {
+                margin: 8px 0;
+                padding-left: 8px;
+            }
+
+            #kb-guide-wrapper .kb-code-block {
+                background: var(--color-surface);
+                border: 1px solid var(--color-border);
+                border-radius: 8px;
+                padding: 20px;
+                margin: 20px 0;
+                overflow-x: auto;
+                font-family: 'Fira Code', 'Courier New', monospace;
+                font-size: 14px;
+                line-height: 1.6;
+                color: var(--color-text-secondary);
+            }
+
+            #kb-guide-wrapper .kb-code-block code {
+                color: var(--color-text-secondary);
+                white-space: pre-wrap;
+                word-wrap: break-word;
+            }
+
+            #kb-guide-wrapper .kb-inline-code {
+                background: var(--color-surface-elevated);
+                color: var(--color-magenta);
+                padding: 2px 8px;
+                border-radius: 4px;
+                font-family: 'Fira Code', monospace;
+                font-size: 14px;
+            }
+
+            #kb-guide-wrapper .kb-footer {
+                margin-top: 80px;
+                padding-top: 32px;
+                border-top: 1px solid var(--color-border);
+            }
+
+            #kb-guide-wrapper .kb-tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin-top: 24px;
+            }
+
+            #kb-guide-wrapper .kb-tag {
+                background: var(--color-surface-elevated);
+                color: var(--color-text-secondary);
+                padding: 6px 12px;
+                border-radius: 6px;
+                font-size: 13px;
+                border: 1px solid var(--color-border);
+            }
+
+            #kb-guide-wrapper .mermaid {
+                background: var(--color-surface-elevated);
+                border: 1px solid var(--color-border);
+                border-radius: 12px;
+                padding: 32px;
+                margin: 32px 0;
+            }
+
+            @media (max-width: 768px) {
+                #kb-guide-wrapper .kb-container {
+                    padding: 40px 20px;
+                }
+
+                #kb-guide-wrapper .kb-title {
+                    font-size: 36px;
+                }
+
+                #kb-guide-wrapper h2 {
+                    font-size: 28px;
+                }
+            }
+        </style>
+
+        <div class="kb-container">
+            <header class="kb-header">
+                <h1 class="kb-title">
+                    <span class="kb-emoji">�</span>
+                    Workflow: Análise de Problemas
+                </h1>
+                <p class="kb-lead">```mermaid</p>
+            </header>
+
+            <main>
+                <p>---</p>
+<p>guide_id: "workflow-analise-problemas"</p>
+<p>version: 1.0.0</p>
+<p>status: complete</p>
+<p>updated: 2025-11-06</p>
+<p>layer: 4-workflows</p>
+<p>tags: [workflow, analise, diagnostico, rca]</p>
+<p>---</p>
+
+<h1>🔍 Workflow: Análise de Problemas</h1>
+
+<h2>Visão Geral do Workflow</h2>
+
+<p>``<span class="kb-inline-code">mermaid</p>
+<p>stateDiagram-v2</p>
+<p>    [*] --> Coleta</p>
+<p>    Coleta --> Analise: Dados suficientes</p>
+<p>    Analise --> Diagnostico: Padrões identificados</p>
+<p>    Diagnostico --> Priorizacao: Causas raiz encontradas</p>
+<p>    Priorizacao --> Plano: Prioridades definidas</p>
+<p>    Plano --> [*]</p>
+
+<p>    Analise --> Coleta: Dados insuficientes</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<h2>Passo 1: Coleta de Evidências</h2>
+
+<p></span>`<span class="kb-inline-code">markdown</p>
+<h3>Template: Coleta de Dados</h3>
+
+<p><strong>Sintomas Observados:</strong></p><ul><li>[Comportamento anormal]</li><li>[Frequência: sempre/intermitente]</li><li>[Quando começou]</li>
+
+<p><strong>Logs Relevantes:</strong></p>
+<p></span>`<span class="kb-inline-code"></p>
+<p>[logs aqui]</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p><strong>Métricas:</strong></p><li>Latência: [valor]</li><li>Error rate: [valor]</li><li>Throughput: [valor]</li>
+
+<p><strong>Código Suspeito:</strong></p>
+<p></span>`<span class="kb-inline-code">[language]</p>
+<p>[código]</p>
+<p></span>`<span class="kb-inline-code"></p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<h2>Passo 2: Análise Multi-Camada</h2>
+
+<p></span>`<span class="kb-inline-code">mermaid</p>
+<p>graph TD</p>
+<p>    A[Problema] --> B[Layer 1: Sintomas]</p>
+<p>    B --> C[Layer 2: Estrutura]</p>
+<p>    C --> D[Layer 3: Causa]</p>
+<p>    D --> E[Layer 4: Contexto]</p>
+
+<p>    B --> B1[O que está quebrado?]</p>
+<p>    C --> C1[Como está implementado?]</p>
+<p>    D --> D1[Por que está assim?]</p>
+<p>    E --> E1[Contexto histórico/sistêmico]</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<h2>Passo 3: Root Cause Analysis</h2>
+
+<p>Use 5 Whys + First Principles:</p>
+
+<p></span>`<span class="kb-inline-code">markdown</p>
+<p><strong>5 Whys:</strong></p>
+<p>Problema: [sintoma]</p>
+<p>Por quê 1? → [causa 1]</p>
+<p>Por quê 2? → [causa 2]</p>
+<p>Por quê 3? → [causa 3]</p>
+<p>Por quê 4? → [causa 4]</p>
+<p>Por quê 5? → [CAUSA RAIZ]</p>
+
+<p><strong>First Principles:</strong></p><li>Suposição identificada: [X]</li><li>Validação: [como testar]</li><li>Resultado: [válida ou inválida]</li>
+<p></span>`<span class="kb-inline-code"></p>
+
+<h2>Passo 4: Priorização</h2>
+
+<p></span>`<span class="kb-inline-code">mermaid</p>
+<p>quadrantChart</p>
+<p>    title Matriz de Priorização</p>
+<p>    x-axis Baixo Esforço --> Alto Esforço</p>
+<p>    y-axis Baixo Impacto --> Alto Impacto</p>
+<p>    quadrant-1 Planejar</p>
+<p>    quadrant-2 FAZER JÁ</p>
+<p>    quadrant-3 Ignorar</p>
+<p>    quadrant-4 Quick Wins</p>
+<p>    Bug Crítico: [0.2, 0.9]</p>
+<p>    Performance: [0.7, 0.8]</p>
+<p>    Refatoração: [0.8, 0.3]</p>
+<p>    Code Smell: [0.3, 0.2]</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<h2>Passo 5: Plano de Ação</h2>
+
+<p></span>`<span class="kb-inline-code">markdown</p>
+<h3>Output Final: Plano de Ação</h3>
+
+<p><strong>Problema Identificado:</strong> [nome]</p>
+<p><strong>Causa Raiz:</strong> [descrição]</p>
+<p><strong>Prioridade:</strong> [P0-P3]</p>
+
+<p><strong>Soluções (Ordenadas):</strong></p>
+<p>1. <strong>[Solução 1]</strong> - P0</p><li>Ação: [o que fazer]</li><li>Esforço: [tempo]</li><li>Impacto: [esperado]</li><li>Owner: [quem]</li>
+
+<p>2. <strong>[Solução 2]</strong> - P1</p>
+<p>   [...]</p>
+
+<p><strong>Métricas de Sucesso:</strong></p><li>[ ] [Métrica 1] atingida</li><li>[ ] [Métrica 2] atingida</li>
+
+<p><strong>Riscos:</strong></p><li>Risco 1: [descrição + mitigação]</li>
+<p></span>``</p>
+
+<p>---</p>
+
+<p><strong>Tags:</strong> #workflow #analise #rca #diagnostico</p>
+
+<p><strong>Relacionados:</strong></p><li>[[../3-thinking/01-metodologias-analise-profunda]]</li><li>[[02-workflow-design-solucoes]]</li></ul>
+
+            </main>
+
+            <footer class="kb-footer">
+                
+                <div class="kb-tags">
+                    <span class="kb-tag">#workflow</span>
+                    <span class="kb-tag">#analise</span>
+                    <span class="kb-tag">#rca</span>
+                    <span class="kb-tag">#diagnostico</span>
+                </div>
+                
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Mermaid for diagrams
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            themeVariables: {
+                primaryColor: '#ff0080',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#ff0080',
+                lineColor: '#ffd700',
+                secondaryColor: '#ffd700',
+                tertiaryColor: '#0a0a0a'
+            }
+        });
+    </script>
+</body>
+</html>
