@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design de Templates Universais</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        /* Scoped CSS - Modular/Component Visual Style */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            line-height: 1.7;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+
+        /* Component Header */
+        .component-header {
+            background: linear-gradient(135deg, #1a0a1f 0%, #000000 100%);
+            padding: 60px 40px;
+            border-radius: 20px;
+            border: 3px solid #ff0080;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .component-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255, 215, 0, 0.05) 10px, rgba(255, 215, 0, 0.05) 20px);
+            pointer-events: none;
+        }
+
+        .component-header h1 {
+            font-size: 2.8em;
+            background: linear-gradient(45deg, #ff0080, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .component-header .subtitle {
+            font-size: 1.3em;
+            color: #ffd700;
+            font-weight: 600;
+        }
+
+        /* Modular Blocks */
+        .module-block {
+            background: linear-gradient(135deg, #0d0515 0%, #1a0a1f 100%);
+            border: 2px solid #ff0080;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .module-block::before {
+            content: attr(data-module);
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #000000;
+            color: #ffd700;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 700;
+            border: 2px solid #ffd700;
+        }
+
+        .module-title {
+            font-size: 1.8em;
+            color: #ffd700;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        /* Component Grid */
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .component-card {
+            background: #0a0a0a;
+            border: 2px solid #ff0080;
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .component-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 30px rgba(255, 0, 128, 0.4);
+            border-color: #ffd700;
+        }
+
+        .component-card h3 {
+            color: #ff0080;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .component-card p {
+            color: #cccccc;
+            font-size: 0.95em;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: #0a0a0a;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            color: #00ff88;
+        }
+
+        .code-block pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        /* Section Separators */
+        .section-separator {
+            height: 3px;
+            background: linear-gradient(90deg, #ff0080 0%, #ffd700 50%, #ff0080 100%);
+            margin: 50px 0;
+            border-radius: 2px;
+        }
+
+        /* Process Steps */
+        .process-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .step {
+            background: linear-gradient(90deg, #1a0a1f 0%, #0a0a0a 100%);
+            border-left: 5px solid #ff0080;
+            padding: 25px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .step::before {
+            content: attr(data-step);
+            position: absolute;
+            left: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #ff0080;
+            color: #000;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.2em;
+            border: 3px solid #ffd700;
+        }
+
+        .step h3 {
+            color: #ffd700;
+            margin-bottom: 10px;
+            margin-left: 30px;
+        }
+
+        .step-content {
+            margin-left: 30px;
+            color: #cccccc;
+        }
+
+        /* Placeholder Showcase */
+        .placeholder-box {
+            background: #1a0a1f;
+            border: 2px dashed #ffd700;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            color: #ffd700;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 25px 0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: #ff0080;
+            color: #000;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        tr:hover {
+            background: #1a0a1f;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin: 10px 0;
+            color: #cccccc;
+        }
+
+        /* Highlights */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(255, 0, 128, 0.1) 0%, rgba(255, 215, 0, 0.1) 100%);
+            border-left: 5px solid #ffd700;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .highlight-box strong {
+            color: #ffd700;
+        }
+
+        /* Tags */
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .tag {
+            background: rgba(255, 0, 128, 0.2);
+            color: #ff0080;
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid #ff0080;
+            font-size: 0.9em;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 60px;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            padding: 15px 30px;
+            background: #ff0080;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid #ff0080;
+        }
+
+        .nav-btn:hover {
+            background: #ffd700;
+            border-color: #ffd700;
+            color: #000;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .component-header h1 { font-size: 2em; }
+            .component-grid { grid-template-columns: 1fr; }
+            .nav-buttons { flex-direction: column; }
+            .step::before { left: -15px; width: 35px; height: 35px; font-size: 1em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="component-header">
+            <h1>🎨 Design de Templates Universais</h1>
+            <p class="subtitle">Da Especificidade à Reutilização</p>
+        </div>
+
+        <div class="module-block" data-module="INTRODUÇÃO">
+            <h2 class="module-title">O Paradoxo da Reutilização</h2>
+            <p>Você criou um prompt perfeito que resolve seu problema específico. Mas na semana seguinte, tem um problema similar - <strong style="color: #ff0080;">porém não idêntico</strong>.</p>
+            
+            <div class="component-grid" style="margin-top: 25px;">
+                <div class="component-card">
+                    <h3>❌ Copy-paste e adaptar</h3>
+                    <p>Cria duplicação, inconsistência</p>
+                </div>
+                <div class="component-card">
+                    <h3>❌ Reescrever do zero</h3>
+                    <p>Desperdiça trabalho anterior</p>
+                </div>
+                <div class="component-card">
+                    <h3>✅ Criar template universal</h3>
+                    <p>Reutiliza a estrutura, adapta os detalhes</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-separator"></div>
+
+        <div class="module-block" data-module="CONCEITOS">
+            <h2 class="module-title">O Que Torna um Template "Universal"?</h2>
+            <div class="component-grid">
+                <div class="component-card">
+                    <h3>1. Abstrato o suficiente</h3>
+                    <p>Para servir vários casos</p>
+                </div>
+                <div class="component-card">
+                    <h3>2. Específico o suficiente</h3>
+                    <p>Para gerar respostas úteis</p>
+                </div>
+                <div class="component-card">
+                    <h3>3. Parametrizável</h3>
+                    <p>Via placeholders inteligentes</p>
+                </div>
+                <div class="component-card">
+                    <h3>4. Portável</h3>
+                    <p>Entre projetos/domínios</p>
+                </div>
+                <div class="component-card">
+                    <h3>5. Evoluível</h3>
+                    <p>Fácil de melhorar com o tempo</p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <strong>Sweet Spot:</strong> Entre "Domínio Específico" e "Multi-Domínio"
+            </div>
+        </div>
+
+        <div class="section-separator"></div>
+
+        <div class="module-block" data-module="PROCESSO">
+            <h2 class="module-title">Processo de Universalização em 5 Passos</h2>
+            
+            <div class="process-steps">
+                <div class="step" data-step="1">
+                    <h3>Identificar Padrões Recorrentes 🔍</h3>
+                    <div class="step-content">
+                        <p>Você precisa de <strong style="color: #ffd700;">3+ exemplos similares</strong> para justificar template.</p>
+                        <p>Técnica: Análise de Similaridade - compare aspectos entre prompts similares.</p>
+                    </div>
+                </div>
+
+                <div class="step" data-step="2">
+                    <h3>Extrair a Estrutura Fixa 🏗️</h3>
+                    <div class="step-content">
+                        <p>Identifique <strong style="color: #ff0080;">o que NUNCA muda</strong> entre as instâncias.</p>
+                        <div class="code-block">
+                            <pre>Você é um [ROLE] especializado em [DOMAIN].
+
+Analise:
+[CRITERIA]
+
+Formato:
+[OUTPUT_FORMAT]</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step" data-step="3">
+                    <h3>Criar Placeholders Inteligentes 🎯</h3>
+                    <div class="step-content">
+                        <p>Use placeholders <strong style="color: #ffd700;">autodescritivos</strong> que guiam o usuário.</p>
+                        <div class="placeholder-box">
+                            [CATEGORIA_DESCRICAO_TIPO?EXEMPLO]
+                        </div>
+                        <p style="margin-top: 15px;">Exemplos:</p>
+                        <ul>
+                            <li><code style="color: #00ff88;">[LINGUAGEM:ex_node-js_python]</code></li>
+                            <li><code style="color: #00ff88;">[STACK_BACKEND:ex_node+express+postgresql]</code></li>
+                            <li><code style="color: #00ff88;">[METRICA_PERFORMANCE:latencia_p95&lt;200ms]</code></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step" data-step="4">
+                    <h3>Definir Variações e Defaults 🔀</h3>
+                    <div class="step-content">
+                        <p>Templates universais precisam lidar com variações.</p>
+                        <div class="component-grid" style="margin-top: 15px;">
+                            <div class="component-card">
+                                <h3>Defaults Inteligentes</h3>
+                                <p>Se usuário não preencher, usa default</p>
+                            </div>
+                            <div class="component-card">
+                                <h3>Variações Predefinidas</h3>
+                                <p>Backend, Frontend, Infra</p>
+                            </div>
+                            <div class="component-card">
+                                <h3>Composição Modular</h3>
+                                <p>Combinar módulos opcionais</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step" data-step="5">
+                    <h3>Documentar Uso e Evoluir 📚</h3>
+                    <div class="step-content">
+                        <p>Template sem documentação é template que ninguém usa.</p>
+                        <div class="highlight-box">
+                            <strong>Inclua:</strong> Quando usar, placeholders obrigatórios/opcionais, exemplos de uso, changelog, métricas
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-separator"></div>
+
+        <div class="module-block" data-module="TÉCNICAS">
+            <h2 class="module-title">Técnicas Avançadas de Universalização</h2>
+            
+            <div class="component-grid">
+                <div class="component-card">
+                    <h3>Herança de Templates</h3>
+                    <p>Template Base → Templates Derivados especializados</p>
+                </div>
+                <div class="component-card">
+                    <h3>Composição Modular</h3>
+                    <p>Template Final = BASE + MODULO_A + MODULO_B</p>
+                </div>
+                <div class="component-card">
+                    <h3>Parametrização por Domínio</h3>
+                    <p>Fintech, E-commerce, Healthcare com pesos diferentes</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-separator"></div>
+
+        <div class="module-block" data-module="ANTIPADRÕES">
+            <h2 class="module-title">Antipadrões de Universalização</h2>
+            
+            <div class="step" style="border-left-color: #ff3366;">
+                <h3>🚫 Template "Swiss Army Knife"</h3>
+                <div class="step-content">
+                    <p><strong style="color: #ff3366;">Problema:</strong> Complexo demais, ninguém usa.</p>
+                    <p><strong style="color: #00ff88;">Solução:</strong> Crie múltiplos templates específicos, não um mega-template.</p>
+                </div>
+            </div>
+
+            <div class="step" style="border-left-color: #ff3366;">
+                <h3>🚫 Abstração Excessiva</h3>
+                <div class="step-content">
+                    <p><strong style="color: #ff3366;">Problema:</strong> Placeholders vagos, usuário não sabe o que preencher.</p>
+                    <p><strong style="color: #00ff88;">Solução:</strong> Placeholders autodescritivos com exemplos.</p>
+                </div>
+            </div>
+
+            <div class="step" style="border-left-color: #ff3366;">
+                <h3>🚫 Template Estático</h3>
+                <div class="step-content">
+                    <p><strong style="color: #ff3366;">Problema:</strong> Fica desatualizado, práticas antigas.</p>
+                    <p><strong style="color: #00ff88;">Solução:</strong> Versioning + Changelog + Review trimestral.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-separator"></div>
+
+        <div class="module-block" data-module="REFLEXÃO">
+            <h2 class="module-title">🌱 Reflexão Final</h2>
+            <div class="highlight-box">
+                <p>Criar templates universais é como <strong>criar ferramentas de qualidade</strong>:</p>
+                <ul style="margin-top: 15px;">
+                    <li>Investimento inicial maior</li>
+                    <li>Mas economiza tempo exponencialmente</li>
+                    <li>Melhora a cada uso (feedback loop)</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>Regra de ouro:</strong> Se você usou 3+ vezes, universalize.</p>
+            </div>
+        </div>
+
+        <div class="tag-list">
+            <span class="tag">#templates</span>
+            <span class="tag">#universalizacao</span>
+            <span class="tag">#abstracao</span>
+            <span class="tag">#placeholders</span>
+            <span class="tag">#reutilizacao</span>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="./00-INDEX.html" class="nav-btn">← Voltar ao Índice</a>
+            <a href="./02-arquitetura-prompts-complexos.html" class="nav-btn">Próximo: Arquitetura →</a>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Especificação de Requisitos: Transformando Ideias Vagas em Specs Precisas</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            themeVariables: {
+                primaryColor: '#FF00FF',
+                primaryTextColor: '#FFD700',
+                primaryBorderColor: '#FFD700',
+                lineColor: '#FF00FF',
+                secondaryColor: '#1a1a1a',
+                tertiaryColor: '#2a2a2a'
+            }
+        });
+    </script>
+    <style>
+        /* Scoped styles with prefix req-spec- */
+        .req-spec-container {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .req-spec-header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border: 2px solid #FF00FF;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.3);
+        }
+
+        .req-spec-header h1 {
+            color: #FFD700;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .req-spec-header .subtitle {
+            color: #FF00FF;
+            font-size: 1.2em;
+            font-weight: 300;
+        }
+
+        .req-spec-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .req-spec-meta-badge {
+            background: linear-gradient(135deg, #FF00FF 0%, #8B008B 100%);
+            color: #FFD700;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            border: 1px solid #FFD700;
+        }
+
+        .req-spec-section {
+            background: #1a1a1a;
+            border-left: 4px solid #FF00FF;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .req-spec-section h2 {
+            color: #FFD700;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #FF00FF;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .req-spec-section h3 {
+            color: #FF00FF;
+            font-size: 1.5em;
+            margin: 25px 0 15px 0;
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+        }
+
+        .req-spec-section h4 {
+            color: #FFD700;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        /* Requirements Card Component */
+        .req-spec-card {
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+            border: 2px solid #FF00FF;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 5px 20px rgba(255, 0, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .req-spec-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 0, 255, 0.4);
+            border-color: #FFD700;
+        }
+
+        .req-spec-card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 0, 255, 0.3);
+        }
+
+        .req-spec-card-icon {
+            font-size: 2em;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #FF00FF 0%, #8B008B 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+        }
+
+        .req-spec-card-title {
+            color: #FFD700;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .req-spec-card-content {
+            color: #e0e0e0;
+            line-height: 1.8;
+        }
+
+        /* Acceptance Criteria Layout */
+        .req-spec-criteria {
+            background: #0a0a0a;
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .req-spec-criteria-header {
+            color: #FFD700;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #FF00FF;
+        }
+
+        .req-spec-criteria-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 12px;
+            margin: 10px 0;
+            background: rgba(255, 0, 255, 0.05);
+            border-left: 3px solid #FF00FF;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .req-spec-criteria-item:hover {
+            background: rgba(255, 0, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .req-spec-criteria-icon {
+            color: #FFD700;
+            font-size: 1.3em;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .req-spec-criteria-text {
+            color: #e0e0e0;
+            flex: 1;
+        }
+
+        /* Comparison Table */
+        .req-spec-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 20px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .req-spec-table th {
+            background: linear-gradient(135deg, #FF00FF 0%, #8B008B 100%);
+            color: #FFD700;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+            border: 1px solid #FFD700;
+        }
+
+        .req-spec-table td {
+            background: #1a1a1a;
+            padding: 15px;
+            border: 1px solid #333;
+            color: #e0e0e0;
+        }
+
+        .req-spec-table tr:hover td {
+            background: #2a2a2a;
+        }
+
+        /* Status Badges */
+        .req-spec-badge-good {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #000;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 5px 0;
+        }
+
+        .req-spec-badge-bad {
+            background: linear-gradient(135deg, #8B008B 0%, #4B0082 100%);
+            color: #FFD700;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 5px 0;
+        }
+
+        /* Code Blocks */
+        .req-spec-code {
+            background: #0a0a0a;
+            border: 2px solid #FF00FF;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            color: #FFD700;
+            line-height: 1.8;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.2);
+        }
+
+        .req-spec-code pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        /* Highlight Boxes */
+        .req-spec-highlight {
+            background: linear-gradient(135deg, rgba(255, 0, 255, 0.1) 0%, rgba(255, 215, 0, 0.1) 100%);
+            border-left: 5px solid #FFD700;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-style: italic;
+        }
+
+        /* List Styling */
+        .req-spec-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .req-spec-list li {
+            padding: 10px 10px 10px 40px;
+            margin: 8px 0;
+            background: rgba(255, 0, 255, 0.05);
+            border-radius: 5px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .req-spec-list li:hover {
+            background: rgba(255, 0, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .req-spec-list li::before {
+            content: "►";
+            color: #FFD700;
+            font-size: 1.2em;
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Checklist */
+        .req-spec-checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .req-spec-checklist li {
+            padding: 12px 12px 12px 45px;
+            margin: 10px 0;
+            background: #1a1a1a;
+            border-left: 3px solid #FF00FF;
+            border-radius: 5px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .req-spec-checklist li:hover {
+            background: #2a2a2a;
+            border-left-color: #FFD700;
+        }
+
+        .req-spec-checklist li::before {
+            content: "☐";
+            color: #FFD700;
+            font-size: 1.5em;
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Moscow Priority Sections */
+        .req-spec-moscow {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .req-spec-moscow-item {
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+            border: 2px solid;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .req-spec-moscow-item.must {
+            border-color: #FF00FF;
+        }
+
+        .req-spec-moscow-item.should {
+            border-color: #FFD700;
+        }
+
+        .req-spec-moscow-item.could {
+            border-color: #8B008B;
+        }
+
+        .req-spec-moscow-item.wont {
+            border-color: #555;
+        }
+
+        .req-spec-moscow-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .req-spec-moscow-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid;
+        }
+
+        .req-spec-moscow-item.must .req-spec-moscow-title {
+            color: #FF00FF;
+            border-bottom-color: #FF00FF;
+        }
+
+        .req-spec-moscow-item.should .req-spec-moscow-title {
+            color: #FFD700;
+            border-bottom-color: #FFD700;
+        }
+
+        .req-spec-moscow-item.could .req-spec-moscow-title {
+            color: #8B008B;
+            border-bottom-color: #8B008B;
+        }
+
+        .req-spec-moscow-item.wont .req-spec-moscow-title {
+            color: #888;
+            border-bottom-color: #555;
+        }
+
+        /* Alert Boxes */
+        .req-spec-alert {
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 2px solid;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .req-spec-alert-warning {
+            background: rgba(139, 0, 139, 0.1);
+            border-color: #8B008B;
+        }
+
+        .req-spec-alert-success {
+            background: rgba(255, 215, 0, 0.1);
+            border-color: #FFD700;
+        }
+
+        .req-spec-alert-icon {
+            font-size: 1.5em;
+            flex-shrink: 0;
+        }
+
+        /* Mermaid Diagram Container */
+        .req-spec-diagram {
+            background: #0a0a0a;
+            border: 2px solid #FF00FF;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+            overflow-x: auto;
+        }
+
+        /* Footer */
+        .req-spec-footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+            border-top: 2px solid #FF00FF;
+            color: #888;
+        }
+
+        .req-spec-footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .req-spec-footer-link {
+            color: #FFD700;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid #FF00FF;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .req-spec-footer-link:hover {
+            background: #FF00FF;
+            color: #000;
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .req-spec-container {
+                padding: 10px;
+            }
+
+            .req-spec-header h1 {
+                font-size: 1.8em;
+            }
+
+            .req-spec-header .subtitle {
+                font-size: 1em;
+            }
+
+            .req-spec-section {
+                padding: 20px;
+            }
+
+            .req-spec-section h2 {
+                font-size: 1.5em;
+            }
+
+            .req-spec-section h3 {
+                font-size: 1.2em;
+            }
+
+            .req-spec-card {
+                padding: 15px;
+            }
+
+            .req-spec-card-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .req-spec-moscow {
+                grid-template-columns: 1fr;
+            }
+
+            .req-spec-table {
+                font-size: 0.9em;
+            }
+
+            .req-spec-table th,
+            .req-spec-table td {
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .req-spec-header h1 {
+                font-size: 1.4em;
+            }
+
+            .req-spec-section h2 {
+                font-size: 1.3em;
+            }
+
+            .req-spec-card-title {
+                font-size: 1.2em;
+            }
+
+            .req-spec-meta {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="req-spec-container">
+        <!-- Header -->
+        <div class="req-spec-header">
+            <h1>📐 Especificação de Requisitos</h1>
+            <div class="subtitle">Transformando Ideias Vagas em Specs Precisas</div>
+            <div class="req-spec-meta">
+                <span class="req-spec-meta-badge">Layer: 1-fundamentals</span>
+                <span class="req-spec-meta-badge">Status: Complete</span>
+                <span class="req-spec-meta-badge">Version: 1.0.0</span>
+                <span class="req-spec-meta-badge">Updated: 2025-11-06</span>
+            </div>
+        </div>
+
+        <!-- Introduction -->
+        <div class="req-spec-section">
+            <h2>Introdução: O Problema da Vagueza</h2>
+            <div class="req-spec-highlight">
+                <p><strong>Imagine pedir a um desenvolvedor:</strong><br>
+                "Crie um sistema de autenticação legal e seguro"</p>
+            </div>
+            <p>O desenvolvedor provavelmente vai perguntar:</p>
+            <ul class="req-spec-list">
+                <li>O que é "legal"? (Simples? Moderno? Completo?)</li>
+                <li>Quão "seguro"? (2FA? Biometria? Conformidade com qual padrão?)</li>
+                <li>Quais features exatamente? (Login? Recuperação de senha? SSO?)</li>
+            </ul>
+            <div class="req-spec-alert req-spec-alert-warning">
+                <div class="req-spec-alert-icon">⚠️</div>
+                <div>
+                    <strong>IA tem o mesmo problema.</strong> Requests vagos geram respostas genéricas.
+                    A solução? <strong>Especificações precisas e mensuráveis.</strong>
+                </div>
+            </div>
+            <p>Este guia ensina como transformar:</p>
+            <ul class="req-spec-list">
+                <li>"Melhore o código" → "Reduza complexidade ciclomática de 20 para &lt;10"</li>
+                <li>"Deixe mais rápido" → "Latência p95 deve ser &lt;200ms (atual: 2s)"</li>
+                <li>"Implemente autenticação" → [spec completa com 15 requisitos objetivos]</li>
+            </ul>
+        </div>
+
+        <!-- Good vs Bad Requirements -->
+        <div class="req-spec-section">
+            <h2>O Que Torna um Requisito "Bom"?</h2>
+            <h3>Requisito RUIM vs BOM</h3>
+            <table class="req-spec-table">
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>❌ Requisito Ruim</th>
+                        <th>✅ Requisito Bom</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Clareza</strong></td>
+                        <td>"Sistema rápido"</td>
+                        <td>"Latência p95 &lt;200ms para 95% das requests"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mensurabilidade</strong></td>
+                        <td>"Código limpo"</td>
+                        <td>"Complexidade ciclomática &lt;10, cobertura &gt;80%"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Acionabilidade</strong></td>
+                        <td>"Melhore segurança"</td>
+                        <td>"Implemente rate limiting (100 req/min por IP) e SQL injection protection"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Testabilidade</strong></td>
+                        <td>"Funcione bem"</td>
+                        <td>"Deve passar nos testes: [lista de cenários]"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Completude</strong></td>
+                        <td>"Autenticação"</td>
+                        <td>"Login com email+senha, JWT (15min), refresh tokens (7 dias), 2FA opcional"</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Os 5 Critérios de um Bom Requisito</h3>
+            <div class="req-spec-card">
+                <div class="req-spec-card-header">
+                    <div class="req-spec-card-icon">🎯</div>
+                    <h3 class="req-spec-card-title">1. SMART</h3>
+                </div>
+                <div class="req-spec-card-content">
+                    <ul class="req-spec-list">
+                        <li><strong>S</strong>pecific (Específico)</li>
+                        <li><strong>M</strong>easurable (Mensurável)</li>
+                        <li><strong>A</strong>chievable (Atingível)</li>
+                        <li><strong>R</strong>elevant (Relevante)</li>
+                        <li><strong>T</strong>ime-bound (Com deadline, quando aplicável)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="req-spec-card">
+                <div class="req-spec-card-header">
+                    <div class="req-spec-card-icon">💎</div>
+                    <h3 class="req-spec-card-title">2. Unambíguo</h3>
+                </div>
+                <div class="req-spec-card-content">
+                    <ul class="req-spec-list">
+                        <li>Uma única interpretação possível</li>
+                        <li>Sem termos vagos ("bom", "rápido", "legal")</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="req-spec-card">
+                <div class="req-spec-card-header">
+                    <div class="req-spec-card-icon">✓</div>
+                    <h3 class="req-spec-card-title">3. Testável</h3>
+                </div>
+                <div class="req-spec-card-content">
+                    <ul class="req-spec-list">
+                        <li>Você consegue validar se foi atendido?</li>
+                        <li>Como provar que está completo?</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="req-spec-card">
+                <div class="req-spec-card-header">
+                    <div class="req-spec-card-icon">🔧</div>
+                    <h3 class="req-spec-card-title">4. Independente de Implementação</h3>
+                </div>
+                <div class="req-spec-card-content">
+                    <ul class="req-spec-list">
+                        <li>Diz "O QUÊ", não "COMO"</li>
+                        <li><span class="req-spec-badge-good">✅</span> "Sistema deve autenticar usuários"</li>
+                        <li><span class="req-spec-badge-bad">❌</span> "Use JWT com library X" (muito específico)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="req-spec-card">
+                <div class="req-spec-card-header">
+                    <div class="req-spec-card-icon">📊</div>
+                    <h3 class="req-spec-card-title">5. Priorizável</h3>
+                </div>
+                <div class="req-spec-card-content">
+                    <ul class="req-spec-list">
+                        <li>Distingue obrigatório vs opcional</li>
+                        <li>Must-have vs nice-to-have</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Refinement Process -->
+        <div class="req-spec-section">
+            <h2>Transformando Vagas Ideias em Specs</h2>
+            <h3>Processo de Refinamento</h3>
+            <div class="req-spec-diagram">
+                <div class="mermaid">
+graph TD
+    A[IDEIA VAGA] -->|"O que exatamente?"| B[RESPOSTA INICIAL]
+    B -->|"Como medir?"| C[REQUISITO MENSURÁVEL]
+    C -->|"Como validar?"| D[SPEC COMPLETA]
+
+    style A fill:#8B008B,stroke:#FF00FF,stroke-width:2px,color:#FFD700
+    style B fill:#1a1a1a,stroke:#FF00FF,stroke-width:2px,color:#FFD700
+    style C fill:#1a1a1a,stroke:#FFD700,stroke-width:2px,color:#FFD700
+    style D fill:#2a2a2a,stroke:#FFD700,stroke-width:3px,color:#FFD700
+                </div>
+            </div>
+
+            <h3>Exemplo Passo a Passo: Sistema de Cache</h3>
+
+            <div class="req-spec-card">
+                <div class="req-spec-card-header">
+                    <div class="req-spec-card-icon">1️⃣</div>
+                    <h3 class="req-spec-card-title">IDEIA VAGA</h3>
+                </div>
+                <div class="req-spec-card-content">
+                    <div class="req-spec-highlight">
+                        "Preciso de um sistema de cache"
+                    </div>
+                </div>
+            </div>
+
+            <div class="req-spec-card">
+                <div class="req-spec-card-header">
+                    <div class="req-spec-card-icon">2️⃣</div>
+                    <h3 class="req-spec-card-title">Refinamento 1: O QUÊ exatamente?</h3>
+                </div>
+                <div class="req-spec-card-content">
+                    <p><strong>P:</strong> Cache para quê? Onde? Por quê?</p>
+                    <p><strong>R:</strong> Cache para queries de banco que demoram muito</p>
+                    <p><strong>→</strong> "Implementar cache para otimizar queries lentas"</p>
+                </div>
+            </div>
+
+            <div class="req-spec-card">
+                <div class="req-spec-card-header">
+                    <div class="req-spec-card-icon">3️⃣</div>
+                    <h3 class="req-spec-card-title">Refinamento 2: QUANTO?</h3>
+                </div>
+                <div class="req-spec-card-content">
+                    <p><strong>P:</strong> Quais queries? Quão lentas? Quanto deve melhorar?</p>
+                    <p><strong>R:</strong> Queries de produtos (search/filter), hoje demoram 2-3s, queremos &lt;200ms</p>
+                    <p><strong>→</strong> "Cache de queries de produtos: Queries atuais: 2-3s, Target: &lt;200ms (p95)"</p>
+                </div>
+            </div>
+
+            <div class="req-spec-card">
+                <div class="req-spec-card-header">
+                    <div class="req-spec-card-icon">4️⃣</div>
+                    <h3 class="req-spec-card-title">Refinamento 3: COMO validar?</h3>
+                </div>
+                <div class="req-spec-card-content">
+                    <p><strong>P:</strong> Como saber se funcionou? Que métricas observar?</p>
+                    <p><strong>R:</strong> Medir latência antes/depois, observar hit rate</p>
+                    <div class="req-spec-criteria">
+                        <div class="req-spec-criteria-header">Critérios de sucesso:</div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">✓</div>
+                            <div class="req-spec-criteria-text">Latência p95 &lt;200ms</div>
+                        </div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">✓</div>
+                            <div class="req-spec-criteria-text">Hit rate &gt;70%</div>
+                        </div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">✓</div>
+                            <div class="req-spec-criteria-text">Invalidação correta (dados atualizados visíveis em &lt;30s)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="req-spec-card">
+                <div class="req-spec-card-header">
+                    <div class="req-spec-card-icon">5️⃣</div>
+                    <h3 class="req-spec-card-title">Refinamento 4: CONSTRAINTS?</h3>
+                </div>
+                <div class="req-spec-card-content">
+                    <p><strong>P:</strong> Que tipo de cache? Onde? Limitações?</p>
+                    <p><strong>R:</strong> Redis (já temos), não pode usar memória local (Lambda), budget para cache = $200/mês</p>
+                    <ul class="req-spec-list">
+                        <li>Usar Redis existente</li>
+                        <li>Funcionar em AWS Lambda (stateless)</li>
+                        <li>Cache size: ~10GB (estima 100k produtos × 100KB)</li>
+                        <li>Budget: $200/mês</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>SPEC FINAL: Sistema de Cache para Queries de Produtos</h3>
+            <div class="req-spec-code">
+                <pre>## Requisito: Sistema de Cache para Queries de Produtos
+
+### Objetivo
+Reduzir latência de queries de busca/filtro de produtos de 2-3s para &lt;200ms.
+
+### Requisitos Funcionais
+1. **Cache de Queries:**
+   - Cachear resultados de GET /api/products (search, filters)
+   - TTL: 5 minutos (dados podem ter leve delay)
+   - Invalidação: Ao criar/atualizar/deletar produto
+
+2. **Hit Rate Target:**
+   - Mínimo 70% de cache hits
+   - Miss: Buscar no DB e popular cache
+
+3. **Invalidação:**
+   - Granular (apenas produtos afetados)
+   - Propagação: &lt;30s
+
+### Requisitos Não-Funcionais
+1. **Performance:**
+   - Latência p95: &lt;200ms (cache hit)
+   - Latência p95: &lt;3s (cache miss - não pode piorar)
+   - Timeout: 5s
+
+2. **Escalabilidade:**
+   - Suportar 10k requests/min
+   - Cache size: ~10GB
+
+3. **Disponibilidade:**
+   - Se Redis cair, sistema funciona (fallback para DB)
+   - Degradação graceful, não erro 500
+
+### Constraints
+- **Tecnologia:** Redis (cluster existente)
+- **Infraestrutura:** AWS Lambda (stateless, não pode cache local)
+- **Budget:** $200/mês (custo Redis)
+- **Prazo:** Implementar em 2 sprints (4 semanas)
+
+### Critérios de Sucesso
+✓ Latência p95 &lt;200ms (validar via APM)
+✓ Hit rate &gt;70% (via Redis INFO stats)
+✓ Zero downtime durante rollout
+✓ Invalidação funciona (teste: atualizar produto, ver em &lt;30s)
+
+### Testes de Validação
+1. **Performance Test:**
+   - 10k requests simultâneos
+   - Validar: p95 &lt;200ms, zero timeouts
+
+2. **Invalidation Test:**
+   - UPDATE produto X
+   - GET /api/products?id=X em &lt;30s
+   - Validar: dados atualizados
+
+3. **Failure Test:**
+   - Derrubar Redis
+   - Validar: Sistema funciona (mais lento, sem erros)
+
+### Fora do Escopo
+❌ Cache de outras entidades (users, orders) - fase futura
+❌ Pré-aquecimento de cache - não é prioridade
+❌ Cache distribuído cross-region - single region por ora</pre>
+            </div>
+        </div>
+
+        <!-- Types of Requirements -->
+        <div class="req-spec-section">
+            <h2>Tipos de Requisitos</h2>
+
+            <div class="req-spec-card">
+                <div class="req-spec-card-header">
+                    <div class="req-spec-card-icon">⚙️</div>
+                    <h3 class="req-spec-card-title">1. Requisitos Funcionais</h3>
+                </div>
+                <div class="req-spec-card-content">
+                    <p><strong>O que o sistema DEVE FAZER</strong></p>
+                    <div class="req-spec-code">
+                        <pre>Estrutura:
+O sistema deve [AÇÃO] [OBJETO] quando [CONDIÇÃO]</pre>
+                    </div>
+                    <h4>Exemplos:</h4>
+                    <div class="req-spec-criteria">
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">✅</div>
+                            <div class="req-spec-criteria-text">"Sistema deve autenticar usuário quando credenciais válidas são fornecidas"</div>
+                        </div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">✅</div>
+                            <div class="req-spec-criteria-text">"API deve retornar erro 401 quando token JWT expirado"</div>
+                        </div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">✅</div>
+                            <div class="req-spec-criteria-text">"Checkout deve validar estoque antes de confirmar pedido"</div>
+                        </div>
+                    </div>
+                    <h4>Antiexemplos:</h4>
+                    <div class="req-spec-criteria">
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">❌</div>
+                            <div class="req-spec-criteria-text">"Sistema deve ter login" (vago)</div>
+                        </div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">❌</div>
+                            <div class="req-spec-criteria-text">"Deve funcionar bem" (não mensurável)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="req-spec-card">
+                <div class="req-spec-card-header">
+                    <div class="req-spec-card-icon">📊</div>
+                    <h3 class="req-spec-card-title">2. Requisitos Não-Funcionais</h3>
+                </div>
+                <div class="req-spec-card-content">
+                    <p><strong>Como o sistema deve PERFORMAR</strong></p>
+                    <h4>Categorias:</h4>
+                    <ul class="req-spec-list">
+                        <li><strong>Performance:</strong> Latência, throughput, tempo de resposta</li>
+                        <li><strong>Escalabilidade:</strong> Quantos usuários/carga suporta</li>
+                        <li><strong>Disponibilidade:</strong> Uptime, tolerância a falhas</li>
+                        <li><strong>Segurança:</strong> Autenticação, autorização, criptografia</li>
+                        <li><strong>Manutenibilidade:</strong> Facilidade de debugar/evoluir</li>
+                        <li><strong>Usabilidade:</strong> Facilidade de uso (quando aplicável)</li>
+                    </ul>
+                    <h4>Exemplos:</h4>
+                    <div class="req-spec-criteria">
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">✅</div>
+                            <div class="req-spec-criteria-text">Performance: "p95 latency &lt;200ms sob 1000 req/s"</div>
+                        </div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">✅</div>
+                            <div class="req-spec-criteria-text">Escalabilidade: "Suportar 10k usuários simultâneos sem degradação"</div>
+                        </div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">✅</div>
+                            <div class="req-spec-criteria-text">Disponibilidade: "99.9% uptime (max 43min downtime/mês)"</div>
+                        </div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">✅</div>
+                            <div class="req-spec-criteria-text">Segurança: "Senhas hasheadas com bcrypt (cost 12), rate limiting 100 req/min"</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="req-spec-card">
+                <div class="req-spec-card-header">
+                    <div class="req-spec-card-icon">🚧</div>
+                    <h3 class="req-spec-card-title">3. Constraints (Restrições)</h3>
+                </div>
+                <div class="req-spec-card-content">
+                    <p><strong>O que NÃO PODE ser mudado</strong></p>
+                    <h4>Categorias:</h4>
+                    <ul class="req-spec-list">
+                        <li><strong>Tecnológicas:</strong> Stack, linguagens, frameworks</li>
+                        <li><strong>Infraestrutura:</strong> Cloud provider, servidores</li>
+                        <li><strong>Organizacionais:</strong> Time, skills, processos</li>
+                        <li><strong>Legais:</strong> Compliance, regulamentações, licenças</li>
+                        <li><strong>Orçamentárias:</strong> Budget, tempo, recursos</li>
+                    </ul>
+                    <h4>Exemplos:</h4>
+                    <div class="req-spec-criteria">
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">✅</div>
+                            <div class="req-spec-criteria-text">"Deve usar PostgreSQL (não pode migrar para NoSQL)"</div>
+                        </div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">✅</div>
+                            <div class="req-spec-criteria-text">"Não pode ter downtime (sistema 24/7)"</div>
+                        </div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">✅</div>
+                            <div class="req-spec-criteria-text">"Conformidade GDPR obrigatória"</div>
+                        </div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">✅</div>
+                            <div class="req-spec-criteria-text">"Budget: max $500/mês"</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="req-spec-card">
+                <div class="req-spec-card-header">
+                    <div class="req-spec-card-icon">✅</div>
+                    <h3 class="req-spec-card-title">4. Critérios de Sucesso</h3>
+                </div>
+                <div class="req-spec-card-content">
+                    <p><strong>Como VALIDAR que requisito foi atendido</strong></p>
+                    <div class="req-spec-code">
+                        <pre>Estrutura:
+✓ [MÉTRICA] [OPERADOR] [VALOR] validado via [MÉTODO]</pre>
+                    </div>
+                    <h4>Exemplos:</h4>
+                    <div class="req-spec-criteria">
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">✅</div>
+                            <div class="req-spec-criteria-text">"Latência p95 &lt;200ms validado via load test com 10k requests"</div>
+                        </div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">✅</div>
+                            <div class="req-spec-criteria-text">"Cobertura de testes &gt;80% validado via coverage report"</div>
+                        </div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">✅</div>
+                            <div class="req-spec-criteria-text">"Zero vulnerabilidades HIGH/CRITICAL validado via security scan"</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Definition of Done -->
+        <div class="req-spec-section">
+            <h2>Definição de "Pronto" (Definition of Done)</h2>
+            <p>Para cada requisito, defina <strong>quando ele está completo</strong>.</p>
+
+            <h3>Template de DoD</h3>
+            <div class="req-spec-code">
+                <pre>## Definição de Pronto: [Nome do Requisito]
+
+### Implementação
+- [ ] Código implementado e revisado
+- [ ] Tratamento de erros completo
+- [ ] Logging adequado (info, error)
+- [ ] Documentação inline (comentários)
+
+### Testes
+- [ ] Testes unitários (cobertura &gt;80%)
+- [ ] Testes de integração (cenários principais)
+- [ ] Testes de edge cases ([listar casos])
+- [ ] Testes de performance (se aplicável)
+
+### Qualidade
+- [ ] Code review aprovado (2+ aprovações)
+- [ ] Linter passou (zero warnings)
+- [ ] Security scan passou (zero HIGH/CRITICAL)
+- [ ] Complexidade &lt;10 (ou justificada)
+
+### Validação
+- [ ] Testado em ambiente de staging
+- [ ] Métricas validadas: [listar]
+- [ ] Casos de teste executados manualmente: [listar]
+
+### Documentação
+- [ ] README atualizado (se necessário)
+- [ ] API docs atualizado (Swagger/OpenAPI)
+- [ ] Runbook atualizado (operação)
+
+### Deploy
+- [ ] Feature flag implementada (se aplicável)
+- [ ] Rollback plan documentado
+- [ ] Stakeholders comunicados</pre>
+            </div>
+
+            <h3>Exemplo Específico: Implementar Cache de Produtos</h3>
+            <div class="req-spec-criteria">
+                <div class="req-spec-criteria-header">Implementação</div>
+                <ul class="req-spec-checklist">
+                    <li>CacheService implementado com Redis client</li>
+                    <li>Middleware de cache em GET /api/products</li>
+                    <li>Invalidação em POST/PUT/DELETE /api/products</li>
+                    <li>Tratamento de erro quando Redis indisponível (fallback para DB)</li>
+                    <li>Logging: cache hit/miss, invalidações</li>
+                </ul>
+            </div>
+
+            <div class="req-spec-criteria">
+                <div class="req-spec-criteria-header">Testes</div>
+                <ul class="req-spec-checklist">
+                    <li>Unit tests: CacheService (get, set, invalidate, fallback)</li>
+                    <li>Integration tests: endpoint com cache enabled</li>
+                    <li>Edge cases: Redis down, TTL expiration, concurrent requests</li>
+                    <li>Performance test: 10k requests, validar p95 &lt;200ms</li>
+                </ul>
+            </div>
+
+            <div class="req-spec-criteria">
+                <div class="req-spec-criteria-header">Qualidade</div>
+                <ul class="req-spec-checklist">
+                    <li>Code review por @senior-dev</li>
+                    <li>ESLint passou</li>
+                    <li>Security: validar input (prevent cache poisoning)</li>
+                </ul>
+            </div>
+
+            <div class="req-spec-criteria">
+                <div class="req-spec-criteria-header">Validação</div>
+                <ul class="req-spec-checklist">
+                    <li>Staging: Hit rate &gt;70% em 24h de uso real</li>
+                    <li>Latência p95 &lt;200ms (via Datadog)</li>
+                    <li>Teste manual: atualizar produto, verificar cache em &lt;30s</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- MoSCoW Prioritization -->
+        <div class="req-spec-section">
+            <h2>Priorizando Requisitos: MoSCoW</h2>
+            <p>Nem tudo é igualmente importante. Use <strong>MoSCoW</strong>:</p>
+            <ul class="req-spec-list">
+                <li><strong>Must Have</strong> - Obrigatório (sem isso, não funciona)</li>
+                <li><strong>Should Have</strong> - Importante (mas pode lançar sem)</li>
+                <li><strong>Could Have</strong> - Desejável (nice-to-have)</li>
+                <li><strong>Won't Have</strong> - Não faremos (agora ou nunca)</li>
+            </ul>
+
+            <h3>Exemplo: Feature Sistema de Autenticação</h3>
+            <div class="req-spec-moscow">
+                <div class="req-spec-moscow-item must">
+                    <div class="req-spec-moscow-title">Must Have</div>
+                    <ul class="req-spec-checklist">
+                        <li>Login com email + senha</li>
+                        <li>JWT com expiração (15min)</li>
+                        <li>Refresh tokens (7 dias)</li>
+                        <li>Logout</li>
+                        <li>Rate limiting (prevent brute force)</li>
+                    </ul>
+                </div>
+
+                <div class="req-spec-moscow-item should">
+                    <div class="req-spec-moscow-title">Should Have</div>
+                    <ul class="req-spec-checklist">
+                        <li>Recuperação de senha via email</li>
+                        <li>2FA (TOTP)</li>
+                        <li>Remember me (30 dias)</li>
+                    </ul>
+                </div>
+
+                <div class="req-spec-moscow-item could">
+                    <div class="req-spec-moscow-title">Could Have</div>
+                    <ul class="req-spec-checklist">
+                        <li>Login com Google/GitHub (OAuth)</li>
+                        <li>Autenticação biométrica</li>
+                        <li>Login passwordless (magic link)</li>
+                    </ul>
+                </div>
+
+                <div class="req-spec-moscow-item wont">
+                    <div class="req-spec-moscow-title">Won't Have (Esta Fase)</div>
+                    <ul class="req-spec-checklist">
+                        <li>Login com face recognition</li>
+                        <li>Multi-tenancy SSO</li>
+                        <li>Hardware token (Yubikey)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="req-spec-alert req-spec-alert-success">
+                <div class="req-spec-alert-icon">💡</div>
+                <div>
+                    <strong>Benefício:</strong> Clareza de prioridade, facilita negociação de escopo.
+                </div>
+            </div>
+        </div>
+
+        <!-- Specification Techniques -->
+        <div class="req-spec-section">
+            <h2>Técnicas de Especificação</h2>
+
+            <div class="req-spec-card">
+                <div class="req-spec-card-header">
+                    <div class="req-spec-card-icon">📝</div>
+                    <h3 class="req-spec-card-title">Técnica 1: User Stories (Formato Ágil)</h3>
+                </div>
+                <div class="req-spec-card-content">
+                    <div class="req-spec-code">
+                        <pre>Como [PERSONA],
+Eu quero [AÇÃO],
+Para [BENEFÍCIO]
+
+Critérios de aceitação:
+- [Cenário 1]
+- [Cenário 2]
+- [Cenário 3]</pre>
+                    </div>
+                    <h4>Exemplo:</h4>
+                    <div class="req-spec-highlight">
+                        <p><strong>Como</strong> usuário final,<br>
+                        <strong>Eu quero</strong> fazer login com email e senha,<br>
+                        <strong>Para</strong> acessar minha conta de forma segura</p>
+                    </div>
+                    <div class="req-spec-criteria">
+                        <div class="req-spec-criteria-header">Critérios de aceitação:</div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">•</div>
+                            <div class="req-spec-criteria-text">Dado que forneço credenciais válidas, devo ser autenticado e receber JWT</div>
+                        </div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">•</div>
+                            <div class="req-spec-criteria-text">Dado que forneço senha incorreta, devo receber erro 401 "Invalid credentials"</div>
+                        </div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">•</div>
+                            <div class="req-spec-criteria-text">Dado que forneço email não cadastrado, devo receber erro 404 "User not found"</div>
+                        </div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">•</div>
+                            <div class="req-spec-criteria-text">Dado que tento login 5+ vezes com senha errada, devo ser bloqueado por 15min</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="req-spec-card">
+                <div class="req-spec-card-header">
+                    <div class="req-spec-card-icon">🎭</div>
+                    <h3 class="req-spec-card-title">Técnica 2: BDD (Behavior-Driven Development)</h3>
+                </div>
+                <div class="req-spec-card-content">
+                    <div class="req-spec-code">
+                        <pre>Feature: [Nome da Feature]
+
+Scenario: [Cenário específico]
+  Given [contexto/pré-condição]
+  When [ação]
+  Then [resultado esperado]</pre>
+                    </div>
+                    <h4>Exemplo:</h4>
+                    <div class="req-spec-code">
+                        <pre>Feature: Autenticação de Usuário
+
+Scenario: Login bem-sucedido
+  Given um usuário cadastrado com email "user@example.com" e senha "securePass123"
+  When envio POST /api/login com {"email": "user@example.com", "password": "securePass123"}
+  Then recebo status 200
+  And recebo um JWT válido no body
+  And o JWT contém userId e expira em 15 minutos
+
+Scenario: Login com senha incorreta
+  Given um usuário cadastrado com email "user@example.com"
+  When envio POST /api/login com senha incorreta
+  Then recebo status 401
+  And recebo mensagem "Invalid credentials"
+  And não recebo JWT</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="req-spec-card">
+                <div class="req-spec-card-header">
+                    <div class="req-spec-card-icon">📋</div>
+                    <h3 class="req-spec-card-title">Técnica 3: Specification by Example</h3>
+                </div>
+                <div class="req-spec-card-content">
+                    <p>Forneça <strong>exemplos concretos</strong> de input/output esperado.</p>
+                    <h4>Exemplo: Validação de Email</h4>
+                    <div class="req-spec-criteria">
+                        <div class="req-spec-criteria-header">Deve Aceitar</div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">✅</div>
+                            <div class="req-spec-criteria-text">test@example.com</div>
+                        </div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">✅</div>
+                            <div class="req-spec-criteria-text">user+tag@domain.co.uk</div>
+                        </div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">✅</div>
+                            <div class="req-spec-criteria-text">name.surname@company.com</div>
+                        </div>
+                    </div>
+                    <div class="req-spec-criteria">
+                        <div class="req-spec-criteria-header">Deve Rejeitar</div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">❌</div>
+                            <div class="req-spec-criteria-text">@example.com (sem local part)</div>
+                        </div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">❌</div>
+                            <div class="req-spec-criteria-text">test@ (sem domain)</div>
+                        </div>
+                        <div class="req-spec-criteria-item">
+                            <div class="req-spec-criteria-icon">❌</div>
+                            <div class="req-spec-criteria-text">test @example.com (espaço)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Checklist -->
+        <div class="req-spec-section">
+            <h2>Checklist de Requisitos Bem Especificados</h2>
+            <p>Antes de considerar um requisito "pronto", valide:</p>
+
+            <div class="req-spec-criteria">
+                <div class="req-spec-criteria-header">Clareza</div>
+                <ul class="req-spec-checklist">
+                    <li>Requisito pode ser entendido por alguém fora do projeto?</li>
+                    <li>Não há ambiguidade (uma única interpretação)?</li>
+                    <li>Termos técnicos estão definidos/documentados?</li>
+                </ul>
+            </div>
+
+            <div class="req-spec-criteria">
+                <div class="req-spec-criteria-header">Mensurabilidade</div>
+                <ul class="req-spec-checklist">
+                    <li>Há métricas objetivas?</li>
+                    <li>Posso medir se foi atendido?</li>
+                    <li>Valores numéricos quando aplicável? (latência, throughput, etc)</li>
+                </ul>
+            </div>
+
+            <div class="req-spec-criteria">
+                <div class="req-spec-criteria-header">Completude</div>
+                <ul class="req-spec-checklist">
+                    <li>Requisitos funcionais cobrem todos casos de uso?</li>
+                    <li>Requisitos não-funcionais definidos?</li>
+                    <li>Constraints explícitas?</li>
+                    <li>Critérios de sucesso claros?</li>
+                </ul>
+            </div>
+
+            <div class="req-spec-criteria">
+                <div class="req-spec-criteria-header">Testabilidade</div>
+                <ul class="req-spec-checklist">
+                    <li>Posso escrever testes automatizados?</li>
+                    <li>Posso validar manualmente?</li>
+                    <li>Casos de sucesso E falha definidos?</li>
+                    <li>Edge cases identificados?</li>
+                </ul>
+            </div>
+
+            <div class="req-spec-criteria">
+                <div class="req-spec-criteria-header">Viabilidade</div>
+                <ul class="req-spec-checklist">
+                    <li>É tecnicamente possível implementar?</li>
+                    <li>Está dentro das constraints (tempo, budget, skills)?</li>
+                    <li>Não contradiz outros requisitos?</li>
+                </ul>
+            </div>
+
+            <div class="req-spec-criteria">
+                <div class="req-spec-criteria-header">Prioridade</div>
+                <ul class="req-spec-checklist">
+                    <li>Classificado (Must/Should/Could/Won't)?</li>
+                    <li>Dependências identificadas?</li>
+                    <li>Ordem de implementação clara?</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Antipatterns -->
+        <div class="req-spec-section">
+            <h2>Antipadrões de Requisitos</h2>
+
+            <div class="req-spec-card">
+                <div class="req-spec-card-header">
+                    <div class="req-spec-card-icon">🚫</div>
+                    <h3 class="req-spec-card-title">Antipadrão 1: Requisito de Implementação</h3>
+                </div>
+                <div class="req-spec-card-content">
+                    <div class="req-spec-alert req-spec-alert-warning">
+                        <div class="req-spec-alert-icon">❌</div>
+                        <div>
+                            <p><strong>Problema:</strong> Muito específico, amarra implementação.</p>
+                            <p>"Usar biblioteca X para JWT"</p>
+                            <p>"Implementar padrão Observer com events"</p>
+                        </div>
+                    </div>
+                    <div class="req-spec-alert req-spec-alert-success">
+                        <div class="req-spec-alert-icon">✅</div>
+                        <div>
+                            <p><strong>Solução:</strong> Especifique o "O QUÊ", não o "COMO":</p>
+                            <p>"Sistema deve gerar tokens de autenticação com expiração"</p>
+                            <p>"Componentes devem reagir a mudanças de estado sem acoplamento direto"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="req-spec-card">
+                <div class="req-spec-card-header">
+                    <div class="req-spec-card-icon">🚫</div>
+                    <h3 class="req-spec-card-title">Antipadrão 2: Requisito Vago</h3>
+                </div>
+                <div class="req-spec-card-content">
+                    <div class="req-spec-alert req-spec-alert-warning">
+                        <div class="req-spec-alert-icon">❌</div>
+                        <div>
+                            <p>"Sistema deve ser performático"</p>
+                            <p>"Código deve ser de qualidade"</p>
+                        </div>
+                    </div>
+                    <div class="req-spec-alert req-spec-alert-success">
+                        <div class="req-spec-alert-icon">✅</div>
+                        <div>
+                            <p><strong>Solução:</strong> Quantifique:</p>
+                            <p>"Latência p95 &lt;200ms para 95% das requests"</p>
+                            <p>"Complexidade ciclomática &lt;10, cobertura de testes &gt;80%"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="req-spec-card">
+                <div class="req-spec-card-header">
+                    <div class="req-spec-card-icon">🚫</div>
+                    <h3 class="req-spec-card-title">Antipadrão 3: Requisito Impossível de Validar</h3>
+                </div>
+                <div class="req-spec-card-content">
+                    <div class="req-spec-alert req-spec-alert-warning">
+                        <div class="req-spec-alert-icon">❌</div>
+                        <div>
+                            <p>"Sistema deve ser fácil de usar"</p>
+                            <p>"Código deve ser elegante"</p>
+                        </div>
+                    </div>
+                    <div class="req-spec-alert req-spec-alert-success">
+                        <div class="req-spec-alert-icon">✅</div>
+                        <div>
+                            <p><strong>Solução:</strong> Defina métricas proxy:</p>
+                            <p>"90% dos usuários completam onboarding em &lt;5 minutos (medido via analytics)"</p>
+                            <p>"Código segue style guide do projeto (validado via linter)"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="req-spec-card">
+                <div class="req-spec-card-header">
+                    <div class="req-spec-card-icon">🚫</div>
+                    <h3 class="req-spec-card-title">Antipadrão 4: Requisito "Oculto" em Constraints</h3>
+                </div>
+                <div class="req-spec-card-content">
+                    <div class="req-spec-alert req-spec-alert-warning">
+                        <div class="req-spec-alert-icon">❌</div>
+                        <div>
+                            <p><strong>Problema:</strong> Mistura constraint com requisito.</p>
+                            <p>"Usar PostgreSQL" (parece constraint mas é requisito funcional escondido)</p>
+                        </div>
+                    </div>
+                    <div class="req-spec-alert req-spec-alert-success">
+                        <div class="req-spec-alert-icon">✅</div>
+                        <div>
+                            <p><strong>Solução:</strong> Separe:</p>
+                            <p><strong>Requisito:</strong> "Sistema deve persistir dados de forma relacional"</p>
+                            <p><strong>Constraint:</strong> "Usar PostgreSQL (já temos infraestrutura)"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Final Reflection -->
+        <div class="req-spec-section">
+            <h2>🌱 Reflexão Final</h2>
+            <div class="req-spec-highlight">
+                <p>Especificação de requisitos é como <strong>desenhar o mapa antes da viagem</strong>:</p>
+                <ul class="req-spec-list">
+                    <li>Sem mapa, você se perde</li>
+                    <li>Com mapa vago, pode acabar no lugar errado</li>
+                    <li>Com mapa detalhado, chega onde quer eficientemente</li>
+                </ul>
+            </div>
+
+            <div class="req-spec-alert req-spec-alert-success">
+                <div class="req-spec-alert-icon">💡</div>
+                <div>
+                    <p><strong>Invista tempo em specs claras.</strong> Cada hora especificando economiza 10 horas debugando código que resolve o problema errado.</p>
+                </div>
+            </div>
+
+            <h3>Comece hoje:</h3>
+            <div class="req-spec-criteria">
+                <div class="req-spec-criteria-item">
+                    <div class="req-spec-criteria-icon">1</div>
+                    <div class="req-spec-criteria-text">Pegue um feature request vago do seu backlog</div>
+                </div>
+                <div class="req-spec-criteria-item">
+                    <div class="req-spec-criteria-icon">2</div>
+                    <div class="req-spec-criteria-text">Aplique o processo de refinamento deste guia</div>
+                </div>
+                <div class="req-spec-criteria-item">
+                    <div class="req-spec-criteria-icon">3</div>
+                    <div class="req-spec-criteria-text">Crie spec completa (requisitos + critérios + DoD)</div>
+                </div>
+                <div class="req-spec-criteria-item">
+                    <div class="req-spec-criteria-icon">4</div>
+                    <div class="req-spec-criteria-text">Compare: implementar com vs sem spec detalhada</div>
+                </div>
+            </div>
+
+            <div class="req-spec-highlight">
+                <p><strong>A diferença em qualidade e velocidade será drástica.</strong></p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="req-spec-footer">
+            <h3>Próximos Passos</h3>
+            <p>Domine especificação de requisitos e explore:</p>
+            <div class="req-spec-footer-links">
+                <a href="../2-engineering/01-design-templates-universais.html" class="req-spec-footer-link">Design Templates Universais</a>
+                <a href="../2-engineering/03-checklists-validacoes.html" class="req-spec-footer-link">Checklists & Validações</a>
+                <a href="../4-workflows/01-workflow-analise-problemas.html" class="req-spec-footer-link">Workflow Análise Problemas</a>
+                <a href="06-estruturacao-contexto.html" class="req-spec-footer-link">Estruturação de Contexto</a>
+            </div>
+            <p style="margin-top: 30px; color: #FFD700;">
+                <strong>Tags:</strong> #requisitos #specs #validacao #criterios #DoD
+            </p>
+        </div>
+    </div>
+</body>
+</html>

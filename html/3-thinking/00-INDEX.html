@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layer 3: Advanced Thinking - Índice</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        .thinking-index-scope {
+            --bg-dark: #0a0a0a;
+            --bg-card: #1a1a1a;
+            --magenta: #ff00ff;
+            --magenta-dark: #cc00cc;
+            --magenta-light: #ff66ff;
+            --gold: #ffd700;
+            --gold-dark: #ccaa00;
+            --white: #ffffff;
+            --gray: #808080;
+            --gray-light: #a0a0a0;
+        }
+
+        .thinking-index-scope * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .thinking-index-scope {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a0a1a 100%);
+            color: var(--white);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .thinking-index-scope .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .thinking-index-scope .header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(255,0,255,0.1) 0%, rgba(255,215,0,0.1) 100%);
+            border-radius: 20px;
+            margin-bottom: 60px;
+            border: 2px solid var(--magenta);
+            box-shadow: 0 0 40px rgba(255,0,255,0.3);
+        }
+
+        .thinking-index-scope .header h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--magenta) 0%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .thinking-index-scope .subtitle {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: var(--gray-light);
+            margin-bottom: 30px;
+        }
+
+        .thinking-index-scope .intro {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 50px;
+            border-left: 5px solid var(--magenta);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .thinking-index-scope .intro h2 {
+            color: var(--gold);
+            margin-bottom: 20px;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+        }
+
+        .thinking-index-scope .mermaid-container {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 40px 0;
+            border: 2px solid var(--magenta);
+            text-align: center;
+            overflow-x: auto;
+        }
+
+        .thinking-index-scope .guides-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .thinking-index-scope .guide-card {
+            background: var(--bg-card);
+            padding: 35px;
+            border-radius: 15px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .thinking-index-scope .guide-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--magenta) 0%, var(--gold) 100%);
+        }
+
+        .thinking-index-scope .guide-card:hover {
+            border-color: var(--magenta);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255,0,255,0.4);
+        }
+
+        .thinking-index-scope .guide-number {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--magenta) 0%, var(--magenta-dark) 100%);
+            color: var(--white);
+            border-radius: 50%;
+            line-height: 50px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .thinking-index-scope .guide-card h3 {
+            color: var(--gold);
+            margin-bottom: 15px;
+            font-size: clamp(1.3rem, 2.5vw, 1.5rem);
+        }
+
+        .thinking-index-scope .guide-card h3 a {
+            color: var(--gold);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .thinking-index-scope .guide-card h3 a:hover {
+            color: var(--magenta-light);
+        }
+
+        .thinking-index-scope .guide-description {
+            color: var(--gray-light);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .thinking-index-scope .footer {
+            margin-top: 60px;
+            padding: 40px;
+            background: var(--bg-card);
+            border-radius: 15px;
+            border-top: 3px solid var(--gold);
+        }
+
+        .thinking-index-scope .footer-section {
+            margin-bottom: 25px;
+        }
+
+        .thinking-index-scope .footer-section strong {
+            color: var(--magenta);
+            font-size: 1.1rem;
+        }
+
+        .thinking-index-scope .footer-section a {
+            color: var(--gold);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .thinking-index-scope .footer-section a:hover {
+            color: var(--magenta-light);
+        }
+
+        .thinking-index-scope .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 40px;
+        }
+
+        .thinking-index-scope .tag {
+            background: linear-gradient(135deg, var(--magenta-dark) 0%, var(--magenta) 100%);
+            color: var(--white);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .thinking-index-scope .guides-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .thinking-index-scope .header {
+                padding: 40px 20px;
+            }
+
+            .thinking-index-scope .intro {
+                padding: 25px;
+            }
+
+            .thinking-index-scope .footer {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body class="thinking-index-scope">
+    <div class="container">
+        <header class="header">
+            <h1>🧠 Layer 3: Advanced Thinking</h1>
+            <p class="subtitle">Metodologias e Frameworks para Análise Profunda</p>
+        </header>
+
+        <section class="intro">
+            <h2>O Que é Advanced Thinking?</h2>
+            <p>Esta camada foca em técnicas de raciocínio sistemático e metodologias de análise para resolver problemas complexos.</p>
+        </section>
+
+        <div class="mermaid-container">
+            <pre class="mermaid">
+pyramid
+    title Pirâmide do Conhecimento
+    "Meta-Learning" : 10
+    "Workflows" : 20
+    "Advanced Thinking" : 30
+    "Engineering" : 40
+    "Fundamentals" : 50
+            </pre>
+        </div>
+
+        <section>
+            <h2 style="color: var(--gold); font-size: 2rem; margin-bottom: 30px; text-align: center;">📚 Guias Disponíveis</h2>
+
+            <div class="guides-grid">
+                <div class="guide-card">
+                    <div class="guide-number">1</div>
+                    <h3><a href="./01-metodologias-analise-profunda.html">Metodologias de Análise Profunda</a></h3>
+                    <p class="guide-description">First principles, 5 Whys e outras técnicas para análise em profundidade</p>
+                </div>
+
+                <div class="guide-card">
+                    <div class="guide-number">2</div>
+                    <h3><a href="./02-deteccao-padroes-sistematica.html">Detecção de Padrões Sistemática</a></h3>
+                    <p class="guide-description">Como identificar padrões e anti-patterns de forma sistemática</p>
+                </div>
+
+                <div class="guide-card">
+                    <div class="guide-number">3</div>
+                    <h3><a href="./03-decomposicao-problemas-complexos.html">Decomposição de Problemas Complexos</a></h3>
+                    <p class="guide-description">Técnicas para quebrar problemas complexos em partes gerenciáveis</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="footer-section">
+                <strong>Pré-requisitos:</strong> Domínio de <a href="../../1-fundamentals/00-INDEX.html">Layer 1: Fundamentals</a> e <a href="../../2-engineering/00-INDEX.html">Layer 2: Engineering</a>
+            </div>
+            <div class="footer-section">
+                <strong>Próximos Passos:</strong> Aplique em <a href="../../4-workflows/00-INDEX.html">Layer 4: Workflows</a>
+            </div>
+            <div class="tags">
+                <span class="tag">#thinking</span>
+                <span class="tag">#methodologies</span>
+                <span class="tag">#analysis</span>
+                <span class="tag">#problem-solving</span>
+                <span class="tag">#frameworks</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            themeVariables: {
+                primaryColor: '#ff00ff',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#ffd700',
+                lineColor: '#ffd700',
+                secondaryColor: '#ffd700',
+                tertiaryColor: '#1a1a1a'
+            }
+        });
+    </script>
+</body>
+</html>

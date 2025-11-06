@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tipos de Prompts e Quando Usar Cada Um</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="prompt-types-guide">
+        <style>
+            #prompt-types-guide * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            #prompt-types-guide {
+                --color-bg: #000000;
+                --color-surface: #0a0a0a;
+                --color-surface-elevated: #141414;
+                --color-border: #1f1f1f;
+                --color-border-bright: #2a2a2a;
+                --color-text: #ffffff;
+                --color-text-secondary: #a3a3a3;
+                --color-text-tertiary: #737373;
+                --color-magenta: #ff0080;
+                --color-magenta-glow: rgba(255, 0, 128, 0.3);
+                --color-magenta-dim: rgba(255, 0, 128, 0.1);
+                --color-gold: #ffd700;
+                --color-gold-glow: rgba(255, 215, 0, 0.2);
+                --color-gold-dim: rgba(255, 215, 0, 0.05);
+                --color-success: #00ff88;
+                --color-error: #ff3366;
+
+                background: var(--color-bg);
+                color: var(--color-text);
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                line-height: 1.6;
+                min-height: 100vh;
+                position: relative;
+            }
+
+            /* Animated background grid */
+            #prompt-types-guide::before {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-image:
+                    linear-gradient(var(--color-border) 1px, transparent 1px),
+                    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+                background-size: 50px 50px;
+                opacity: 0.3;
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            #prompt-types-guide .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 24px;
+                position: relative;
+                z-index: 1;
+            }
+
+            /* Hero Section */
+            #prompt-types-guide .hero {
+                padding: 120px 0 80px;
+                text-align: center;
+                position: relative;
+            }
+
+            #prompt-types-guide .hero::before {
+                content: '';
+                position: absolute;
+                top: -100px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 600px;
+                height: 600px;
+                background: radial-gradient(circle, var(--color-magenta-glow) 0%, transparent 70%);
+                opacity: 0.5;
+                pointer-events: none;
+                z-index: -1;
+            }
+
+            #prompt-types-guide .hero-emoji {
+                font-size: 80px;
+                margin-bottom: 24px;
+                display: block;
+                animation: float 3s ease-in-out infinite;
+            }
+
+            @keyframes float {
+                0%, 100% { transform: translateY(0px); }
+                50% { transform: translateY(-20px); }
+            }
+
+            #prompt-types-guide .hero-title {
+                font-size: clamp(36px, 6vw, 64px);
+                font-weight: 900;
+                line-height: 1.1;
+                letter-spacing: -0.03em;
+                margin-bottom: 24px;
+                background: linear-gradient(135deg, var(--color-text) 0%, var(--color-text-secondary) 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+
+            #prompt-types-guide .hero-lead {
+                font-size: clamp(18px, 2.5vw, 24px);
+                color: var(--color-text-secondary);
+                max-width: 800px;
+                margin: 0 auto 40px;
+                line-height: 1.6;
+            }
+
+            #prompt-types-guide .hero-subtitle {
+                font-size: 18px;
+                color: var(--color-text-tertiary);
+                font-style: italic;
+                max-width: 700px;
+                margin: 0 auto;
+            }
+
+            /* Section Headers */
+            #prompt-types-guide .section-header {
+                margin: 100px 0 60px;
+                text-align: center;
+            }
+
+            #prompt-types-guide .section-title {
+                font-size: clamp(32px, 4vw, 48px);
+                font-weight: 800;
+                margin-bottom: 16px;
+                background: linear-gradient(135deg, var(--color-magenta) 0%, var(--color-gold) 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+
+            #prompt-types-guide .section-description {
+                font-size: 18px;
+                color: var(--color-text-secondary);
+                max-width: 700px;
+                margin: 0 auto;
+            }
+
+            /* Taxonomy Grid - 8 Prompt Types */
+            #prompt-types-guide .taxonomy-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                gap: 32px;
+                margin: 60px 0;
+            }
+
+            #prompt-types-guide .prompt-card {
+                background: var(--color-surface);
+                border: 1px solid var(--color-border);
+                border-radius: 16px;
+                padding: 32px;
+                position: relative;
+                overflow: hidden;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            #prompt-types-guide .prompt-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: linear-gradient(90deg, var(--accent-color, var(--color-magenta)) 0%, var(--color-gold) 100%);
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+
+            #prompt-types-guide .prompt-card:hover {
+                border-color: var(--accent-color, var(--color-magenta));
+                transform: translateY(-4px);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 40px var(--accent-glow, var(--color-magenta-glow));
+            }
+
+            #prompt-types-guide .prompt-card:hover::before {
+                opacity: 1;
+            }
+
+            /* Unique accent colors for each prompt type */
+            #prompt-types-guide .prompt-card[data-type="instrucao"] { --accent-color: #ff0080; --accent-glow: rgba(255, 0, 128, 0.3); }
+            #prompt-types-guide .prompt-card[data-type="analise"] { --accent-color: #00d9ff; --accent-glow: rgba(0, 217, 255, 0.3); }
+            #prompt-types-guide .prompt-card[data-type="criativa"] { --accent-color: #ff6b35; --accent-glow: rgba(255, 107, 53, 0.3); }
+            #prompt-types-guide .prompt-card[data-type="refatoracao"] { --accent-color: #00ff88; --accent-glow: rgba(0, 255, 136, 0.3); }
+            #prompt-types-guide .prompt-card[data-type="debugging"] { --accent-color: #ff3366; --accent-glow: rgba(255, 51, 102, 0.3); }
+            #prompt-types-guide .prompt-card[data-type="documentacao"] { --accent-color: #ffd700; --accent-glow: rgba(255, 215, 0, 0.3); }
+            #prompt-types-guide .prompt-card[data-type="planejamento"] { --accent-color: #a855f7; --accent-glow: rgba(168, 85, 247, 0.3); }
+            #prompt-types-guide .prompt-card[data-type="transformacao"] { --accent-color: #14b8a6; --accent-glow: rgba(20, 184, 166, 0.3); }
+
+            #prompt-types-guide .prompt-card-header {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                margin-bottom: 24px;
+            }
+
+            #prompt-types-guide .prompt-card-emoji {
+                font-size: 48px;
+                line-height: 1;
+            }
+
+            #prompt-types-guide .prompt-card-title-wrapper {
+                flex: 1;
+            }
+
+            #prompt-types-guide .prompt-card-number {
+                font-size: 12px;
+                font-weight: 700;
+                color: var(--accent-color);
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                margin-bottom: 4px;
+            }
+
+            #prompt-types-guide .prompt-card-title {
+                font-size: 24px;
+                font-weight: 700;
+                color: var(--color-text);
+                line-height: 1.2;
+            }
+
+            #prompt-types-guide .prompt-card-definition {
+                color: var(--color-text-secondary);
+                margin-bottom: 24px;
+                font-size: 15px;
+                line-height: 1.6;
+            }
+
+            #prompt-types-guide .prompt-card-section {
+                margin-bottom: 24px;
+            }
+
+            #prompt-types-guide .prompt-card-section-title {
+                font-size: 13px;
+                font-weight: 700;
+                color: var(--accent-color);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-bottom: 12px;
+            }
+
+            #prompt-types-guide .prompt-card-section ul {
+                list-style: none;
+                padding: 0;
+            }
+
+            #prompt-types-guide .prompt-card-section li {
+                color: var(--color-text-secondary);
+                padding-left: 24px;
+                position: relative;
+                margin-bottom: 8px;
+                font-size: 14px;
+            }
+
+            #prompt-types-guide .prompt-card-section li::before {
+                content: '→';
+                position: absolute;
+                left: 0;
+                color: var(--accent-color);
+                font-weight: 700;
+            }
+
+            #prompt-types-guide .structure-box {
+                background: var(--color-surface-elevated);
+                border: 1px solid var(--color-border-bright);
+                border-left: 3px solid var(--accent-color);
+                border-radius: 8px;
+                padding: 16px;
+                font-family: 'Fira Code', monospace;
+                font-size: 13px;
+                color: var(--color-text-secondary);
+                margin: 16px 0;
+                line-height: 1.8;
+            }
+
+            /* Example Cards */
+            #prompt-types-guide .example-card {
+                background: var(--color-surface-elevated);
+                border: 1px solid var(--color-border-bright);
+                border-radius: 12px;
+                padding: 24px;
+                margin: 24px 0;
+            }
+
+            #prompt-types-guide .example-header {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 16px;
+            }
+
+            #prompt-types-guide .example-badge {
+                font-size: 20px;
+            }
+
+            #prompt-types-guide .example-label {
+                font-size: 13px;
+                font-weight: 600;
+                color: var(--color-success);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+
+            #prompt-types-guide .example-content {
+                background: var(--color-bg);
+                border: 1px solid var(--color-border);
+                border-radius: 8px;
+                padding: 20px;
+                font-family: 'Fira Code', monospace;
+                font-size: 14px;
+                line-height: 1.8;
+                color: var(--color-text-secondary);
+                white-space: pre-wrap;
+            }
+
+            /* When to Use Section */
+            #prompt-types-guide .when-to-use {
+                background: linear-gradient(135deg, var(--color-magenta-dim) 0%, var(--color-gold-dim) 100%);
+                border: 1px solid var(--accent-color);
+                border-radius: 12px;
+                padding: 20px;
+                margin: 24px 0;
+            }
+
+            #prompt-types-guide .when-to-use-title {
+                font-size: 14px;
+                font-weight: 700;
+                color: var(--accent-color);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-bottom: 12px;
+            }
+
+            #prompt-types-guide .when-to-use ul {
+                list-style: none;
+                padding: 0;
+            }
+
+            #prompt-types-guide .when-to-use li {
+                color: var(--color-text);
+                padding-left: 24px;
+                position: relative;
+                margin-bottom: 8px;
+                font-size: 14px;
+            }
+
+            #prompt-types-guide .when-to-use li::before {
+                content: '✓';
+                position: absolute;
+                left: 0;
+                color: var(--accent-color);
+                font-weight: 700;
+            }
+
+            /* Flow Diagram Section */
+            #prompt-types-guide .flow-section {
+                background: var(--color-surface);
+                border: 1px solid var(--color-border);
+                border-radius: 20px;
+                padding: 48px;
+                margin: 80px 0;
+            }
+
+            #prompt-types-guide .flow-title {
+                font-size: 32px;
+                font-weight: 700;
+                margin-bottom: 32px;
+                text-align: center;
+                color: var(--color-text);
+            }
+
+            #prompt-types-guide .flow-steps {
+                display: grid;
+                gap: 24px;
+            }
+
+            #prompt-types-guide .flow-step {
+                background: var(--color-surface-elevated);
+                border: 1px solid var(--color-border-bright);
+                border-left: 4px solid var(--step-color, var(--color-magenta));
+                border-radius: 12px;
+                padding: 24px;
+                transition: all 0.3s;
+            }
+
+            #prompt-types-guide .flow-step:hover {
+                transform: translateX(8px);
+                border-left-width: 8px;
+            }
+
+            #prompt-types-guide .flow-step-number {
+                font-size: 14px;
+                font-weight: 700;
+                color: var(--step-color, var(--color-magenta));
+                margin-bottom: 8px;
+            }
+
+            #prompt-types-guide .flow-step-type {
+                font-size: 18px;
+                font-weight: 700;
+                color: var(--color-text);
+                margin-bottom: 8px;
+            }
+
+            #prompt-types-guide .flow-step-prompt {
+                color: var(--color-text-secondary);
+                font-size: 14px;
+                margin-bottom: 8px;
+                font-style: italic;
+            }
+
+            #prompt-types-guide .flow-step-result {
+                color: var(--color-text-tertiary);
+                font-size: 13px;
+            }
+
+            #prompt-types-guide .flow-step-result::before {
+                content: '→ ';
+                color: var(--step-color);
+                font-weight: 700;
+            }
+
+            /* Decision Matrix Table */
+            #prompt-types-guide .decision-matrix {
+                background: var(--color-surface);
+                border: 1px solid var(--color-border);
+                border-radius: 20px;
+                padding: 48px;
+                margin: 80px 0;
+                overflow-x: auto;
+            }
+
+            #prompt-types-guide .matrix-title {
+                font-size: 32px;
+                font-weight: 700;
+                margin-bottom: 32px;
+                text-align: center;
+                background: linear-gradient(135deg, var(--color-magenta) 0%, var(--color-gold) 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+
+            #prompt-types-guide .matrix-table {
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 0;
+            }
+
+            #prompt-types-guide .matrix-table thead th {
+                background: var(--color-surface-elevated);
+                color: var(--color-magenta);
+                font-size: 13px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                padding: 16px 20px;
+                text-align: left;
+                border-bottom: 2px solid var(--color-border-bright);
+            }
+
+            #prompt-types-guide .matrix-table thead th:first-child {
+                border-top-left-radius: 12px;
+            }
+
+            #prompt-types-guide .matrix-table thead th:last-child {
+                border-top-right-radius: 12px;
+            }
+
+            #prompt-types-guide .matrix-table tbody tr {
+                transition: all 0.2s;
+            }
+
+            #prompt-types-guide .matrix-table tbody tr:hover {
+                background: var(--color-surface-elevated);
+            }
+
+            #prompt-types-guide .matrix-table tbody td {
+                padding: 20px;
+                border-bottom: 1px solid var(--color-border);
+                color: var(--color-text-secondary);
+                font-size: 14px;
+            }
+
+            #prompt-types-guide .matrix-table tbody td:first-child {
+                color: var(--color-text);
+                font-weight: 500;
+            }
+
+            #prompt-types-guide .matrix-table tbody td:nth-child(2) {
+                color: var(--color-gold);
+                font-weight: 600;
+            }
+
+            #prompt-types-guide .matrix-table tbody td:nth-child(3) {
+                font-family: 'Fira Code', monospace;
+                font-size: 13px;
+            }
+
+            /* Anti-patterns Section */
+            #prompt-types-guide .antipatterns-grid {
+                display: grid;
+                gap: 32px;
+                margin: 60px 0;
+            }
+
+            #prompt-types-guide .antipattern-card {
+                background: var(--color-surface);
+                border: 1px solid var(--color-border);
+                border-radius: 16px;
+                padding: 32px;
+                position: relative;
+                overflow: hidden;
+            }
+
+            #prompt-types-guide .antipattern-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: linear-gradient(90deg, var(--color-error) 0%, var(--color-magenta) 100%);
+            }
+
+            #prompt-types-guide .antipattern-title {
+                font-size: 20px;
+                font-weight: 700;
+                color: var(--color-text);
+                margin-bottom: 24px;
+            }
+
+            #prompt-types-guide .antipattern-examples {
+                display: grid;
+                gap: 16px;
+            }
+
+            #prompt-types-guide .antipattern-bad {
+                background: rgba(255, 51, 102, 0.1);
+                border: 1px solid var(--color-error);
+                border-radius: 8px;
+                padding: 16px;
+            }
+
+            #prompt-types-guide .antipattern-bad-label {
+                font-size: 12px;
+                font-weight: 700;
+                color: var(--color-error);
+                margin-bottom: 8px;
+            }
+
+            #prompt-types-guide .antipattern-bad-code {
+                font-family: 'Fira Code', monospace;
+                font-size: 14px;
+                color: var(--color-text-secondary);
+            }
+
+            #prompt-types-guide .antipattern-problem {
+                color: var(--color-text-secondary);
+                font-size: 14px;
+                margin: 16px 0;
+                padding-left: 16px;
+                border-left: 3px solid var(--color-text-tertiary);
+            }
+
+            #prompt-types-guide .antipattern-good {
+                background: rgba(0, 255, 136, 0.1);
+                border: 1px solid var(--color-success);
+                border-radius: 8px;
+                padding: 16px;
+            }
+
+            #prompt-types-guide .antipattern-good-label {
+                font-size: 12px;
+                font-weight: 700;
+                color: var(--color-success);
+                margin-bottom: 8px;
+            }
+
+            #prompt-types-guide .antipattern-good-code {
+                font-family: 'Fira Code', monospace;
+                font-size: 14px;
+                color: var(--color-text-secondary);
+                white-space: pre-wrap;
+            }
+
+            /* Checklist Section */
+            #prompt-types-guide .checklist {
+                background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-elevated) 100%);
+                border: 1px solid var(--color-border);
+                border-radius: 20px;
+                padding: 48px;
+                margin: 80px 0;
+            }
+
+            #prompt-types-guide .checklist-title {
+                font-size: 32px;
+                font-weight: 700;
+                margin-bottom: 32px;
+                text-align: center;
+                color: var(--color-text);
+            }
+
+            #prompt-types-guide .checklist-items {
+                display: grid;
+                gap: 32px;
+            }
+
+            #prompt-types-guide .checklist-item {
+                background: var(--color-bg);
+                border: 1px solid var(--color-border-bright);
+                border-radius: 12px;
+                padding: 24px;
+            }
+
+            #prompt-types-guide .checklist-question {
+                font-size: 18px;
+                font-weight: 700;
+                color: var(--color-magenta);
+                margin-bottom: 16px;
+            }
+
+            #prompt-types-guide .checklist-options {
+                display: grid;
+                gap: 8px;
+                padding-left: 24px;
+            }
+
+            #prompt-types-guide .checklist-option {
+                color: var(--color-text-secondary);
+                font-size: 14px;
+                position: relative;
+            }
+
+            #prompt-types-guide .checklist-option::before {
+                content: '•';
+                position: absolute;
+                left: -16px;
+                color: var(--color-gold);
+                font-weight: 700;
+            }
+
+            /* Exercise Section */
+            #prompt-types-guide .exercise {
+                background: var(--color-surface);
+                border: 2px solid var(--color-magenta);
+                border-radius: 20px;
+                padding: 48px;
+                margin: 80px 0;
+            }
+
+            #prompt-types-guide .exercise-title {
+                font-size: 32px;
+                font-weight: 700;
+                margin-bottom: 32px;
+                text-align: center;
+                color: var(--color-magenta);
+            }
+
+            #prompt-types-guide .exercise-questions {
+                display: grid;
+                gap: 16px;
+                margin-bottom: 32px;
+            }
+
+            #prompt-types-guide .exercise-question {
+                background: var(--color-surface-elevated);
+                border: 1px solid var(--color-border-bright);
+                border-radius: 8px;
+                padding: 20px;
+                color: var(--color-text-secondary);
+                font-size: 15px;
+            }
+
+            #prompt-types-guide .exercise-question::before {
+                content: attr(data-number) '. ';
+                color: var(--color-gold);
+                font-weight: 700;
+            }
+
+            #prompt-types-guide .exercise-answers {
+                background: var(--color-surface-elevated);
+                border: 1px solid var(--color-gold);
+                border-radius: 12px;
+                padding: 24px;
+            }
+
+            #prompt-types-guide .exercise-answers-label {
+                font-size: 14px;
+                font-weight: 700;
+                color: var(--color-gold);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-bottom: 12px;
+            }
+
+            #prompt-types-guide .exercise-answers-content {
+                color: var(--color-text-secondary);
+                font-size: 14px;
+            }
+
+            /* Footer */
+            #prompt-types-guide .footer {
+                margin-top: 120px;
+                padding: 48px 0;
+                border-top: 1px solid var(--color-border);
+            }
+
+            #prompt-types-guide .footer-tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+                justify-content: center;
+                margin-bottom: 32px;
+            }
+
+            #prompt-types-guide .footer-tag {
+                background: var(--color-surface-elevated);
+                border: 1px solid var(--color-border-bright);
+                color: var(--color-text-secondary);
+                padding: 8px 16px;
+                border-radius: 20px;
+                font-size: 13px;
+                font-weight: 500;
+                transition: all 0.2s;
+            }
+
+            #prompt-types-guide .footer-tag:hover {
+                border-color: var(--color-magenta);
+                color: var(--color-magenta);
+                transform: translateY(-2px);
+            }
+
+            #prompt-types-guide .footer-links {
+                text-align: center;
+            }
+
+            #prompt-types-guide .footer-links-title {
+                font-size: 16px;
+                font-weight: 700;
+                color: var(--color-text);
+                margin-bottom: 16px;
+            }
+
+            #prompt-types-guide .footer-links-list {
+                list-style: none;
+                padding: 0;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 16px;
+                justify-content: center;
+            }
+
+            #prompt-types-guide .footer-links-list li {
+                color: var(--color-text-secondary);
+                font-size: 14px;
+            }
+
+            #prompt-types-guide .footer-links-list li::before {
+                content: '→ ';
+                color: var(--color-gold);
+                font-weight: 700;
+            }
+
+            /* Mermaid Diagrams */
+            #prompt-types-guide .mermaid {
+                background: var(--color-surface-elevated);
+                border: 1px solid var(--color-border);
+                border-radius: 16px;
+                padding: 32px;
+                margin: 32px 0;
+            }
+
+            /* Responsive */
+            @media (max-width: 768px) {
+                #prompt-types-guide .container {
+                    padding: 0 16px;
+                }
+
+                #prompt-types-guide .hero {
+                    padding: 80px 0 60px;
+                }
+
+                #prompt-types-guide .hero-emoji {
+                    font-size: 60px;
+                }
+
+                #prompt-types-guide .taxonomy-grid {
+                    grid-template-columns: 1fr;
+                    gap: 24px;
+                }
+
+                #prompt-types-guide .flow-section,
+                #prompt-types-guide .decision-matrix,
+                #prompt-types-guide .checklist,
+                #prompt-types-guide .exercise {
+                    padding: 32px 24px;
+                }
+
+                #prompt-types-guide .matrix-table {
+                    font-size: 13px;
+                }
+
+                #prompt-types-guide .matrix-table thead th,
+                #prompt-types-guide .matrix-table tbody td {
+                    padding: 12px;
+                }
+
+                #prompt-types-guide .footer-links-list {
+                    flex-direction: column;
+                    align-items: center;
+                }
+            }
+
+            /* Utility classes */
+            #prompt-types-guide .mb-4 { margin-bottom: 16px; }
+            #prompt-types-guide .mb-6 { margin-bottom: 24px; }
+            #prompt-types-guide .mb-8 { margin-bottom: 32px; }
+        </style>
+
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <span class="hero-emoji">📚</span>
+                <h1 class="hero-title">Tipos de Prompts e Quando Usar Cada Um</h1>
+                <p class="hero-lead">
+                    Assim como diferentes problemas exigem diferentes ferramentas,
+                    <strong>diferentes objetivos exigem diferentes tipos de prompts</strong>.
+                    Este guia apresenta as principais categorias de prompts e ensina quando aplicar cada uma.
+                </p>
+                <p class="hero-subtitle">
+                    Pense em tipos de prompt como "modos de operação" da IA - cada um otimizado para um propósito específico.
+                </p>
+            </section>
+
+            <!-- Taxonomy Section -->
+            <section>
+                <div class="section-header">
+                    <h2 class="section-title">Taxonomia de Prompts</h2>
+                    <p class="section-description">
+                        8 tipos fundamentais para dominar qualquer interação com IA
+                    </p>
+                </div>
+
+                <div class="taxonomy-grid">
+                    <!-- 1. Instrução Direta -->
+                    <div class="prompt-card" data-type="instrucao">
+                        <div class="prompt-card-header">
+                            <div class="prompt-card-emoji">📝</div>
+                            <div class="prompt-card-title-wrapper">
+                                <div class="prompt-card-number">Tipo 01</div>
+                                <h3 class="prompt-card-title">Instrução Direta</h3>
+                            </div>
+                        </div>
+
+                        <p class="prompt-card-definition">
+                            Comando claro e objetivo para uma ação específica.
+                        </p>
+
+                        <div class="structure-box">
+[Ação] + [Objeto] + [Critérios]
+                        </div>
+
+                        <div class="when-to-use">
+                            <div class="when-to-use-title">Use Quando:</div>
+                            <ul>
+                                <li>A tarefa é clara e bem escopo</li>
+                                <li>Você precisa de resposta rápida e direta</li>
+                                <li>Não há ambiguidade sobre o que fazer</li>
+                            </ul>
+                        </div>
+
+                        <div class="example-card">
+                            <div class="example-header">
+                                <span class="example-badge">✅</span>
+                                <span class="example-label">Bom Exemplo</span>
+                            </div>
+                            <div class="example-content">"Converta esta função recursiva para iterativa:
+[código]
+Mantenha a mesma assinatura e comportamento."</div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Análise e Comparação -->
+                    <div class="prompt-card" data-type="analise">
+                        <div class="prompt-card-header">
+                            <div class="prompt-card-emoji">🔍</div>
+                            <div class="prompt-card-title-wrapper">
+                                <div class="prompt-card-number">Tipo 02</div>
+                                <h3 class="prompt-card-title">Análise e Comparação</h3>
+                            </div>
+                        </div>
+
+                        <p class="prompt-card-definition">
+                            Solicita avaliação, comparação ou crítica de opções.
+                        </p>
+
+                        <div class="structure-box">
+"Compare [A] vs [B] considerando:
+- [Critério 1]
+- [Critério 2]
+Para o contexto de [cenário específico]"
+                        </div>
+
+                        <div class="when-to-use">
+                            <div class="when-to-use-title">Use Quando:</div>
+                            <ul>
+                                <li>Precisa tomar decisão arquitetural</li>
+                                <li>Quer validar abordagem antes de implementar</li>
+                                <li>Busca identificar riscos ou limitações</li>
+                            </ul>
+                        </div>
+
+                        <div class="example-card">
+                            <div class="example-header">
+                                <span class="example-badge">✅</span>
+                                <span class="example-label">Bom Exemplo</span>
+                            </div>
+                            <div class="example-content">"Compare REST vs GraphQL vs gRPC para API de microservices
+considerando performance, complexidade e custos.
+Contexto: E-commerce 100k usuários/dia, time 5 devs"</div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Geração Criativa -->
+                    <div class="prompt-card" data-type="criativa">
+                        <div class="prompt-card-header">
+                            <div class="prompt-card-emoji">🎨</div>
+                            <div class="prompt-card-title-wrapper">
+                                <div class="prompt-card-number">Tipo 03</div>
+                                <h3 class="prompt-card-title">Geração Criativa</h3>
+                            </div>
+                        </div>
+
+                        <p class="prompt-card-definition">
+                            Pede à IA para criar algo do zero com liberdade criativa.
+                        </p>
+
+                        <div class="structure-box">
+"Crie/Gere/Proponha [artefato] que:
+- [Requisito obrigatório 1]
+- [Requisito obrigatório 2]
+Pode ser criativo com [aspecto flexível]"
+                        </div>
+
+                        <div class="when-to-use">
+                            <div class="when-to-use-title">Use Quando:</div>
+                            <ul>
+                                <li>Está na fase de discovery/ideação</li>
+                                <li>Quer explorar múltiplas alternativas</li>
+                                <li>Precisa de inspiração ou perspectivas diferentes</li>
+                            </ul>
+                        </div>
+
+                        <div class="example-card">
+                            <div class="example-header">
+                                <span class="example-badge">✅</span>
+                                <span class="example-label">Bom Exemplo</span>
+                            </div>
+                            <div class="example-content">"Proponha 3 arquiteturas diferentes para sistema de
+notificações em tempo real com 1M+ conexões.
+Inclua stack, custos, e trade-offs para cada."</div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Refatoração/Melhoria -->
+                    <div class="prompt-card" data-type="refatoracao">
+                        <div class="prompt-card-header">
+                            <div class="prompt-card-emoji">🔧</div>
+                            <div class="prompt-card-title-wrapper">
+                                <div class="prompt-card-number">Tipo 04</div>
+                                <h3 class="prompt-card-title">Refatoração/Melhoria</h3>
+                            </div>
+                        </div>
+
+                        <p class="prompt-card-definition">
+                            Pede para melhorar algo existente mantendo funcionalidade.
+                        </p>
+
+                        <div class="structure-box">
+"Refatore/Melhore [código/design] para:
+- [Melhoria 1]
+- [Melhoria 2]
+Mantenha: [o que NÃO pode mudar]"
+                        </div>
+
+                        <div class="when-to-use">
+                            <div class="when-to-use-title">Use Quando:</div>
+                            <ul>
+                                <li>Algo funciona mas não está ideal</li>
+                                <li>Precisa manter compatibilidade</li>
+                                <li>Quer melhorar qualidade incremental</li>
+                            </ul>
+                        </div>
+
+                        <div class="example-card">
+                            <div class="example-header">
+                                <span class="example-badge">✅</span>
+                                <span class="example-label">Bom Exemplo</span>
+                            </div>
+                            <div class="example-content">"Refatore esta classe para aplicar Strategy pattern,
+injeção de dependências, e melhorar testabilidade.
+Mantenha a interface pública (não quebrar clients)."</div>
+                        </div>
+                    </div>
+
+                    <!-- 5. Debugging/Diagnóstico -->
+                    <div class="prompt-card" data-type="debugging">
+                        <div class="prompt-card-header">
+                            <div class="prompt-card-emoji">🐛</div>
+                            <div class="prompt-card-title-wrapper">
+                                <div class="prompt-card-number">Tipo 05</div>
+                                <h3 class="prompt-card-title">Debugging/Diagnóstico</h3>
+                            </div>
+                        </div>
+
+                        <p class="prompt-card-definition">
+                            Solicita identificação e solução de problemas.
+                        </p>
+
+                        <div class="structure-box">
+"Identifique o problema em [código/sistema]:
+Sintomas: [comportamento observado]
+Esperado: [comportamento correto]
+Contexto: [ambiente, dados, logs]"
+                        </div>
+
+                        <div class="when-to-use">
+                            <div class="when-to-use-title">Use Quando:</div>
+                            <ul>
+                                <li>Está travado em um bug</li>
+                                <li>Comportamento é inconsistente/intermitente</li>
+                                <li>Precisa de segunda opinião sobre causa</li>
+                            </ul>
+                        </div>
+
+                        <div class="example-card">
+                            <div class="example-header">
+                                <span class="example-badge">✅</span>
+                                <span class="example-label">Bom Exemplo</span>
+                            </div>
+                            <div class="example-content">"Este endpoint retorna 500 intermitentemente:
+Sintomas: Funciona 80% das vezes, falha em picos >100 req/s
+Log: 'Connection pool exhausted'
+Ambiente: Node.js 18, PostgreSQL, max conexões=20"</div>
+                        </div>
+                    </div>
+
+                    <!-- 6. Documentação/Explicação -->
+                    <div class="prompt-card" data-type="documentacao">
+                        <div class="prompt-card-header">
+                            <div class="prompt-card-emoji">📖</div>
+                            <div class="prompt-card-title-wrapper">
+                                <div class="prompt-card-number">Tipo 06</div>
+                                <h3 class="prompt-card-title">Documentação/Explicação</h3>
+                            </div>
+                        </div>
+
+                        <p class="prompt-card-definition">
+                            Pede para explicar ou documentar algo técnico.
+                        </p>
+
+                        <div class="structure-box">
+"Explique/Documente [assunto] para [audiência]:
+- [Aspecto 1 a cobrir]
+- [Aspecto 2 a cobrir]
+Formato: [estrutura desejada]"
+                        </div>
+
+                        <div class="when-to-use">
+                            <div class="when-to-use-title">Use Quando:</div>
+                            <ul>
+                                <li>Precisa compartilhar conhecimento com time</li>
+                                <li>Código sem docs precisa ser mantido</li>
+                                <li>Quer aprender/ensinar um conceito</li>
+                            </ul>
+                        </div>
+
+                        <div class="example-card">
+                            <div class="example-header">
+                                <span class="example-badge">✅</span>
+                                <span class="example-label">Bom Exemplo</span>
+                            </div>
+                            <div class="example-content">"Explique algoritmo de consenso Raft para dev backend
+sem background em sistemas distribuídos.
+Estrutura: problema, funcionamento, garantias, trade-offs.
+Use analogias quando possível."</div>
+                        </div>
+                    </div>
+
+                    <!-- 7. Planejamento/Design -->
+                    <div class="prompt-card" data-type="planejamento">
+                        <div class="prompt-card-header">
+                            <div class="prompt-card-emoji">🏗️</div>
+                            <div class="prompt-card-title-wrapper">
+                                <div class="prompt-card-number">Tipo 07</div>
+                                <h3 class="prompt-card-title">Planejamento/Design</h3>
+                            </div>
+                        </div>
+
+                        <p class="prompt-card-definition">
+                            Solicita arquitetura, design ou plano de implementação.
+                        </p>
+
+                        <div class="structure-box">
+"Desenhe [arquitetura/plano] para [sistema]:
+Requisitos: [funcionais e não-funcionais]
+Constraints: [limitações]
+Entregue: [diagramas, fases, justificativas]"
+                        </div>
+
+                        <div class="when-to-use">
+                            <div class="when-to-use-title">Use Quando:</div>
+                            <ul>
+                                <li>Começando projeto do zero</li>
+                                <li>Grande refatoração arquitetural</li>
+                                <li>Precisa convencer stakeholders</li>
+                            </ul>
+                        </div>
+
+                        <div class="example-card">
+                            <div class="example-header">
+                                <span class="example-badge">✅</span>
+                                <span class="example-label">Bom Exemplo</span>
+                            </div>
+                            <div class="example-content">"Desenhe arquitetura de microservices para streaming (Netflix):
+Requisitos: 10M usuários, transcodificação, recomendação
+Constraints: Budget $50k/mês AWS, time 8 devs, launch 6 meses
+Entregue: C4 diagram, stack, plano de fases, riscos"</div>
+                        </div>
+                    </div>
+
+                    <!-- 8. Transformação de Formato -->
+                    <div class="prompt-card" data-type="transformacao">
+                        <div class="prompt-card-header">
+                            <div class="prompt-card-emoji">🔄</div>
+                            <div class="prompt-card-title-wrapper">
+                                <div class="prompt-card-number">Tipo 08</div>
+                                <h3 class="prompt-card-title">Transformação de Formato</h3>
+                            </div>
+                        </div>
+
+                        <p class="prompt-card-definition">
+                            Converte dados/código de um formato para outro.
+                        </p>
+
+                        <div class="structure-box">
+"Converta [formato origem] para [formato destino]:
+[dados/código]
+Requisitos: [preservar X, mapear Y para Z]"
+                        </div>
+
+                        <div class="when-to-use">
+                            <div class="when-to-use-title">Use Quando:</div>
+                            <ul>
+                                <li>Migrando entre tecnologias</li>
+                                <li>Integrando sistemas diferentes</li>
+                                <li>Precisa de adapter/translator</li>
+                            </ul>
+                        </div>
+
+                        <div class="example-card">
+                            <div class="example-header">
+                                <span class="example-badge">✅</span>
+                                <span class="example-label">Bom Exemplo</span>
+                            </div>
+                            <div class="example-content">"Converta este schema SQL para Prisma schema:
+[SQL DDL]
+Requisitos: preservar constraints, mapear tipos,
+adicionar índices equivalentes"</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Flow Section -->
+            <section class="flow-section">
+                <h2 class="flow-title">Combinando Tipos de Prompts</h2>
+                <p style="text-align: center; color: var(--color-text-secondary); margin-bottom: 40px;">
+                    Exemplo de fluxo completo usando múltiplos tipos em sequência
+                </p>
+
+                <div class="flow-steps">
+                    <div class="flow-step" style="--step-color: #00d9ff;">
+                        <div class="flow-step-number">Passo 1 • Análise</div>
+                        <div class="flow-step-type">Prompt de Análise</div>
+                        <div class="flow-step-prompt">"Compare PostgreSQL vs MongoDB para meu caso de uso: [detalhes]"</div>
+                        <div class="flow-step-result">IA recomenda PostgreSQL</div>
+                    </div>
+
+                    <div class="flow-step" style="--step-color: #a855f7;">
+                        <div class="flow-step-number">Passo 2 • Design</div>
+                        <div class="flow-step-type">Prompt de Design</div>
+                        <div class="flow-step-prompt">"Desenhe schema PostgreSQL para: [requisitos]"</div>
+                        <div class="flow-step-result">IA entrega schema</div>
+                    </div>
+
+                    <div class="flow-step" style="--step-color: #ff0080;">
+                        <div class="flow-step-number">Passo 3 • Implementação</div>
+                        <div class="flow-step-type">Prompt de Instrução Direta</div>
+                        <div class="flow-step-prompt">"Crie migrations Prisma para este schema: [schema]"</div>
+                        <div class="flow-step-result">IA gera código</div>
+                    </div>
+
+                    <div class="flow-step" style="--step-color: #ffd700;">
+                        <div class="flow-step-number">Passo 4 • Documentação</div>
+                        <div class="flow-step-type">Prompt de Documentação</div>
+                        <div class="flow-step-prompt">"Documente este schema para o time: [schema]"</div>
+                        <div class="flow-step-result">IA cria docs</div>
+                    </div>
+
+                    <div class="flow-step" style="--step-color: #00ff88;">
+                        <div class="flow-step-number">Passo 5 • Testes</div>
+                        <div class="flow-step-type">Prompt de Instrução Direta</div>
+                        <div class="flow-step-prompt">"Gere testes unitários para estas queries: [código]"</div>
+                        <div class="flow-step-result">IA cria suite de testes</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Decision Matrix -->
+            <section class="decision-matrix">
+                <h2 class="matrix-title">Matriz de Decisão: Qual Tipo Usar?</h2>
+
+                <table class="matrix-table">
+                    <thead>
+                        <tr>
+                            <th>Situação</th>
+                            <th>Tipo de Prompt</th>
+                            <th>Exemplo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Sei exatamente o que quero</td>
+                            <td>Instrução Direta</td>
+                            <td>"Crie função X que faça Y"</td>
+                        </tr>
+                        <tr>
+                            <td>Preciso decidir entre opções</td>
+                            <td>Análise/Comparação</td>
+                            <td>"Compare A vs B para contexto C"</td>
+                        </tr>
+                        <tr>
+                            <td>Estou explorando possibilidades</td>
+                            <td>Geração Criativa</td>
+                            <td>"Sugira 5 formas de resolver X"</td>
+                        </tr>
+                        <tr>
+                            <td>Algo funciona mas não está bom</td>
+                            <td>Refatoração</td>
+                            <td>"Melhore este código para Y"</td>
+                        </tr>
+                        <tr>
+                            <td>Algo não funciona</td>
+                            <td>Debugging</td>
+                            <td>"Por que isto falha quando Z?"</td>
+                        </tr>
+                        <tr>
+                            <td>Preciso explicar para alguém</td>
+                            <td>Documentação</td>
+                            <td>"Explique X para audiência Y"</td>
+                        </tr>
+                        <tr>
+                            <td>Começando projeto grande</td>
+                            <td>Planejamento</td>
+                            <td>"Desenhe arquitetura para X"</td>
+                        </tr>
+                        <tr>
+                            <td>Migrando tecnologias</td>
+                            <td>Transformação</td>
+                            <td>"Converta A para formato B"</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Anti-patterns Section -->
+            <section>
+                <div class="section-header">
+                    <h2 class="section-title">Antipadrões: Tipos Errados para o Objetivo</h2>
+                    <p class="section-description">
+                        Aprenda com erros comuns ao escolher o tipo de prompt
+                    </p>
+                </div>
+
+                <div class="antipatterns-grid">
+                    <div class="antipattern-card">
+                        <h3 class="antipattern-title">🚫 Usar Instrução Direta quando precisa Análise</h3>
+
+                        <div class="antipattern-examples">
+                            <div class="antipattern-bad">
+                                <div class="antipattern-bad-label">❌ ERRADO</div>
+                                <div class="antipattern-bad-code">"Implemente autenticação com JWT"</div>
+                            </div>
+
+                            <div class="antipattern-problem">
+                                <strong>Problema:</strong> Assume que JWT é a melhor escolha sem validar.
+                            </div>
+
+                            <div class="antipattern-good">
+                                <div class="antipattern-good-label">✅ CORRETO</div>
+                                <div class="antipattern-good-code">"Compare JWT vs Sessions vs OAuth2 para:
+   [contexto]
+   Depois, implemente a melhor opção"</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="antipattern-card">
+                        <h3 class="antipattern-title">🚫 Usar Geração Criativa quando precisa Precisão</h3>
+
+                        <div class="antipattern-examples">
+                            <div class="antipattern-bad">
+                                <div class="antipattern-bad-label">❌ ERRADO</div>
+                                <div class="antipattern-bad-code">"Crie uma solução criativa para autenticação"</div>
+                            </div>
+
+                            <div class="antipattern-problem">
+                                <strong>Problema:</strong> Autenticação não é lugar para experimentação criativa.
+                            </div>
+
+                            <div class="antipattern-good">
+                                <div class="antipattern-good-label">✅ CORRETO</div>
+                                <div class="antipattern-good-code">"Implemente autenticação seguindo padrão OAuth 2.0:
+   [especificações exatas]"</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="antipattern-card">
+                        <h3 class="antipattern-title">🚫 Usar Debugging quando o problema é Design</h3>
+
+                        <div class="antipattern-examples">
+                            <div class="antipattern-bad">
+                                <div class="antipattern-bad-label">❌ ERRADO</div>
+                                <div class="antipattern-bad-code">"Por que meu sistema é lento?"</div>
+                            </div>
+
+                            <div class="antipattern-problem">
+                                <strong>Problema:</strong> Muito genérico, pode ser problema arquitetural.
+                            </div>
+
+                            <div class="antipattern-good">
+                                <div class="antipattern-good-label">✅ CORRETO</div>
+                                <div class="antipattern-good-code">"Analise a arquitetura e identifique gargalos:
+   [diagrama + métricas]
+   Sugira melhorias estruturais"</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Checklist Section -->
+            <section class="checklist">
+                <h2 class="checklist-title">Checklist de Seleção de Tipo</h2>
+                <p style="text-align: center; color: var(--color-text-secondary); margin-bottom: 40px;">
+                    Antes de escrever o prompt, pergunte:
+                </p>
+
+                <div class="checklist-items">
+                    <div class="checklist-item">
+                        <div class="checklist-question">1. Qual é meu objetivo principal?</div>
+                        <div class="checklist-options">
+                            <div class="checklist-option">Executar tarefa → Instrução Direta</div>
+                            <div class="checklist-option">Tomar decisão → Análise</div>
+                            <div class="checklist-option">Explorar opções → Criativa</div>
+                            <div class="checklist-option">Melhorar existente → Refatoração</div>
+                            <div class="checklist-option">Resolver problema → Debugging</div>
+                            <div class="checklist-option">Comunicar → Documentação</div>
+                            <div class="checklist-option">Planejar → Design</div>
+                            <div class="checklist-option">Converter → Transformação</div>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checklist-question">2. Quanta liberdade a IA deve ter?</div>
+                        <div class="checklist-options">
+                            <div class="checklist-option">Zero → Instrução Direta</div>
+                            <div class="checklist-option">Moderada → Análise/Refatoração</div>
+                            <div class="checklist-option">Alta → Criativa/Design</div>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item">
+                        <div class="checklist-question">3. Já existe algo implementado?</div>
+                        <div class="checklist-options">
+                            <div class="checklist-option">Não → Criativa/Design/Instrução</div>
+                            <div class="checklist-option">Sim, funciona → Refatoração/Documentação</div>
+                            <div class="checklist-option">Sim, não funciona → Debugging</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise Section -->
+            <section class="exercise">
+                <h2 class="exercise-title">Exercício Prático</h2>
+                <p style="text-align: center; color: var(--color-text-secondary); margin-bottom: 32px;">
+                    Para cada cenário, identifique o tipo de prompt mais adequado:
+                </p>
+
+                <div class="exercise-questions">
+                    <div class="exercise-question" data-number="1">
+                        Preciso implementar cache na minha API mas não sei se uso Redis ou Memcached
+                    </div>
+                    <div class="exercise-question" data-number="2">
+                        Este código funciona mas está com 500 linhas, preciso organizar
+                    </div>
+                    <div class="exercise-question" data-number="3">
+                        A aplicação trava quando tem mais de 100 usuários simultâneos
+                    </div>
+                    <div class="exercise-question" data-number="4">
+                        Preciso de ideias de features inovadoras para meu app
+                    </div>
+                    <div class="exercise-question" data-number="5">
+                        Como funciona a concorrência em Go?
+                    </div>
+                </div>
+
+                <div class="exercise-answers">
+                    <div class="exercise-answers-label">Respostas:</div>
+                    <div class="exercise-answers-content">
+                        (1) Análise, (2) Refatoração, (3) Debugging, (4) Criativa, (5) Documentação
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="footer">
+                <div class="footer-tags">
+                    <span class="footer-tag">#fundamentals</span>
+                    <span class="footer-tag">#tipos-prompts</span>
+                    <span class="footer-tag">#taxonomia</span>
+                    <span class="footer-tag">#decisao</span>
+                    <span class="footer-tag">#estrategia</span>
+                </div>
+
+                <div class="footer-links">
+                    <div class="footer-links-title">Relacionados</div>
+                    <ul class="footer-links-list">
+                        <li>01-o-que-e-prompt-engineering</li>
+                        <li>03-contexto-e-role-playing</li>
+                        <li>../2-engineering/01-templates-reutilizaveis</li>
+                    </ul>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Mermaid for diagrams
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            themeVariables: {
+                primaryColor: '#ff0080',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#ff0080',
+                lineColor: '#ffd700',
+                secondaryColor: '#ffd700',
+                tertiaryColor: '#0a0a0a',
+                background: '#000000',
+                mainBkg: '#0a0a0a',
+                secondBkg: '#141414',
+                lineColor: '#ffd700',
+                border1: '#1f1f1f',
+                border2: '#2a2a2a',
+                note: '#ff0080',
+                noteBkgColor: 'rgba(255, 0, 128, 0.1)',
+                noteBorderColor: '#ff0080',
+                noteTextColor: '#ffffff'
+            }
+        });
+    </script>
+</body>
+</html>

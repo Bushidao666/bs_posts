@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contexto e Role-Playing: O Poder de Definir Persona</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+    </script>
+</head>
+<body style="margin: 0; padding: 0; background: #0a0a0a; font-family: system-ui, -apple-system, sans-serif;">
+
+<div id="role-playing-guide" style="max-width: 1400px; margin: 0 auto; padding: 0;">
+    <style>
+        #role-playing-guide * {
+            box-sizing: border-box;
+        }
+
+        #role-playing-guide {
+            --black: #000;
+            --magenta: #ff0080;
+            --gold: #ffd700;
+            --dark-bg: #0a0a0a;
+            --card-bg: #1a1a1a;
+            color: #f0f0f0;
+            line-height: 1.7;
+        }
+
+        /* Hero Section */
+        #role-playing-guide .hero {
+            background: linear-gradient(135deg, var(--black) 0%, #1a0a14 50%, var(--black) 100%);
+            padding: 80px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 3px solid var(--magenta);
+        }
+
+        #role-playing-guide .hero::before {
+            content: '🎭';
+            position: absolute;
+            font-size: 400px;
+            opacity: 0.03;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #role-playing-guide .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin: 0 0 20px 0;
+            background: linear-gradient(135deg, var(--magenta) 0%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            letter-spacing: -1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        #role-playing-guide .hero .subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            color: var(--gold);
+            font-weight: 300;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Container */
+        #role-playing-guide .container {
+            padding: 40px 20px;
+        }
+
+        /* Section Headers */
+        #role-playing-guide .section-header {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: var(--magenta);
+            margin: 60px 0 30px 0;
+            padding: 20px;
+            background: linear-gradient(90deg, rgba(255, 0, 128, 0.1) 0%, transparent 100%);
+            border-left: 5px solid var(--magenta);
+            font-weight: 700;
+        }
+
+        /* Intro Card */
+        #role-playing-guide .intro-card {
+            background: linear-gradient(135deg, var(--card-bg) 0%, #2a1a24 100%);
+            padding: 40px;
+            border-radius: 20px;
+            margin: 30px 0;
+            border: 2px solid rgba(255, 0, 128, 0.2);
+            box-shadow: 0 20px 60px rgba(255, 0, 128, 0.1);
+        }
+
+        #role-playing-guide .intro-card p {
+            font-size: 1.1rem;
+            margin: 15px 0;
+            color: #d0d0d0;
+        }
+
+        /* Theatrical Role Cards */
+        #role-playing-guide .theater-stage {
+            perspective: 1000px;
+            margin: 40px 0;
+        }
+
+        #role-playing-guide .role-card {
+            background: linear-gradient(145deg, #1a1a1a 0%, #0d0d0d 100%);
+            border: 2px solid var(--magenta);
+            border-radius: 25px;
+            padding: 40px;
+            margin: 30px 0;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow:
+                0 10px 40px rgba(255, 0, 128, 0.2),
+                inset 0 1px 0 rgba(255, 215, 0, 0.1);
+        }
+
+        #role-playing-guide .role-card:hover {
+            transform: translateY(-10px) rotateX(2deg);
+            box-shadow:
+                0 20px 60px rgba(255, 0, 128, 0.3),
+                inset 0 1px 0 rgba(255, 215, 0, 0.2);
+            border-color: var(--gold);
+        }
+
+        #role-playing-guide .role-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--magenta) 0%, var(--gold) 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        #role-playing-guide .role-card:hover::before {
+            opacity: 1;
+        }
+
+        #role-playing-guide .role-icon {
+            font-size: 4rem;
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            opacity: 0.15;
+            filter: drop-shadow(0 0 20px var(--magenta));
+        }
+
+        #role-playing-guide .role-title {
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin: 0 0 15px 0;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        #role-playing-guide .role-emoji {
+            font-size: 2.5rem;
+            filter: drop-shadow(0 0 10px var(--magenta));
+        }
+
+        #role-playing-guide .role-when {
+            background: rgba(255, 0, 128, 0.15);
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 4px solid var(--magenta);
+            font-weight: 600;
+            color: var(--magenta);
+        }
+
+        #role-playing-guide .role-examples {
+            margin: 20px 0;
+        }
+
+        #role-playing-guide .role-benefit {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, transparent 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        /* Before/After Comparison */
+        #role-playing-guide .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        #role-playing-guide .comparison-container::before {
+            content: 'VS';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, var(--magenta) 0%, var(--gold) 100%);
+            color: var(--black);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.5rem;
+            z-index: 10;
+            box-shadow: 0 10px 40px rgba(255, 0, 128, 0.5);
+            border: 4px solid var(--black);
+        }
+
+        #role-playing-guide .before-card,
+        #role-playing-guide .after-card {
+            padding: 30px;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #role-playing-guide .before-card {
+            background: linear-gradient(135deg, #1a0000 0%, var(--card-bg) 100%);
+            border: 2px solid #660000;
+        }
+
+        #role-playing-guide .after-card {
+            background: linear-gradient(135deg, #001a00 0%, var(--card-bg) 100%);
+            border: 2px solid #006600;
+        }
+
+        #role-playing-guide .comparison-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #role-playing-guide .before-badge {
+            background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+            color: white;
+        }
+
+        #role-playing-guide .after-badge {
+            background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%);
+            color: var(--black);
+        }
+
+        /* Code Blocks */
+        #role-playing-guide .code-block {
+            background: #0d0d0d;
+            border: 1px solid rgba(255, 0, 128, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #role-playing-guide .code-block pre {
+            margin: 0;
+            color: #e0e0e0;
+        }
+
+        /* Layered Context Sections */
+        #role-playing-guide .context-layers {
+            position: relative;
+            margin: 50px 0;
+        }
+
+        #role-playing-guide .context-layer {
+            background: linear-gradient(135deg, var(--card-bg) 0%, #1a1a2a 100%);
+            border: 2px solid var(--magenta);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            position: relative;
+            transform: translateX(0);
+            transition: all 0.3s ease;
+        }
+
+        #role-playing-guide .context-layer:nth-child(1) {
+            z-index: 4;
+            box-shadow: 0 5px 20px rgba(255, 0, 128, 0.2);
+        }
+
+        #role-playing-guide .context-layer:nth-child(2) {
+            z-index: 3;
+            margin-top: -10px;
+            transform: translateX(20px);
+            opacity: 0.95;
+            box-shadow: 0 5px 20px rgba(255, 0, 128, 0.15);
+        }
+
+        #role-playing-guide .context-layer:nth-child(3) {
+            z-index: 2;
+            margin-top: -10px;
+            transform: translateX(40px);
+            opacity: 0.9;
+            box-shadow: 0 5px 20px rgba(255, 0, 128, 0.1);
+        }
+
+        #role-playing-guide .context-layer:nth-child(4) {
+            z-index: 1;
+            margin-top: -10px;
+            transform: translateX(60px);
+            opacity: 0.85;
+            box-shadow: 0 5px 20px rgba(255, 0, 128, 0.05);
+        }
+
+        #role-playing-guide .context-layer:hover {
+            transform: translateX(0) translateY(-5px);
+            z-index: 10;
+            opacity: 1;
+        }
+
+        #role-playing-guide .layer-icon {
+            font-size: 2rem;
+            margin-right: 15px;
+            filter: drop-shadow(0 0 10px var(--gold));
+        }
+
+        #role-playing-guide .layer-title {
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin: 0 0 15px 0;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Lists */
+        #role-playing-guide ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #role-playing-guide li {
+            padding: 10px 0 10px 35px;
+            position: relative;
+            color: #d0d0d0;
+        }
+
+        #role-playing-guide li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--magenta);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Checkmark Lists */
+        #role-playing-guide .check-list li::before {
+            content: '✓';
+            background: linear-gradient(135deg, var(--magenta) 0%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+        }
+
+        /* Anti-pattern Cards */
+        #role-playing-guide .antipattern-card {
+            background: linear-gradient(135deg, #1a0000 0%, var(--card-bg) 100%);
+            border: 2px solid #cc0000;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        #role-playing-guide .antipattern-card::before {
+            content: '🚫';
+            position: absolute;
+            font-size: 3rem;
+            top: 20px;
+            right: 30px;
+            opacity: 0.2;
+        }
+
+        #role-playing-guide .antipattern-title {
+            font-size: 1.5rem;
+            color: #ff4444;
+            margin: 0 0 20px 0;
+            font-weight: 700;
+        }
+
+        /* Technique Cards */
+        #role-playing-guide .technique-card {
+            background: linear-gradient(145deg, #1a1a1a 0%, #0d0d0d 100%);
+            border: 2px solid var(--gold);
+            border-radius: 20px;
+            padding: 35px;
+            margin: 30px 0;
+            box-shadow: 0 10px 40px rgba(255, 215, 0, 0.15);
+        }
+
+        #role-playing-guide .technique-title {
+            font-size: 1.6rem;
+            color: var(--gold);
+            margin: 0 0 20px 0;
+            font-weight: 700;
+        }
+
+        /* Checklist */
+        #role-playing-guide .checklist-container {
+            background: linear-gradient(135deg, var(--card-bg) 0%, #1a2a1a 100%);
+            border: 2px solid var(--gold);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+
+        #role-playing-guide .checklist-section {
+            margin: 30px 0;
+        }
+
+        #role-playing-guide .checklist-section h4 {
+            font-size: 1.4rem;
+            color: var(--magenta);
+            margin: 0 0 15px 0;
+        }
+
+        /* Exercise Card */
+        #role-playing-guide .exercise-card {
+            background: linear-gradient(135deg, #1a1a00 0%, var(--card-bg) 100%);
+            border: 3px solid var(--gold);
+            border-radius: 25px;
+            padding: 40px;
+            margin: 50px 0;
+            box-shadow: 0 20px 60px rgba(255, 215, 0, 0.2);
+        }
+
+        #role-playing-guide .exercise-title {
+            font-size: 2rem;
+            color: var(--gold);
+            margin: 0 0 25px 0;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Blockquote */
+        #role-playing-guide blockquote {
+            background: rgba(255, 0, 128, 0.05);
+            border-left: 5px solid var(--magenta);
+            padding: 20px 30px;
+            margin: 20px 0;
+            font-style: italic;
+            border-radius: 0 12px 12px 0;
+        }
+
+        /* Tags */
+        #role-playing-guide .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 40px 0;
+        }
+
+        #role-playing-guide .tag {
+            background: linear-gradient(135deg, var(--magenta) 0%, var(--gold) 100%);
+            color: var(--black);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        /* Spotlight Effect */
+        #role-playing-guide .spotlight {
+            position: relative;
+            padding: 50px;
+            margin: 50px 0;
+            background: radial-gradient(circle at center, rgba(255, 0, 128, 0.1) 0%, transparent 70%);
+        }
+
+        #role-playing-guide .spotlight::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+            pointer-events: none;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            #role-playing-guide .hero {
+                padding: 50px 20px;
+            }
+
+            #role-playing-guide .comparison-container {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+
+            #role-playing-guide .comparison-container::before {
+                top: calc(50% - 30px);
+            }
+
+            #role-playing-guide .context-layer {
+                transform: translateX(0) !important;
+                margin-top: 20px !important;
+            }
+
+            #role-playing-guide .role-card {
+                padding: 25px;
+            }
+
+            #role-playing-guide .role-icon {
+                font-size: 2.5rem;
+                top: 15px;
+                right: 15px;
+            }
+
+            #role-playing-guide .intro-card,
+            #role-playing-guide .technique-card,
+            #role-playing-guide .exercise-card {
+                padding: 25px;
+            }
+
+            #role-playing-guide .code-block {
+                font-size: 0.85rem;
+                padding: 15px;
+            }
+        }
+
+        /* Smooth Scrolling */
+        #role-playing-guide {
+            scroll-behavior: smooth;
+        }
+
+        /* Strong text styling */
+        #role-playing-guide strong {
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        /* Emphasis */
+        #role-playing-guide em {
+            color: var(--magenta);
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        /* HR Divider */
+        #role-playing-guide hr {
+            border: none;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, var(--magenta) 50%, transparent 100%);
+            margin: 50px 0;
+        }
+    </style>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>🎭 Contexto e Role-Playing</h1>
+        <div class="subtitle">O Poder de Definir Persona</div>
+    </div>
+
+    <div class="container">
+        <!-- Introduction -->
+        <div class="intro-card">
+            <p>Imagine contratar um consultor sem dizer qual é sua área de expertise. Ele não saberia se deve pensar como engenheiro, designer, marqueteiro ou CFO. <strong>Com IA é a mesma coisa</strong> - definir uma "persona" (role) direciona todo o raciocínio do modelo.</p>
+            <p>Contexto + Role são os <strong>alicerces</strong> de um prompt efetivo. Este guia ensina como usar essas ferramentas para multiplicar a qualidade das respostas.</p>
+        </div>
+
+        <!-- Why Role-Playing Works -->
+        <h2 class="section-header">Por Que Role-Playing Funciona?</h2>
+
+        <div class="intro-card">
+            <h3 style="color: var(--magenta); font-size: 1.8rem; margin-top: 0;">O Conceito de "Ativação de Conhecimento"</h3>
+            <p>Modelos de IA foram treinados em textos de especialistas em milhares de domínios:</p>
+            <ul>
+                <li>Código de engenheiros de software</li>
+                <li>Papers de pesquisadores</li>
+                <li>Documentação técnica</li>
+                <li>Livros especializados</li>
+            </ul>
+            <p style="margin-top: 30px;">Quando você diz <strong>"Você é um arquiteto de software sênior"</strong>, a IA:</p>
+            <ul class="check-list">
+                <li>Ativa padrões linguísticos desse domínio</li>
+                <li>Prioriza conhecimento relevante para essa role</li>
+                <li>Adota o "estilo de pensamento" dessa expertise</li>
+                <li>Considera trade-offs que um profissional desse nível consideraria</li>
+            </ul>
+        </div>
+
+        <!-- Comparison: With vs Without Role -->
+        <h3 style="color: var(--gold); font-size: 1.6rem; margin: 50px 0 30px 0;">Experimento: Com vs Sem Role</h3>
+
+        <div class="comparison-container">
+            <div class="before-card">
+                <span class="comparison-badge before-badge">❌ Sem Role</span>
+                <div class="code-block">
+                    <pre>"Como implementar autenticação?"</pre>
+                </div>
+                <blockquote style="border-left-color: #cc0000; background: rgba(255, 0, 0, 0.05);">
+                    <strong style="color: #ff6666;">Resposta típica:</strong><br>
+                    "Existem várias formas: senhas, tokens, biometria..."<br>
+                    <em style="color: #ff8888;">(Genérico, superficial, não acionável)</em>
+                </blockquote>
+            </div>
+
+            <div class="after-card">
+                <span class="comparison-badge after-badge">✅ Com Role</span>
+                <div class="code-block">
+                    <pre>"Você é um engenheiro de segurança especializado em autenticação.
+Como implementar autenticação para uma API REST crítica
+(sistema bancário) que precisa:
+- MFA obrigatório
+- Conformidade PCI-DSS
+- Auditoria completa de acessos"</pre>
+                </div>
+                <blockquote style="border-left-color: #00cc00; background: rgba(0, 255, 0, 0.05);">
+                    <strong style="color: #66ff66;">Resposta típica:</strong><br>
+                    "Para contexto bancário com PCI-DSS, recomendo:<br>
+                    1. OAuth 2.0 + OpenID Connect (padrão do setor)<br>
+                    2. MFA com TOTP (RFC 6238) + backup codes<br>
+                    3. JWT de curta duração (15min) + refresh tokens<br>
+                    4. Logging de todos eventos de auth em sistema SIEM<br>
+                    [código detalhado com bibliotecas específicas]"
+                </blockquote>
+            </div>
+        </div>
+
+        <div class="intro-card" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, var(--card-bg) 100%); border-color: rgba(255, 215, 0, 0.3);">
+            <p style="color: var(--gold); font-weight: 600; font-size: 1.1rem;">
+                <strong>Diferença:</strong> A role trouxe conhecimento especializado, melhores práticas do domínio e atenção a regulamentações.
+            </p>
+        </div>
+
+        <!-- Anatomy of Effective Role -->
+        <h2 class="section-header">Anatomia de um Role Efetivo</h2>
+
+        <div class="intro-card">
+            <h3 style="color: var(--magenta); font-size: 1.5rem; margin-top: 0;">Estrutura de Role</h3>
+            <div class="code-block">
+                <pre>Você é um [TÍTULO/EXPERTISE] com experiência em [DOMÍNIO].
+
+[OPCIONAL: Características da persona]
+- Anos de experiência: X
+- Especialidades: [lista]
+- Stack técnico favorito: [tecnologias]
+- Abordagem: [pragmático/teórico/etc]</pre>
+            </div>
+        </div>
+
+        <div class="spotlight">
+            <div style="position: relative; z-index: 1;">
+                <h3 style="color: var(--gold); font-size: 1.8rem; text-align: center; margin-bottom: 30px;">Exemplo Completo</h3>
+                <div class="code-block">
+                    <pre>Você é um Tech Lead de um time de backend com 8 anos de experiência.
+
+Características:
+- Especialista em: Node.js, Go, PostgreSQL, Redis, RabbitMQ
+- Trabalhou em: Fintech (3 anos), E-commerce (5 anos)
+- Foco: Código production-ready (não POCs)
+- Estilo: Pragmático, prioriza simplicidade e manutenibilidade
+- Conhece trade-offs de: performance vs complexidade
+
+Quando responder:
+✓ Considere que o código irá para produção (error handling, logs, etc)
+✓ Mencione onde podem surgir problemas em escala
+✓ Sugira observabilidade desde o início
+✓ Justifique escolhas técnicas</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Types of Roles -->
+        <h2 class="section-header">Tipos de Roles e Quando Usar</h2>
+
+        <div class="theater-stage">
+            <!-- Role 1: Technical Specialist -->
+            <div class="role-card">
+                <div class="role-icon">👨‍💻</div>
+                <div class="role-title">
+                    <span class="role-emoji">👨‍💻</span>
+                    <span>Role de Especialista Técnico</span>
+                </div>
+                <div class="role-when">
+                    <strong>Quando usar:</strong> Tarefas técnicas profundas
+                </div>
+                <div class="role-examples">
+                    <p style="margin-bottom: 15px;"><strong>Exemplos:</strong></p>
+                    <ul class="check-list">
+                        <li>"Você é um DBA especializado em otimização de queries PostgreSQL"</li>
+                        <li>"Você é um engenheiro de ML com foco em NLP"</li>
+                        <li>"Você é um arquiteto de sistemas distribuídos"</li>
+                    </ul>
+                </div>
+                <div class="role-benefit">
+                    <strong>Benefício:</strong> Respostas com profundidade técnica, melhores práticas, casos edge
+                </div>
+            </div>
+
+            <!-- Role 2: Teacher/Mentor -->
+            <div class="role-card">
+                <div class="role-icon">👨‍🏫</div>
+                <div class="role-title">
+                    <span class="role-emoji">👨‍🏫</span>
+                    <span>Role de Professor/Mentor</span>
+                </div>
+                <div class="role-when">
+                    <strong>Quando usar:</strong> Aprendizado, explicações didáticas
+                </div>
+                <div class="role-examples">
+                    <p style="margin-bottom: 15px;"><strong>Exemplos:</strong></p>
+                    <ul class="check-list">
+                        <li>"Você é um professor universitário de Ciência da Computação explicando conceitos para alunos de segundo semestre"</li>
+                        <li>"Você é um mentor que ensina programação para iniciantes usando analogias e exemplos do dia-a-dia"</li>
+                    </ul>
+                </div>
+                <div class="role-benefit">
+                    <strong>Benefício:</strong> Linguagem clara, analogias, progressão pedagógica
+                </div>
+            </div>
+
+            <!-- Role 3: Strategic Consultant -->
+            <div class="role-card">
+                <div class="role-icon">📊</div>
+                <div class="role-title">
+                    <span class="role-emoji">📊</span>
+                    <span>Role de Consultor Estratégico</span>
+                </div>
+                <div class="role-when">
+                    <strong>Quando usar:</strong> Decisões arquiteturais, trade-offs de negócio
+                </div>
+                <div class="role-examples">
+                    <p style="margin-bottom: 15px;"><strong>Exemplos:</strong></p>
+                    <ul class="check-list">
+                        <li>"Você é um CTO consultando uma startup sobre stack tecnológico"</li>
+                        <li>"Você é um arquiteto de soluções avaliando migração para cloud"</li>
+                    </ul>
+                </div>
+                <div class="role-benefit">
+                    <strong>Benefício:</strong> Visão holística, considera custos/time/prazos, não só técnica
+                </div>
+            </div>
+
+            <!-- Role 4: Reviewer/Auditor -->
+            <div class="role-card">
+                <div class="role-icon">🔍</div>
+                <div class="role-title">
+                    <span class="role-emoji">🔍</span>
+                    <span>Role de Revisor/Auditor</span>
+                </div>
+                <div class="role-when">
+                    <strong>Quando usar:</strong> Code review, análise de qualidade, security audit
+                </div>
+                <div class="role-examples">
+                    <p style="margin-bottom: 15px;"><strong>Exemplos:</strong></p>
+                    <ul class="check-list">
+                        <li>"Você é um security engineer fazendo audit de código"</li>
+                        <li>"Você é um tech lead revisando PR antes de merge"</li>
+                    </ul>
+                </div>
+                <div class="role-benefit">
+                    <strong>Benefício:</strong> Olhar crítico, identifica problemas que passariam despercebidos
+                </div>
+            </div>
+
+            <!-- Role 5: Hybrid -->
+            <div class="role-card">
+                <div class="role-icon">🎭</div>
+                <div class="role-title">
+                    <span class="role-emoji">🎭</span>
+                    <span>Role Híbrido</span>
+                </div>
+                <div class="role-when">
+                    <strong>Quando usar:</strong> Problemas que cruzam domínios
+                </div>
+                <div class="role-examples">
+                    <p style="margin-bottom: 15px;"><strong>Exemplos:</strong></p>
+                    <ul class="check-list">
+                        <li>"Você é um Tech Lead com background em UX, balanceando performance técnica e experiência do usuário"</li>
+                        <li>"Você é um arquiteto de software com experiência em DevOps, considerando tanto design quanto operação/deployment"</li>
+                    </ul>
+                </div>
+                <div class="role-benefit">
+                    <strong>Benefício:</strong> Perspectiva multidisciplinar, soluções equilibradas
+                </div>
+            </div>
+        </div>
+
+        <!-- Context: The Second Pillar -->
+        <h2 class="section-header">Contexto: O Segundo Pilar</h2>
+
+        <div class="intro-card" style="background: linear-gradient(135deg, #2a1a24 0%, var(--card-bg) 100%);">
+            <p style="font-size: 1.3rem; text-align: center; color: var(--gold);">
+                Role diz <strong>quem</strong> está respondendo. Contexto diz <strong>sobre o quê</strong>.
+            </p>
+        </div>
+
+        <h3 style="color: var(--magenta); font-size: 1.8rem; margin: 50px 0 30px 0;">Camadas de Contexto</h3>
+
+        <div class="context-layers">
+            <!-- Layer 1: Technical Context -->
+            <div class="context-layer">
+                <div class="layer-title">
+                    <span class="layer-icon">⚙️</span>
+                    <span>1. Contexto Técnico</span>
+                </div>
+                <div class="code-block">
+                    <pre>STACK:
+- Backend: Node.js 18 + Express
+- Database: PostgreSQL 14
+- Cache: Redis 7
+- Infra: AWS (ECS Fargate)
+
+CONSTRAINTS:
+- Não pode mudar DB (legacy data)
+- Budget: $2k/mês AWS
+- Time: 3 devs junior + 1 senior</pre>
+                </div>
+            </div>
+
+            <!-- Layer 2: Business Context -->
+            <div class="context-layer">
+                <div class="layer-title">
+                    <span class="layer-icon">💼</span>
+                    <span>2. Contexto de Negócio</span>
+                </div>
+                <div class="code-block">
+                    <pre>DOMÍNIO: Marketplace B2B
+
+ESCALA:
+- 50k usuários ativos/mês
+- 10k transações/dia
+- Pico: 500 req/min
+
+CRITICIDADE:
+- Downtime = perda direta de receita
+- SLA: 99.9% uptime</pre>
+                </div>
+            </div>
+
+            <!-- Layer 3: Historical Context -->
+            <div class="context-layer">
+                <div class="layer-title">
+                    <span class="layer-icon">📜</span>
+                    <span>3. Contexto Histórico</span>
+                </div>
+                <div class="code-block">
+                    <pre>SITUAÇÃO ATUAL:
+- Sistema tem 3 anos
+- Refatorado 1x (de PHP para Node)
+- Problemas recorrentes: [lista]
+- O que JÁ tentamos: [lista]
+
+O QUE NÃO FUNCIONOU:
+- Tentamos cache but invalidação era buggy
+- Tentamos fila mas complicou debugging</pre>
+                </div>
+            </div>
+
+            <!-- Layer 4: Objective Context -->
+            <div class="context-layer">
+                <div class="layer-title">
+                    <span class="layer-icon">🎯</span>
+                    <span>4. Contexto de Objetivo</span>
+                </div>
+                <div class="code-block">
+                    <pre>PROBLEMA:
+Query de relatórios demora 30s (timeout em 10s)
+
+OBJETIVO:
+< 2s para 95% dos casos
+
+POR QUÊ:
+Clientes reclamando, churn aumentando</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Complete Context Template -->
+        <div class="spotlight">
+            <div style="position: relative; z-index: 1;">
+                <h3 style="color: var(--gold); font-size: 1.8rem; text-align: center; margin-bottom: 30px;">Template de Contexto Completo</h3>
+                <div class="code-block">
+                    <pre>Você é um [ROLE].
+
+CONTEXTO TÉCNICO:
+- Stack: [tecnologias]
+- Infraestrutura: [onde roda]
+- Constraints: [limitações]
+
+CONTEXTO DO PROBLEMA:
+- Situação atual: [estado]
+- O que já tentamos: [histórico]
+- Objetivo: [estado desejado]
+
+CONTEXTO DE NEGÓCIO:
+- Domínio: [área]
+- Escala: [números]
+- Criticidade: [impacto]
+
+TAREFA:
+[o que fazer]</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practical Examples: Before vs After -->
+        <h2 class="section-header">Exemplos Práticos: Antes vs Depois</h2>
+
+        <!-- Example 1: Debugging -->
+        <h3 style="color: var(--gold); font-size: 1.6rem; margin: 40px 0 30px 0;">Exemplo 1: Debugging</h3>
+
+        <div class="comparison-container">
+            <div class="before-card">
+                <span class="comparison-badge before-badge">❌ Sem Role/Contexto</span>
+                <div class="code-block">
+                    <pre>"Por que este código dá erro?
+[código]"</pre>
+                </div>
+            </div>
+
+            <div class="after-card">
+                <span class="comparison-badge after-badge">✅ Com Role/Contexto</span>
+                <div class="code-block">
+                    <pre>Você é um engenheiro backend sênior especializado em Node.js.
+
+CONTEXTO:
+- Código: API REST em Express
+- Ambiente: Produção, AWS Lambda
+- Erro: Intermitente (20% das requests)
+- Log: "Cannot read property 'user' of undefined"
+- Quando: Apenas em picos de tráfego (>100 req/s)
+
+HISTÓRICO:
+- Em dev/staging funciona sempre
+- Começou após deploy de feature de cache
+- Cache: node-cache (in-memory)
+
+CÓDIGO:
+[código]
+
+Diagnostique a causa raiz considerando ambiente serverless
+(Lambda pode ter cold starts, instâncias diferentes, etc).</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="intro-card" style="background: linear-gradient(135deg, rgba(0, 255, 0, 0.05) 0%, var(--card-bg) 100%); border-color: rgba(0, 255, 0, 0.2);">
+            <p style="color: #66ff66; font-weight: 600;">
+                <strong>Resultado:</strong> A IA identifica que cache in-memory não funciona em Lambda (stateless), sugere Redis/ElastiCache.
+            </p>
+        </div>
+
+        <hr>
+
+        <!-- Example 2: Solution Design -->
+        <h3 style="color: var(--gold); font-size: 1.6rem; margin: 40px 0 30px 0;">Exemplo 2: Design de Solução</h3>
+
+        <div class="comparison-container">
+            <div class="before-card">
+                <span class="comparison-badge before-badge">❌ Sem Role/Contexto</span>
+                <div class="code-block">
+                    <pre>"Como fazer um sistema de notificações?"</pre>
+                </div>
+            </div>
+
+            <div class="after-card">
+                <span class="comparison-badge after-badge">✅ Com Role/Contexto</span>
+                <div class="code-block" style="max-height: 400px; overflow-y: auto;">
+                    <pre>Você é um arquiteto de software com 10 anos de experiência
+em sistemas distribuídos de alta escala.
+
+CONTEXTO DO PROJETO:
+- Aplicação: E-commerce (tipo Mercado Livre)
+- Escala: 1M usuários, 50k pedidos/dia
+- Tipos de notificação:
+  * Email (confirmação pedido, shipping updates)
+  * SMS (código 2FA, alertas urgentes)
+  * Push (promoções, status pedido)
+  * Webhook (integrações com sellers)
+
+REQUISITOS NÃO-FUNCIONAIS:
+- Entrega garantida (at-least-once)
+- Ordem não importa
+- Latência: melhor esforço (não crítico se demorar alguns segundos)
+- Custo: otimizar (emails custam, SMS custa mais)
+- Observabilidade: rastrear falhas de entrega
+
+CONSTRAINTS:
+- Stack atual: Node.js + PostgreSQL + Redis
+- Infra: AWS
+- Budget: $5k/mês para notificações
+- Time: 5 devs (familiarizados com microservices)
+
+TAREFA:
+Desenhe arquitetura de microserviço de notificações.
+Inclua:
+1. Diagrama de componentes (ASCII art ou Mermaid)
+2. Stack tecnológico (com justificativas)
+3. Como garantir entrega (retry logic, dead letter queue)
+4. Como controlar custos (rate limiting, deduplicação)
+5. Como observar saúde do sistema</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="intro-card" style="background: linear-gradient(135deg, rgba(0, 255, 0, 0.05) 0%, var(--card-bg) 100%); border-color: rgba(0, 255, 0, 0.2);">
+            <p style="color: #66ff66; font-weight: 600;">
+                <strong>Resultado:</strong> Solução production-ready com filas (SQS), workers, circuit breakers, métricas.
+            </p>
+        </div>
+
+        <hr>
+
+        <!-- Example 3: Refactoring -->
+        <h3 style="color: var(--gold); font-size: 1.6rem; margin: 40px 0 30px 0;">Exemplo 3: Refatoração</h3>
+
+        <div class="comparison-container">
+            <div class="before-card">
+                <span class="comparison-badge before-badge">❌ Sem Role/Contexto</span>
+                <div class="code-block">
+                    <pre>"Melhore este código:
+[código]"</pre>
+                </div>
+            </div>
+
+            <div class="after-card">
+                <span class="comparison-badge after-badge">✅ Com Role/Contexto</span>
+                <div class="code-block" style="max-height: 400px; overflow-y: auto;">
+                    <pre>Você é um tech lead fazendo code review de um PR.
+
+CONTEXTO:
+- Autor: Dev júnior (3 meses de empresa)
+- Código: Controller de checkout em e-commerce
+- Problemas identificados:
+  * 200 linhas (muito longo)
+  * Lógica de negócio misturada com HTTP
+  * Sem testes unitários
+  * Não trata erros edge cases
+
+OBJETIVO DA REFATORAÇÃO:
+- Aplicar padrão service layer
+- Separar concerns (HTTP vs lógica vs persistência)
+- Tornar testável
+- Manter COMPATIBILIDADE (API pública não pode mudar)
+
+SEU TRABALHO:
+1. Refatore o código seguindo princípios SOLID
+2. Explique CADA mudança (é um momento de mentoria)
+3. Mostre ONDE adicionar testes e O QUÊ testar
+4. Seja gentil (dev júnior, foco em ensinar)
+
+CÓDIGO ORIGINAL:
+[código]</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="intro-card" style="background: linear-gradient(135deg, rgba(0, 255, 0, 0.05) 0%, var(--card-bg) 100%); border-color: rgba(0, 255, 0, 0.2);">
+            <p style="color: #66ff66; font-weight: 600;">
+                <strong>Resultado:</strong> Refatoração didática com explicações, mostrando boas práticas.
+            </p>
+        </div>
+
+        <!-- Anti-patterns -->
+        <h2 class="section-header">Antipadrões de Role/Contexto</h2>
+
+        <div class="antipattern-card">
+            <div class="antipattern-title">🚫 Antipadrão 1: Role Genérico Demais</div>
+            <div class="code-block">
+                <pre>❌ "Você é um programador"</pre>
+            </div>
+            <p><strong style="color: #ff6666;">Problema:</strong> Não ativa conhecimento especializado.</p>
+            <div class="code-block" style="border-color: rgba(0, 255, 0, 0.3);">
+                <pre>✅ "Você é um engenheiro backend especializado em Go,
+   com foco em sistemas de alta performance (>10k req/s)"</pre>
+            </div>
+        </div>
+
+        <div class="antipattern-card">
+            <div class="antipattern-title">🚫 Antipadrão 2: Contexto Excessivo e Irrelevante</div>
+            <div class="code-block">
+                <pre>❌ "Fundada em 2010, a empresa cresceu 50% ao ano,
+   tem 200 funcionários, escritórios em 5 países...
+   [3 parágrafos de história da empresa]
+   ...agora, por favor, corrija este bug:
+   [1 linha de código]"</pre>
+            </div>
+            <p><strong style="color: #ff6666;">Problema:</strong> Informação irrelevante dilui foco.</p>
+            <div class="code-block" style="border-color: rgba(0, 255, 0, 0.3);">
+                <pre>✅ "Este endpoint de login está retornando 500:
+   [código + log de erro]
+   Stack: Node.js + JWT
+   Erro: 'secret is required' mas .env tem JWT_SECRET"</pre>
+            </div>
+        </div>
+
+        <div class="antipattern-card">
+            <div class="antipattern-title">🚫 Antipadrão 3: Role Contraditório com Tarefa</div>
+            <div class="code-block">
+                <pre>❌ "Você é um designer de UX.
+   Otimize esta query SQL de 30 segundos para < 2s"</pre>
+            </div>
+            <p><strong style="color: #ff6666;">Problema:</strong> Role não tem expertise para a tarefa.</p>
+            <div class="code-block" style="border-color: rgba(0, 255, 0, 0.3);">
+                <pre>✅ "Você é um DBA especializado em otimização de queries.
+   [tarefa]"</pre>
+            </div>
+        </div>
+
+        <div class="antipattern-card">
+            <div class="antipattern-title">🚫 Antipadrão 4: Contexto Implícito</div>
+            <div class="code-block">
+                <pre>❌ "Você conhece aquele sistema que discutimos antes?
+   Adicione a feature de notificações."</pre>
+            </div>
+            <p><strong style="color: #ff6666;">Problema:</strong> IA não tem "memória" de conversas anteriores (a menos que esteja na mesma sessão).</p>
+            <div class="code-block" style="border-color: rgba(0, 255, 0, 0.3);">
+                <pre>✅ "Você é [role].
+   Sistema atual: [descrição completa]
+   Tarefa: Adicionar feature de notificações
+   [requisitos]"</pre>
+            </div>
+        </div>
+
+        <!-- Checklist -->
+        <h2 class="section-header">Checklist de Role/Contexto</h2>
+
+        <div class="checklist-container">
+            <p style="text-align: center; font-size: 1.2rem; margin-bottom: 30px; color: var(--gold);">
+                <strong>Antes de enviar, valide:</strong>
+            </p>
+
+            <div class="checklist-section">
+                <h4>Role:</h4>
+                <ul class="check-list">
+                    <li>Especifiquei expertise relevante?</li>
+                    <li>O nível de senioridade está claro?</li>
+                    <li>A role tem conhecimento para resolver a tarefa?</li>
+                    <li>Mencionei características importantes? (pragmático, teórico, etc)</li>
+                </ul>
+            </div>
+
+            <div class="checklist-section">
+                <h4>Contexto:</h4>
+                <ul class="check-list">
+                    <li>Dei informação técnica suficiente? (stack, versões, infra)</li>
+                    <li>Expliquei o problema claramente?</li>
+                    <li>Incluí constraints relevantes? (budget, time, skills)</li>
+                    <li>Mencionei histórico quando relevante? (o que já tentamos)</li>
+                    <li>Defini critérios de sucesso?</li>
+                    <li>Removi informação irrelevante?</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Advanced Techniques -->
+        <h2 class="section-header">Técnicas Avançadas</h2>
+
+        <div class="technique-card">
+            <div class="technique-title">1. Multi-Role (Debate)</div>
+            <div class="code-block">
+                <pre>"Simule debate entre 3 personas:
+
+1. Arquiteto de software (foca em design patterns, manutenibilidade)
+2. SRE (foca em operação, observabilidade, custos)
+3. Desenvolvedor do time (foca em velocidade, simplicidade)
+
+Tópico: Devemos adotar microservices ou manter monolito?
+
+Contexto: [dados do projeto]
+
+Formato:
+- Cada persona apresenta 3 argumentos
+- Cada um responde argumentos dos outros
+- Conclusão: consenso ou maioría?"</pre>
+            </div>
+            <p style="margin-top: 20px; color: var(--gold);"><strong>Benefício:</strong> Explora múltiplas perspectivas, identifica trade-offs.</p>
+        </div>
+
+        <div class="technique-card">
+            <div class="technique-title">2. Role Progressivo (Mentoria)</div>
+            <div class="code-block">
+                <pre>"Explique arquitetura de microservices 3 vezes:
+
+1. Para um estudante de computação (2º semestre)
+2. Para um desenvolvedor júnior (1 ano de experiência)
+3. Para um arquiteto sênior (foco em trade-offs)
+
+Use a mesma estrutura, mas adapte linguagem e profundidade."</pre>
+            </div>
+            <p style="margin-top: 20px; color: var(--gold);"><strong>Benefício:</strong> Testa compreensão, identifica lacunas, cria material didático.</p>
+        </div>
+
+        <div class="technique-card">
+            <div class="technique-title">3. Role com Constraints de Personalidade</div>
+            <div class="code-block">
+                <pre>"Você é um engenheiro minimalista obsessivo por simplicidade.
+
+Filosofia:
+- 'Simple > Clever'
+- Odeio over-engineering
+- Prefiro boring technology
+- Delete code > Add code
+
+Revise este design e sugira simplificações agressivas:
+[design complexo]"</pre>
+            </div>
+            <p style="margin-top: 20px; color: var(--gold);"><strong>Benefício:</strong> Força perspectiva diferente, combate over-engineering.</p>
+        </div>
+
+        <!-- Exercise -->
+        <div class="exercise-card">
+            <div class="exercise-title">Exercício Prático</div>
+
+            <p style="font-size: 1.2rem; margin: 20px 0;"><strong>Desafio:</strong> Transforme este prompt genérico adicionando role e contexto:</p>
+
+            <div class="code-block">
+                <pre>"Como implementar autenticação?"</pre>
+            </div>
+
+            <p style="margin: 30px 0 20px 0; font-size: 1.1rem;"><strong>Pense:</strong></p>
+            <ol style="padding-left: 20px;">
+                <li style="margin: 15px 0;">Que tipo de especialista seria ideal para responder?</li>
+                <li style="margin: 15px 0;">Quais informações de contexto são essenciais?
+                    <ul style="margin-top: 10px;">
+                        <li>Stack tecnológico?</li>
+                        <li>Tipo de aplicação?</li>
+                        <li>Requisitos de segurança?</li>
+                        <li>Escala?</li>
+                    </ul>
+                </li>
+                <li style="margin: 15px 0;">Há histórico relevante? (tentativas anteriores?)</li>
+                <li style="margin: 15px 0;">Quais constraints? (tempo, budget, skills do time)</li>
+            </ol>
+
+            <p style="margin: 30px 0 10px 0; font-size: 1.2rem; color: var(--gold);"><strong>Sua vez:</strong> Reescreva o prompt seguindo o template deste guia.</p>
+        </div>
+
+        <!-- Next Steps -->
+        <h2 class="section-header">Próximos Passos</h2>
+
+        <div class="intro-card" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 0, 128, 0.1) 100%);">
+            <p style="font-size: 1.1rem; margin-bottom: 20px;">Agora que domina Role e Contexto:</p>
+            <ul>
+                <li><strong>../2-engineering/02-composicao-de-prompts.md</strong> - Como construir prompts modulares com roles reutilizáveis</li>
+                <li><strong>../3-thinking/02-pensamento-de-primeira-principios.md</strong> - Use roles para pensar a partir de primeiros princípios</li>
+                <li><strong>../4-workflows/03-criacao-de-agentes-especializados.md</strong> - Crie "agentes virtuais" com roles persistentes</li>
+            </ul>
+        </div>
+
+        <!-- Tags -->
+        <div class="tags">
+            <span class="tag">#fundamentals</span>
+            <span class="tag">#role-playing</span>
+            <span class="tag">#contexto</span>
+            <span class="tag">#personas</span>
+            <span class="tag">#especialização</span>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; padding: 60px 20px; color: #666; font-size: 0.9rem;">
+            <p>Created with modern UI/UX design principles</p>
+            <p style="margin-top: 10px;">Black • Magenta • Gold</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

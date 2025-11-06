@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklists e Validações</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        /* Scoped CSS - Validation/QA Dashboard Style */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Dashboard Header */
+        .dashboard-header {
+            background: linear-gradient(135deg, #0d0515 0%, #1a0a1f 100%);
+            padding: 50px;
+            border-radius: 20px;
+            border: 3px solid #00ff88;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .dashboard-header::before {
+            content: '✅';
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            font-size: 4em;
+            opacity: 0.2;
+        }
+
+        .dashboard-header::after {
+            content: '✅';
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            font-size: 4em;
+            opacity: 0.2;
+        }
+
+        .dashboard-header h1 {
+            font-size: 3em;
+            background: linear-gradient(45deg, #00ff88, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            font-weight: 900;
+        }
+
+        .dashboard-subtitle {
+            color: #ff0080;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        /* Quality Metrics Bar */
+        .metrics-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #1a0a1f 0%, #0a0a0a 100%);
+            border: 2px solid #00ff88;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .metric-value {
+            font-size: 3em;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00ff88, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .metric-label {
+            color: #cccccc;
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+
+        /* Checklist Sections */
+        .checklist-section {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a1f 100%);
+            border: 2px solid #ff0080;
+            border-radius: 15px;
+            margin: 40px 0;
+            overflow: hidden;
+        }
+
+        .checklist-header {
+            background: linear-gradient(90deg, #ff0080 0%, #ffd700 100%);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .checklist-title {
+            font-size: 1.8em;
+            color: #000;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .checklist-badge {
+            background: #000;
+            color: #00ff88;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+
+        .checklist-content {
+            padding: 30px;
+        }
+
+        /* Checklist Items */
+        .checklist-group {
+            margin: 25px 0;
+        }
+
+        .group-title {
+            color: #ffd700;
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .group-title::before {
+            content: '';
+            width: 5px;
+            height: 30px;
+            background: #ffd700;
+        }
+
+        .checklist-items {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist-item {
+            background: rgba(255, 0, 128, 0.05);
+            border-left: 4px solid #ff0080;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 0 10px 10px 0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .checklist-item:hover {
+            background: rgba(255, 0, 128, 0.1);
+            border-left-width: 8px;
+        }
+
+        .checklist-item::before {
+            content: '☐';
+            font-size: 1.8em;
+            color: #ff0080;
+            margin-right: 15px;
+            float: left;
+        }
+
+        .checklist-item.checked::before {
+            content: '✓';
+            color: #00ff88;
+        }
+
+        .item-text {
+            color: #cccccc;
+            font-size: 1.05em;
+            margin-left: 50px;
+        }
+
+        /* Validation Status Cards */
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .status-card {
+            background: linear-gradient(135deg, #1a0a1f 0%, #0d0515 100%);
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status-card.pass {
+            border: 3px solid #00ff88;
+        }
+
+        .status-card.warning {
+            border: 3px solid #ffd700;
+        }
+
+        .status-card.fail {
+            border: 3px solid #ff3366;
+        }
+
+        .status-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .status-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .status-card.pass .status-title {
+            color: #00ff88;
+        }
+
+        .status-card.warning .status-title {
+            color: #ffd700;
+        }
+
+        .status-card.fail .status-title {
+            color: #ff3366;
+        }
+
+        .status-desc {
+            color: #cccccc;
+            line-height: 1.6;
+        }
+
+        .status-score {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2.5em;
+            font-weight: 900;
+            opacity: 0.3;
+        }
+
+        /* Progress Bars */
+        .progress-section {
+            margin: 40px 0;
+        }
+
+        .progress-item {
+            margin: 25px 0;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .progress-label {
+            color: #ffd700;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .progress-percentage {
+            color: #00ff88;
+            font-weight: 700;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #0a0a0a;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid #333;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff0080, #ffd700, #00ff88);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 15px;
+            font-weight: 700;
+            color: #000;
+        }
+
+        /* Validation Techniques */
+        .technique-box {
+            background: linear-gradient(135deg, #0d0515 0%, #0a0a0a 100%);
+            border: 2px solid #ffd700;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .technique-title {
+            color: #ffd700;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .technique-desc {
+            color: #cccccc;
+            margin-bottom: 20px;
+            font-size: 1.05em;
+        }
+
+        .technique-benefit {
+            background: rgba(0, 255, 136, 0.1);
+            border-left: 4px solid #00ff88;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .technique-benefit strong {
+            color: #00ff88;
+        }
+
+        /* Code Examples */
+        .code-block {
+            background: #000000;
+            border: 2px solid #ff0080;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+
+        .code-block pre {
+            color: #00ff88;
+            margin: 0;
+        }
+
+        /* Antipattern Boxes */
+        .antipattern {
+            background: linear-gradient(90deg, rgba(255, 51, 102, 0.2) 0%, rgba(10, 10, 10, 0.9) 100%);
+            border-left: 5px solid #ff3366;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .antipattern::before {
+            content: '🚫';
+            font-size: 2em;
+            margin-right: 15px;
+            float: left;
+        }
+
+        .antipattern-title {
+            color: #ff3366;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-size: 1.2em;
+        }
+
+        .antipattern-text {
+            color: #cccccc;
+            margin-left: 60px;
+        }
+
+        /* Workflow Diagram */
+        .workflow {
+            background: #0a0a0a;
+            border: 3px solid #00ff88;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+
+        .workflow-step {
+            background: linear-gradient(90deg, #1a0a1f 0%, #0d0515 100%);
+            border-left: 5px solid #ffd700;
+            padding: 20px;
+            margin: 15px 0;
+            position: relative;
+        }
+
+        .workflow-step::after {
+            content: '↓';
+            position: absolute;
+            left: 50%;
+            bottom: -30px;
+            transform: translateX(-50%);
+            font-size: 2em;
+            color: #ff0080;
+        }
+
+        .workflow-step:last-child::after {
+            content: '✓';
+            color: #00ff88;
+        }
+
+        .step-number {
+            background: #ffd700;
+            color: #000;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            margin-right: 15px;
+        }
+
+        .step-title {
+            color: #ffd700;
+            font-size: 1.2em;
+            font-weight: 700;
+            display: inline;
+        }
+
+        .step-desc {
+            color: #cccccc;
+            margin-top: 15px;
+            margin-left: 55px;
+        }
+
+        /* Final Reflection */
+        .reflection-box {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(255, 215, 0, 0.1));
+            border: 3px solid #00ff88;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 50px 0;
+            text-align: center;
+        }
+
+        .reflection-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .reflection-title {
+            font-size: 2em;
+            color: #ffd700;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .reflection-text {
+            color: #cccccc;
+            font-size: 1.1em;
+            line-height: 1.8;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Tags */
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 40px 0;
+            justify-content: center;
+        }
+
+        .tag {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 2px solid #00ff88;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85em;
+        }
+
+        /* Navigation */
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 80px;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            padding: 20px 40px;
+            background: linear-gradient(45deg, #00ff88, #ffd700);
+            color: #000;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 900;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .nav-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header h1 { font-size: 2em; }
+            .metrics-bar { grid-template-columns: 1fr; }
+            .status-grid { grid-template-columns: 1fr; }
+            .nav-footer { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard-header">
+            <h1>✅ Checklists e Validações</h1>
+            <p class="dashboard-subtitle">Garantindo Qualidade Sistematicamente</p>
+        </div>
+
+        <div class="metrics-bar">
+            <div class="metric-card">
+                <div class="metric-value">5</div>
+                <div class="metric-label">Tipos de Checklists</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">100%</div>
+                <div class="metric-label">Cobertura de Qualidade</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">&lt;10min</div>
+                <div class="metric-label">Tempo de Validação</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">90%+</div>
+                <div class="metric-label">Taxa de Sucesso</div>
+            </div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, rgba(255, 0, 128, 0.1), rgba(255, 215, 0, 0.1)); padding: 30px; border-radius: 15px; margin: 40px 0; border: 2px solid #ff0080;">
+            <h2 style="color: #ffd700; margin-bottom: 20px; font-size: 1.8em;">O Problema da Validação Inconsistente</h2>
+            <p style="color: #cccccc; font-size: 1.1em; margin-bottom: 15px;">
+                Você criou um template perfeito. Executou. A IA gerou 50 páginas de output. E agora?
+            </p>
+            <p style="color: #ff0080; font-size: 1.2em; font-weight: 700;">
+                Como saber se está bom?
+            </p>
+            <p style="color: #cccccc; margin-top: 20px; font-size: 1.05em;">
+                <strong style="color: #00ff88;">Solução:</strong> Checklists de validação sistemática.
+            </p>
+        </div>
+
+        <div class="checklist-section">
+            <div class="checklist-header">
+                <span class="checklist-title">1. Checklist Pré-Prompt</span>
+                <span class="checklist-badge">ANTES DO ENVIO</span>
+            </div>
+            <div class="checklist-content">
+                <p style="color: #cccccc; margin-bottom: 25px; font-size: 1.05em;">
+                    <strong style="color: #ffd700;">Quando usar:</strong> ANTES de enviar prompt para IA<br>
+                    <strong style="color: #ffd700;">Objetivo:</strong> Garantir que prompt está completo e bem estruturado
+                </p>
+
+                <div class="checklist-group">
+                    <h3 class="group-title">CONTEXTO</h3>
+                    <ul class="checklist-items">
+                        <li class="checklist-item">
+                            <span class="item-text">Role/expertise definido claramente?</span>
+                        </li>
+                        <li class="checklist-item">
+                            <span class="item-text">Stack tecnológico especificado (versões)?</span>
+                        </li>
+                        <li class="checklist-item">
+                            <span class="item-text">Escala/métricas quantificadas?</span>
+                        </li>
+                        <li class="checklist-item">
+                            <span class="item-text">Constraints explícitas?</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="checklist-group">
+                    <h3 class="group-title">PROBLEMA/OBJETIVO</h3>
+                    <ul class="checklist-items">
+                        <li class="checklist-item">
+                            <span class="item-text">Problema descrito em 1-2 linhas?</span>
+                        </li>
+                        <li class="checklist-item">
+                            <span class="item-text">Critérios de sucesso mensuráveis?</span>
+                        </li>
+                        <li class="checklist-item">
+                            <span class="item-text">Escopo claro (O QUE fazer e o que NÃO fazer)?</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="checklist-group">
+                    <h3 class="group-title">FORMATO DE SAÍDA</h3>
+                    <ul class="checklist-items">
+                        <li class="checklist-item">
+                            <span class="item-text">Estrutura definida (seções, hierarquia)?</span>
+                        </li>
+                        <li class="checklist-item">
+                            <span class="item-text">Formato especificado (markdown, JSON, código)?</span>
+                        </li>
+                        <li class="checklist-item">
+                            <span class="item-text">Nível de detalhe claro (superficial/profundo)?</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist-section">
+            <div class="checklist-header">
+                <span class="checklist-title">2. Checklist de Template</span>
+                <span class="checklist-badge">CRIAR/ATUALIZAR</span>
+            </div>
+            <div class="checklist-content">
+                <div class="progress-section">
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span class="progress-label">Abstração</span>
+                            <span class="progress-percentage">85%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 85%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span class="progress-label">Placeholders</span>
+                            <span class="progress-percentage">92%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 92%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span class="progress-label">Documentação</span>
+                            <span class="progress-percentage">78%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 78%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span class="progress-label">Versionamento</span>
+                            <span class="progress-percentage">95%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 95%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="checklist-section">
+            <div class="checklist-header">
+                <span class="checklist-title">3. Checklist de Output da IA</span>
+                <span class="checklist-badge">PÓS-RESPOSTA</span>
+            </div>
+            <div class="checklist-content">
+                <div class="status-grid">
+                    <div class="status-card pass">
+                        <div class="status-icon">✓</div>
+                        <h3 class="status-title">Completude</h3>
+                        <p class="status-desc">
+                            Todas seções solicitadas presentes? Não pulou partes importantes? Profundidade adequada?
+                        </p>
+                        <div class="status-score">90%</div>
+                    </div>
+
+                    <div class="status-card pass">
+                        <div class="status-icon">✓</div>
+                        <h3 class="status-title">Correção</h3>
+                        <p class="status-desc">
+                            Tecnicamente correto? Sem erros óbvios? Segue melhores práticas? Não inventou informações?
+                        </p>
+                        <div class="status-score">88%</div>
+                    </div>
+
+                    <div class="status-card warning">
+                        <div class="status-icon">⚠</div>
+                        <h3 class="status-title">Formato</h3>
+                        <p class="status-desc">
+                            Estrutura seguida? Markdown formatado? Código com syntax highlighting? Tabelas legíveis?
+                        </p>
+                        <div class="status-score">75%</div>
+                    </div>
+
+                    <div class="status-card pass">
+                        <div class="status-icon">✓</div>
+                        <h3 class="status-title">Especificidade</h3>
+                        <p class="status-desc">
+                            Específica ao contexto? Cita arquivos/linhas? Métricas quantificadas? Não é genérico?
+                        </p>
+                        <div class="status-score">92%</div>
+                    </div>
+
+                    <div class="status-card pass">
+                        <div class="status-icon">✓</div>
+                        <h3 class="status-title">Acionabilidade</h3>
+                        <p class="status-desc">
+                            Posso implementar? Passos claros? Não falta informação crítica? Dependências explícitas?
+                        </p>
+                        <div class="status-score">86%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin: 60px 0;">
+            <h2 style="color: #ffd700; font-size: 2em; margin-bottom: 30px; text-align: center;">Técnicas de Validação Preventiva</h2>
+
+            <div class="technique-box">
+                <h3 class="technique-title">Técnica 1: Validação Incremental</h3>
+                <p class="technique-desc">
+                    Em vez de validar APÓS output completo, valide <strong style="color: #ff0080;">durante</strong>.
+                </p>
+                <div class="code-block">
+                    <pre>"Ao completar CADA seção, execute self-check:
+✓ Seção está completa (não superficial)?
+✓ Evidências citadas?
+✓ Métricas quantificadas?
+✓ Acionável?
+
+Se qualquer critério falhar, REFAÇA a seção antes de continuar."</pre>
+                </div>
+                <div class="technique-benefit">
+                    <strong>Benefício:</strong> Detecta problemas cedo, evita refazer tudo.
+                </div>
+            </div>
+
+            <div class="technique-box">
+                <h3 class="technique-title">Técnica 2: Checklist Embutido no Template</h3>
+                <p class="technique-desc">
+                    Incluir checklist DENTRO do template para IA auto-validar.
+                </p>
+                <div class="technique-benefit">
+                    <strong>Benefício:</strong> IA valida a si mesma, economiza seu tempo.
+                </div>
+            </div>
+
+            <div class="technique-box">
+                <h3 class="technique-title">Técnica 3: Validação em Camadas (Multi-Pass)</h3>
+                <p class="technique-desc">
+                    Valide em múltiplas passadas, cada uma focada em aspecto diferente.
+                </p>
+                <ul style="list-style: none; padding: 0; color: #cccccc;">
+                    <li style="padding: 10px 0; border-bottom: 1px solid #333;">Pass 1: Estrutura (5 segundos)</li>
+                    <li style="padding: 10px 0; border-bottom: 1px solid #333;">Pass 2: Completude (2 minutos)</li>
+                    <li style="padding: 10px 0; border-bottom: 1px solid #333;">Pass 3: Correção (5 minutos)</li>
+                    <li style="padding: 10px 0;">Pass 4: Acionabilidade (3 minutos)</li>
+                </ul>
+                <div class="technique-benefit">
+                    <strong>Benefício:</strong> Detecta diferentes tipos de problemas, mais rápido que validação monolítica.
+                </div>
+            </div>
+        </div>
+
+        <div style="margin: 60px 0;">
+            <h2 style="color: #ffd700; font-size: 2em; margin-bottom: 30px; text-align: center;">Antipadrões de Checklists</h2>
+
+            <div class="antipattern">
+                <div>
+                    <div class="antipattern-title">Antipadrão 1: Critérios Subjetivos</div>
+                    <div class="antipattern-text">
+                        <p><strong style="color: #ff3366;">Problema:</strong> Não mensurável, interpretação varia.</p>
+                        <p><strong style="color: #00ff88;">Solução:</strong> Objetivos, mensuráveis, binários. Ex: "Complexidade ciclomática &lt;10?"</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="antipattern">
+                <div>
+                    <div class="antipattern-title">Antipadrão 2: Checklist Gigante (100+ items)</div>
+                    <div class="antipattern-text">
+                        <p><strong style="color: #ff3366;">Problema:</strong> Ninguém vai validar tudo, demora horas.</p>
+                        <p><strong style="color: #00ff88;">Solução:</strong> Priorize, agrupe, automatize. CRÍTICO (sempre) + IMPORTANTE (se tempo) + DESEJÁVEL (opcional)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="antipattern">
+                <div>
+                    <div class="antipattern-title">Antipadrão 3: Checklist Desatualizado</div>
+                    <div class="antipattern-text">
+                        <p><strong style="color: #ff3366;">Problema:</strong> Valida coisas erradas, ignora boas práticas novas.</p>
+                        <p><strong style="color: #00ff88;">Solução:</strong> Review trimestral, versionamento.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="workflow">
+            <h2 style="color: #ffd700; margin-bottom: 30px; text-align: center; font-size: 2em;">Workflow Completo com Checklists</h2>
+            
+            <div class="workflow-step">
+                <span class="step-number">1</span>
+                <span class="step-title">PRÉ-PROMPT</span>
+                <div class="step-desc">Checklist: Prompt está completo?</div>
+            </div>
+
+            <div class="workflow-step">
+                <span class="step-number">2</span>
+                <span class="step-title">EXECUTAR PROMPT</span>
+                <div class="step-desc">IA gera output</div>
+            </div>
+
+            <div class="workflow-step">
+                <span class="step-number">3</span>
+                <span class="step-title">VALIDAÇÃO RÁPIDA (1 min)</span>
+                <div class="step-desc">Checklist: Estrutura ok?</div>
+            </div>
+
+            <div class="workflow-step">
+                <span class="step-number">4</span>
+                <span class="step-title">VALIDAÇÃO PROFUNDA (5 min)</span>
+                <div class="step-desc">Checklist: Conteúdo correto?</div>
+            </div>
+
+            <div class="workflow-step">
+                <span class="step-number">5</span>
+                <span class="step-title">VALIDAÇÃO PRÁTICA</span>
+                <div class="step-desc">Checklist: Funciona na prática?</div>
+            </div>
+
+            <div class="workflow-step">
+                <span class="step-number">✓</span>
+                <span class="step-title">APROVADO</span>
+                <div class="step-desc">Pronto para uso!</div>
+            </div>
+        </div>
+
+        <div class="reflection-box">
+            <div class="reflection-icon">🌱</div>
+            <h2 class="reflection-title">Reflexão Final</h2>
+            <div class="reflection-text">
+                <p style="margin-bottom: 20px;">
+                    Checklists são como <strong style="color: #ffd700;">redes de segurança</strong>: evitam que coisas importantes sejam esquecidas, garantem consistência mesmo quando cansado, permitem delegação.
+                </p>
+                <p style="margin-bottom: 20px;">
+                    <strong style="color: #ff0080;">Invista tempo criando bons checklists.</strong> Cada hora investida economiza 10 horas debugando problemas que passaram despercebidos.
+                </p>
+                <p style="font-size: 1.2em; color: #00ff88; font-weight: 700;">
+                    Em 1 mês, você terá biblioteca de checklists que garantem qualidade sistematicamente.
+                </p>
+            </div>
+        </div>
+
+        <div class="tags">
+            <span class="tag">#CHECKLISTS</span>
+            <span class="tag">#VALIDACAO</span>
+            <span class="tag">#QUALIDADE</span>
+            <span class="tag">#SELF-REVIEW</span>
+            <span class="tag">#CRITERIOS</span>
+        </div>
+
+        <div class="nav-footer">
+            <a href="./00-INDEX.html" class="nav-btn">← Voltar ao Índice</a>
+            <a href="../3-thinking/00-INDEX.html" class="nav-btn">Layer 3: Advanced Thinking →</a>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+
+        // Add interactivity to checklist items
+        document.querySelectorAll('.checklist-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.toggle('checked');
+            });
+        });
+    </script>
+</body>
+</html>

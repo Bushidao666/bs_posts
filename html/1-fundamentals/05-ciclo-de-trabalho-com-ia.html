@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ciclo de Trabalho com IA: O Processo Completo</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        #kb-guide-05 {
+            all: initial;
+            display: block;
+        }
+
+        #kb-guide-05 * {
+            all: revert;
+            box-sizing: border-box;
+        }
+
+        #kb-guide-05 {
+            /* Color Theme */
+            --color-bg: #000000;
+            --color-surface: #0d0d0d;
+            --color-surface-elevated: #1a1a1a;
+            --color-border: #2a2a2a;
+            --color-text: #ffffff;
+            --color-text-secondary: #b3b3b3;
+            --color-text-tertiary: #808080;
+
+            /* Brand Colors */
+            --color-magenta: #ff0080;
+            --color-magenta-dim: #990050;
+            --color-magenta-subtle: rgba(255, 0, 128, 0.1);
+            --color-gold: #ffd700;
+            --color-gold-dim: #997d00;
+            --color-gold-subtle: rgba(255, 215, 0, 0.1);
+
+            /* Status Colors */
+            --color-success: #00ff88;
+            --color-error: #ff3366;
+            --color-warning: #ffaa00;
+
+            /* Spacing */
+            --spacing-xs: 8px;
+            --spacing-sm: 16px;
+            --spacing-md: 24px;
+            --spacing-lg: 32px;
+            --spacing-xl: 48px;
+            --spacing-2xl: 64px;
+
+            /* Typography */
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        #kb-guide-05 .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-md);
+        }
+
+        /* Header */
+        #kb-guide-05 .header {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+            padding-bottom: var(--spacing-xl);
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        #kb-guide-05 .header-icon {
+            font-size: 80px;
+            margin-bottom: var(--spacing-md);
+            display: inline-block;
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        #kb-guide-05 .title {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 800;
+            margin-bottom: var(--spacing-md);
+            background: linear-gradient(135deg, var(--color-magenta) 0%, var(--color-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        #kb-guide-05 .subtitle {
+            font-size: clamp(18px, 2.5vw, 24px);
+            color: var(--color-text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Intro Section */
+        #kb-guide-05 .intro {
+            background: var(--color-surface-elevated);
+            border: 1px solid var(--color-border);
+            border-left: 4px solid var(--color-magenta);
+            padding: var(--spacing-lg);
+            border-radius: 12px;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        #kb-guide-05 .intro h2 {
+            font-size: 28px;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-text);
+        }
+
+        #kb-guide-05 .intro p {
+            color: var(--color-text-secondary);
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        #kb-guide-05 .intro ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        #kb-guide-05 .intro li {
+            padding-left: var(--spacing-lg);
+            position: relative;
+            margin-bottom: var(--spacing-xs);
+            color: var(--color-text-secondary);
+        }
+
+        #kb-guide-05 .intro li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--color-gold);
+            font-weight: bold;
+        }
+
+        /* Mermaid Diagram Section */
+        #kb-guide-05 .diagram-section {
+            margin: var(--spacing-2xl) 0;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 16px;
+            padding: var(--spacing-xl);
+        }
+
+        #kb-guide-05 .diagram-section h2 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: var(--spacing-lg);
+            color: var(--color-text);
+        }
+
+        #kb-guide-05 .mermaid {
+            background: var(--color-surface-elevated);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            overflow-x: auto;
+        }
+
+        /* Phase Cards Grid */
+        #kb-guide-05 .phases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-2xl) 0;
+        }
+
+        #kb-guide-05 .phase-card {
+            background: var(--color-surface-elevated);
+            border: 1px solid var(--color-border);
+            border-radius: 16px;
+            padding: var(--spacing-lg);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #kb-guide-05 .phase-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-magenta), var(--color-gold));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #kb-guide-05 .phase-card:hover {
+            border-color: var(--color-magenta);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(255, 0, 128, 0.2);
+        }
+
+        #kb-guide-05 .phase-card:hover::before {
+            opacity: 1;
+        }
+
+        #kb-guide-05 .phase-number {
+            display: inline-block;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--color-magenta), var(--color-gold));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: var(--spacing-md);
+        }
+
+        #kb-guide-05 .phase-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text);
+        }
+
+        #kb-guide-05 .phase-icon {
+            font-size: 28px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        #kb-guide-05 .phase-objective {
+            font-size: 14px;
+            color: var(--color-gold);
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #kb-guide-05 .phase-description {
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+            margin-bottom: var(--spacing-md);
+        }
+
+        #kb-guide-05 .phase-highlights {
+            list-style: none;
+            padding: 0;
+        }
+
+        #kb-guide-05 .phase-highlights li {
+            padding-left: var(--spacing-md);
+            position: relative;
+            margin-bottom: var(--spacing-xs);
+            color: var(--color-text-secondary);
+            font-size: 14px;
+        }
+
+        #kb-guide-05 .phase-highlights li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--color-success);
+            font-weight: bold;
+        }
+
+        /* Section Headers */
+        #kb-guide-05 .section {
+            margin: var(--spacing-2xl) 0;
+        }
+
+        #kb-guide-05 .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-lg);
+            color: var(--color-text);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        #kb-guide-05 .section-title::before {
+            content: '';
+            width: 6px;
+            height: 36px;
+            background: linear-gradient(180deg, var(--color-magenta), var(--color-gold));
+            border-radius: 3px;
+        }
+
+        /* Antipattern Cards */
+        #kb-guide-05 .antipatterns-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-md);
+            margin: var(--spacing-lg) 0;
+        }
+
+        #kb-guide-05 .antipattern-card {
+            background: var(--color-surface-elevated);
+            border: 1px solid var(--color-border);
+            border-left: 4px solid var(--color-error);
+            padding: var(--spacing-md);
+            border-radius: 8px;
+        }
+
+        #kb-guide-05 .antipattern-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        #kb-guide-05 .antipattern-example {
+            background: var(--color-surface);
+            padding: var(--spacing-sm);
+            border-radius: 4px;
+            margin: var(--spacing-sm) 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: var(--color-error);
+        }
+
+        #kb-guide-05 .antipattern-problem {
+            color: var(--color-text-secondary);
+            font-size: 14px;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        #kb-guide-05 .antipattern-solution {
+            color: var(--color-success);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Feedback Loop Cards */
+        #kb-guide-05 .feedback-loops {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-md);
+            margin: var(--spacing-lg) 0;
+        }
+
+        #kb-guide-05 .loop-card {
+            background: linear-gradient(135deg, var(--color-magenta-subtle), var(--color-gold-subtle));
+            border: 1px solid var(--color-border);
+            padding: var(--spacing-lg);
+            border-radius: 12px;
+        }
+
+        #kb-guide-05 .loop-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text);
+        }
+
+        #kb-guide-05 .loop-description {
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        #kb-guide-05 .loop-action {
+            color: var(--color-gold);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        /* Metrics Section */
+        #kb-guide-05 .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin: var(--spacing-lg) 0;
+        }
+
+        #kb-guide-05 .metric-card {
+            background: var(--color-surface-elevated);
+            border: 1px solid var(--color-border);
+            padding: var(--spacing-md);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        #kb-guide-05 .metric-icon {
+            font-size: 36px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        #kb-guide-05 .metric-label {
+            font-size: 14px;
+            color: var(--color-text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        #kb-guide-05 .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-magenta);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        #kb-guide-05 .metric-description {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+        }
+
+        /* Code Blocks */
+        #kb-guide-05 .code-block {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+            overflow-x: auto;
+        }
+
+        #kb-guide-05 .code-block pre {
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--color-text-secondary);
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Call to Action */
+        #kb-guide-05 .cta-box {
+            background: linear-gradient(135deg, var(--color-magenta-subtle), var(--color-gold-subtle));
+            border: 2px solid var(--color-magenta);
+            padding: var(--spacing-xl);
+            border-radius: 16px;
+            margin: var(--spacing-2xl) 0;
+            text-align: center;
+        }
+
+        #kb-guide-05 .cta-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-text);
+        }
+
+        #kb-guide-05 .cta-steps {
+            list-style: none;
+            padding: 0;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        #kb-guide-05 .cta-steps li {
+            padding: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+            background: var(--color-surface-elevated);
+            border-radius: 8px;
+            color: var(--color-text-secondary);
+        }
+
+        #kb-guide-05 .cta-steps li strong {
+            color: var(--color-gold);
+        }
+
+        /* Footer */
+        #kb-guide-05 .footer {
+            margin-top: var(--spacing-2xl);
+            padding-top: var(--spacing-xl);
+            border-top: 1px solid var(--color-border);
+        }
+
+        #kb-guide-05 .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-xs);
+            margin-bottom: var(--spacing-md);
+        }
+
+        #kb-guide-05 .tag {
+            background: var(--color-surface-elevated);
+            color: var(--color-magenta);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            border: 1px solid var(--color-border);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            #kb-guide-05 .container {
+                padding: var(--spacing-lg) var(--spacing-sm);
+            }
+
+            #kb-guide-05 .phases-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #kb-guide-05 .antipatterns-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #kb-guide-05 .feedback-loops {
+                grid-template-columns: 1fr;
+            }
+
+            #kb-guide-05 .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #kb-guide-05 .section-title {
+                font-size: 28px;
+            }
+
+            #kb-guide-05 .diagram-section {
+                padding: var(--spacing-md);
+            }
+        }
+
+        /* Workflow Visualization */
+        #kb-guide-05 .workflow-visual {
+            background: var(--color-surface-elevated);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-xl);
+            margin: var(--spacing-lg) 0;
+            text-align: center;
+        }
+
+        #kb-guide-05 .workflow-steps {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        #kb-guide-05 .workflow-step {
+            background: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        #kb-guide-05 .workflow-step:hover {
+            border-color: var(--color-magenta);
+            transform: scale(1.02);
+        }
+
+        #kb-guide-05 .workflow-step::after {
+            content: '↓';
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: var(--color-gold);
+        }
+
+        #kb-guide-05 .workflow-step:last-child::after {
+            content: '';
+        }
+
+        #kb-guide-05 .workflow-step-number {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--color-magenta), var(--color-gold));
+            border-radius: 50%;
+            color: white;
+            font-weight: bold;
+            line-height: 32px;
+            margin-right: var(--spacing-sm);
+        }
+
+        #kb-guide-05 .workflow-step-content {
+            display: inline;
+            color: var(--color-text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div id="kb-guide-05">
+        <div class="container">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-icon">🔄</div>
+                <h1 class="title">Ciclo de Trabalho com IA: O Processo Completo</h1>
+                <p class="subtitle">Domine o processo iterativo de colaboração com IA - da formulação do problema até a solução validada</p>
+            </header>
+
+            <!-- Introduction -->
+            <section class="intro">
+                <h2>Trabalhando COM a IA, Não APENAS Usando</h2>
+                <p>Muita gente trata IA como um <strong>oráculo mágico</strong>: faz uma pergunta, recebe uma resposta, acabou.</p>
+                <p>Mas trabalhar efetivamente com IA é mais parecido com <strong>colaborar com um colega extremamente inteligente</strong>:</p>
+                <ul>
+                    <li>Você explica o contexto</li>
+                    <li>A IA propõe uma solução</li>
+                    <li>Você valida e dá feedback</li>
+                    <li>A IA refina</li>
+                    <li>Vocês iteram juntos até chegar no resultado ideal</li>
+                </ul>
+                <p><strong>Este guia apresenta o ciclo completo de trabalho</strong> - da formulação do problema até a solução final validada.</p>
+            </section>
+
+            <!-- Workflow Diagram -->
+            <section class="diagram-section">
+                <h2>O Ciclo Completo em 6 Fases</h2>
+                <div class="mermaid">
+graph TD
+    A[1. DEFINIR PROBLEMA<br/>O que eu realmente preciso?] --> B[2. PREPARAR CONTEXTO<br/>O que a IA precisa saber?]
+    B --> C[3. FORMULAR PROMPT<br/>Como estruturar o pedido?]
+    C --> D[4. AVALIAR RESPOSTA<br/>A IA entendeu? É útil?]
+    D --> E{SATISFEITO?}
+    E -->|NÃO| F[5. REFINAR<br/>Como melhorar?]
+    F --> C
+    E -->|SIM| G[6. VALIDAR & APLICAR<br/>Funciona na prática?]
+
+    style A fill:#ff0080,stroke:#ffd700,stroke-width:3px,color:#fff
+    style B fill:#ff0080,stroke:#ffd700,stroke-width:3px,color:#fff
+    style C fill:#ff0080,stroke:#ffd700,stroke-width:3px,color:#fff
+    style D fill:#ff0080,stroke:#ffd700,stroke-width:3px,color:#fff
+    style E fill:#ffd700,stroke:#ff0080,stroke-width:3px,color:#000
+    style F fill:#ff0080,stroke:#ffd700,stroke-width:3px,color:#fff
+    style G fill:#00ff88,stroke:#ffd700,stroke-width:3px,color:#000
+                </div>
+            </section>
+
+            <!-- Phase Cards -->
+            <section class="section">
+                <h2 class="section-title">As 6 Fases do Ciclo</h2>
+                <div class="phases-grid">
+                    <!-- Phase 1 -->
+                    <div class="phase-card">
+                        <div class="phase-icon">🎯</div>
+                        <div class="phase-number">1</div>
+                        <h3 class="phase-title">Definir o Problema</h3>
+                        <p class="phase-objective">Clarificar o que você realmente precisa</p>
+                        <p class="phase-description">Antes de pedir ajuda à IA, você precisa entender claramente qual é o problema real. Use os 5 Porquês para chegar à raiz da questão.</p>
+                        <ul class="phase-highlights">
+                            <li>Qual é o problema real?</li>
+                            <li>Por que preciso resolver isso?</li>
+                            <li>Como vou saber se resolvi?</li>
+                            <li>Qual o escopo exato?</li>
+                        </ul>
+                    </div>
+
+                    <!-- Phase 2 -->
+                    <div class="phase-card">
+                        <div class="phase-icon">📋</div>
+                        <div class="phase-number">2</div>
+                        <h3 class="phase-title">Preparar Contexto</h3>
+                        <p class="phase-objective">Reunir todas as informações necessárias</p>
+                        <p class="phase-description">A IA precisa de contexto para dar respostas relevantes. Reúna informações técnicas, históricas, objetivos e artefatos relevantes.</p>
+                        <ul class="phase-highlights">
+                            <li>Contexto técnico (stack, infra)</li>
+                            <li>Contexto histórico (situação atual)</li>
+                            <li>Contexto de objetivo (meta, motivação)</li>
+                            <li>Artefatos (código, logs, métricas)</li>
+                        </ul>
+                    </div>
+
+                    <!-- Phase 3 -->
+                    <div class="phase-card">
+                        <div class="phase-icon">📝</div>
+                        <div class="phase-number">3</div>
+                        <h3 class="phase-title">Formular Prompt</h3>
+                        <p class="phase-objective">Estruturar o pedido de forma clara</p>
+                        <p class="phase-description">Use uma estrutura clara: Role + Contexto + Problema + Tarefa + Formato + Critérios. Seja específico e inclua exemplos.</p>
+                        <ul class="phase-highlights">
+                            <li>Use verbos de ação claros</li>
+                            <li>Seja específico no formato esperado</li>
+                            <li>Inclua exemplos quando possível</li>
+                            <li>Mencione o que NÃO fazer</li>
+                        </ul>
+                    </div>
+
+                    <!-- Phase 4 -->
+                    <div class="phase-card">
+                        <div class="phase-icon">✅</div>
+                        <div class="phase-number">4</div>
+                        <h3 class="phase-title">Avaliar Resposta</h3>
+                        <p class="phase-objective">Validar se atende suas necessidades</p>
+                        <p class="phase-description">Use validação em camadas: rápida (30s), estrutural (2min), técnica (5-10min) e prática (teste real). Não aceite respostas sem avaliar.</p>
+                        <ul class="phase-highlights">
+                            <li>A IA entendeu o problema?</li>
+                            <li>A resposta é completa?</li>
+                            <li>A resposta é correta?</li>
+                            <li>A resposta é acionável?</li>
+                        </ul>
+                    </div>
+
+                    <!-- Phase 5 -->
+                    <div class="phase-card">
+                        <div class="phase-icon">🔧</div>
+                        <div class="phase-number">5</div>
+                        <h3 class="phase-title">Refinar</h3>
+                        <p class="phase-objective">Melhorar baseado na avaliação</p>
+                        <p class="phase-description">Dê feedback específico e construtivo. Adicione contexto faltante, corrija erros, expanda seções ou peça alternativas.</p>
+                        <ul class="phase-highlights">
+                            <li>Adicionar contexto faltante</li>
+                            <li>Corrigir erros específicos</li>
+                            <li>Expandir seção específica</li>
+                            <li>Pedir alternativas mais simples</li>
+                        </ul>
+                    </div>
+
+                    <!-- Phase 6 -->
+                    <div class="phase-card">
+                        <div class="phase-icon">✨</div>
+                        <div class="phase-number">6</div>
+                        <h3 class="phase-title">Validar & Aplicar</h3>
+                        <p class="phase-objective">Confirmar que funciona no mundo real</p>
+                        <p class="phase-description">Teste em ambiente seguro primeiro. Aplique incrementalmente, monitore resultados e documente mudanças. Nunca pule esta fase!</p>
+                        <ul class="phase-highlights">
+                            <li>Testar em dev/staging primeiro</li>
+                            <li>Aplicação incremental</li>
+                            <li>Monitoramento contínuo</li>
+                            <li>Documentação completa</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Workflow Visual Steps -->
+            <section class="section">
+                <h2 class="section-title">Fluxo Iterativo</h2>
+                <div class="workflow-visual">
+                    <div class="workflow-steps">
+                        <div class="workflow-step">
+                            <span class="workflow-step-number">1</span>
+                            <span class="workflow-step-content"><strong>DEFINIR PROBLEMA:</strong> "Meu endpoint de login demora 5s e deveria demorar < 500ms"</span>
+                        </div>
+                        <div class="workflow-step">
+                            <span class="workflow-step-number">2</span>
+                            <span class="workflow-step-content"><strong>PREPARAR CONTEXTO:</strong> Node.js 18, PostgreSQL, 10M usuários, queries sem índice</span>
+                        </div>
+                        <div class="workflow-step">
+                            <span class="workflow-step-number">3</span>
+                            <span class="workflow-step-content"><strong>FORMULAR PROMPT:</strong> "Você é um DBA especializado. Otimize esta query..."</span>
+                        </div>
+                        <div class="workflow-step">
+                            <span class="workflow-step-number">4</span>
+                            <span class="workflow-step-content"><strong>AVALIAR:</strong> Solução está correta? Completa? Falta algo?</span>
+                        </div>
+                        <div class="workflow-step">
+                            <span class="workflow-step-number">5</span>
+                            <span class="workflow-step-content"><strong>REFINAR:</strong> "Adicione EXPLAIN plan e estimativa de ganho"</span>
+                        </div>
+                        <div class="workflow-step">
+                            <span class="workflow-step-number">6</span>
+                            <span class="workflow-step-content"><strong>VALIDAR:</strong> Testar em staging → Deploy gradual → Monitorar métricas</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Antipatterns -->
+            <section class="section">
+                <h2 class="section-title">Antipadrões do Ciclo</h2>
+                <div class="antipatterns-grid">
+                    <div class="antipattern-card">
+                        <h3 class="antipattern-title">🚫 Pular a Fase 1</h3>
+                        <div class="antipattern-example">❌ "IA, crie um sistema de autenticação"</div>
+                        <p class="antipattern-problem"><strong>Problema:</strong> Problema não está claro. IA vai fazer muitas suposições.</p>
+                        <p class="antipattern-solution">✅ Defina o problema primeiro com clareza e escopo.</p>
+                    </div>
+
+                    <div class="antipattern-card">
+                        <h3 class="antipattern-title">🚫 Contexto Insuficiente</h3>
+                        <div class="antipattern-example">❌ "Por que este código está lento?"<br/>[sem informações de escala]</div>
+                        <p class="antipattern-problem"><strong>Problema:</strong> IA não tem dados para diagnosticar corretamente.</p>
+                        <p class="antipattern-solution">✅ Forneça contexto completo (Fase 2).</p>
+                    </div>
+
+                    <div class="antipattern-card">
+                        <h3 class="antipattern-title">🚫 Aceitar Sem Avaliar</h3>
+                        <div class="antipattern-example">❌ Recebe código → Copia direto</div>
+                        <p class="antipattern-problem"><strong>Problema:</strong> Código pode ter bugs ou não seguir padrões do projeto.</p>
+                        <p class="antipattern-solution">✅ SEMPRE faça Fase 4 (Avaliar).</p>
+                    </div>
+
+                    <div class="antipattern-card">
+                        <h3 class="antipattern-title">🚫 Refinamento Sem Rumo</h3>
+                        <div class="antipattern-example">❌ "Não gostei, tenta de novo"<br/>❌ "Ainda não está bom"</div>
+                        <p class="antipattern-problem"><strong>Problema:</strong> Feedback vago não ajuda a IA a melhorar.</p>
+                        <p class="antipattern-solution">✅ Dê feedback específico (Fase 5).</p>
+                    </div>
+
+                    <div class="antipattern-card">
+                        <h3 class="antipattern-title">🚫 Não Validar na Prática</h3>
+                        <div class="antipattern-example">❌ "A IA disse que funciona"</div>
+                        <p class="antipattern-problem"><strong>Problema:</strong> Solução pode não funcionar no seu contexto específico.</p>
+                        <p class="antipattern-solution">✅ Sempre valide em ambiente real (Fase 6).</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Feedback Loops -->
+            <section class="section">
+                <h2 class="section-title">Feedback Loops: Melhorando o Ciclo</h2>
+                <div class="feedback-loops">
+                    <div class="loop-card">
+                        <h3 class="loop-title">Loop 1: Captura de Padrões</h3>
+                        <p class="loop-description">Após 5-10 ciclos, identifique padrões: Que tipos de problema você resolve frequentemente? Quais contextos você sempre precisa fornecer?</p>
+                        <p class="loop-action">→ Crie templates reutilizáveis</p>
+                    </div>
+
+                    <div class="loop-card">
+                        <h3 class="loop-title">Loop 2: Refinamento de Processo</h3>
+                        <p class="loop-description">Meça sua eficiência: Quantas iterações até solução satisfatória? Quanto tempo em cada fase? Onde você se repete?</p>
+                        <p class="loop-action">→ Otimize os gargalos</p>
+                    </div>
+
+                    <div class="loop-card">
+                        <h3 class="loop-title">Loop 3: Evolução de Conhecimento</h3>
+                        <p class="loop-description">Documente seus aprendizados: O que funcionou bem? Que erros evitar? Quais heurísticas aplicar?</p>
+                        <p class="loop-action">→ Construa sua biblioteca pessoal</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Metrics -->
+            <section class="section">
+                <h2 class="section-title">Métricas de um Ciclo Eficiente</h2>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon">🔄</div>
+                        <div class="metric-label">Iterações</div>
+                        <div class="metric-value">2-3</div>
+                        <div class="metric-description">Ideal: menos de 5 iterações até solução</div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-icon">⚡</div>
+                        <div class="metric-label">Tempo</div>
+                        <div class="metric-value">~30min</div>
+                        <div class="metric-description">Proporcional à complexidade do problema</div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-icon">✅</div>
+                        <div class="metric-label">Taxa de Sucesso</div>
+                        <div class="metric-value">> 80%</div>
+                        <div class="metric-description">Ciclos que chegam em solução satisfatória</div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-icon">💡</div>
+                        <div class="metric-label">Aprendizado</div>
+                        <div class="metric-value">Alto</div>
+                        <div class="metric-description">Você aprende algo novo no processo?</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Call to Action -->
+            <section class="cta-box">
+                <h2 class="cta-title">🌱 Comece Hoje</h2>
+                <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-lg); font-size: 18px;">O ciclo de trabalho com IA não é linear - é <strong>espiral</strong>. Cada volta você sobe um nível. Cada iteração adiciona clareza.</p>
+                <ul class="cta-steps">
+                    <li><strong>1.</strong> Escolha um problema real que você precisa resolver</li>
+                    <li><strong>2.</strong> Siga o ciclo completo (todas as 6 fases)</li>
+                    <li><strong>3.</strong> Documente: o que funcionou? O que você faria diferente?</li>
+                    <li><strong>4.</strong> No próximo problema, aplique seus aprendizados</li>
+                </ul>
+                <p style="color: var(--color-gold); margin-top: var(--spacing-lg); font-size: 18px; font-weight: 600;">Em 1 mês, o ciclo será natural. Em 3 meses, será automático.</p>
+            </section>
+
+            <!-- Footer -->
+            <footer class="footer">
+                <div class="tags">
+                    <span class="tag">#ciclo</span>
+                    <span class="tag">#workflow</span>
+                    <span class="tag">#processo</span>
+                    <span class="tag">#iteracao</span>
+                    <span class="tag">#colaboracao</span>
+                    <span class="tag">#feedback-loop</span>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#ff0080',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#ffd700',
+                lineColor: '#ffd700',
+                secondaryColor: '#ffd700',
+                tertiaryColor: '#1a1a1a',
+                background: '#0d0d0d',
+                mainBkg: '#ff0080',
+                secondBkg: '#ffd700',
+                textColor: '#ffffff',
+                fontSize: '16px'
+            }
+        });
+    </script>
+</body>
+</html>

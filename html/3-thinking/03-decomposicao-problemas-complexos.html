@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decomposição de Problemas Complexos</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        .decomposition-scope {
+            --bg-dark: #0a0a0a;
+            --bg-tree: #1a1a1a;
+            --bg-branch: #2a2a2a;
+            --magenta: #ff00ff;
+            --magenta-dark: #cc00cc;
+            --magenta-light: #ff66ff;
+            --gold: #ffd700;
+            --gold-dark: #ccaa00;
+            --white: #ffffff;
+            --gray: #808080;
+            --gray-light: #a0a0a0;
+            --green: #44ff44;
+        }
+
+        .decomposition-scope * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .decomposition-scope {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at 20% 50%, #1a0a1a 0%, var(--bg-dark) 50%);
+            color: var(--white);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .decomposition-scope .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .decomposition-scope .tree-header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(255,0,255,0.1) 0%, rgba(255,215,0,0.1) 100%);
+            border-radius: 20px;
+            margin-bottom: 60px;
+            border: 3px solid var(--magenta);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .decomposition-scope .tree-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 20px,
+                rgba(255,215,0,0.03) 20px,
+                rgba(255,215,0,0.03) 40px
+            );
+        }
+
+        .decomposition-scope .tree-header h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--magenta) 0%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 1;
+        }
+
+        .decomposition-scope .intro-box {
+            background: var(--bg-tree);
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 50px;
+            border-left: 5px solid var(--gold);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .decomposition-scope .intro-box h2 {
+            color: var(--gold);
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .decomposition-scope .technique-section {
+            margin: 60px 0;
+            position: relative;
+        }
+
+        .decomposition-scope .technique-section::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--magenta) 0%, var(--gold) 100%);
+        }
+
+        .decomposition-scope .technique-section {
+            padding-left: 30px;
+        }
+
+        .decomposition-scope .technique-title {
+            color: var(--magenta);
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .decomposition-scope .technique-title::before {
+            content: '▶';
+            position: absolute;
+            left: -35px;
+            color: var(--gold);
+        }
+
+        .decomposition-scope .tree-diagram {
+            background: var(--bg-tree);
+            padding: 40px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border: 2px solid var(--magenta);
+            box-shadow: 0 0 40px rgba(255,0,255,0.2);
+        }
+
+        .decomposition-scope .mermaid-container {
+            background: var(--bg-dark);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 12px;
+            text-align: center;
+            overflow-x: auto;
+            border: 2px solid var(--gold);
+        }
+
+        .decomposition-scope .example-breakdown {
+            background: var(--bg-branch);
+            padding: 35px;
+            margin: 30px 0;
+            border-radius: 12px;
+            border: 2px solid var(--gold);
+        }
+
+        .decomposition-scope .example-title {
+            color: var(--gold);
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+
+        .decomposition-scope .tree-structure {
+            font-family: 'Courier New', monospace;
+            background: var(--bg-dark);
+            padding: 25px;
+            border-radius: 8px;
+            overflow-x: auto;
+            line-height: 1.8;
+            border-left: 5px solid var(--magenta);
+        }
+
+        .decomposition-scope .tree-structure .root {
+            color: var(--magenta-light);
+            font-weight: bold;
+        }
+
+        .decomposition-scope .tree-structure .branch {
+            color: var(--gold);
+        }
+
+        .decomposition-scope .tree-structure .leaf {
+            color: var(--green);
+        }
+
+        .decomposition-scope .dependency-map {
+            background: var(--bg-tree);
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+            border: 3px solid var(--gold);
+        }
+
+        .decomposition-scope .dependency-map h3 {
+            color: var(--gold);
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+        }
+
+        .decomposition-scope .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin: 25px 0;
+            padding: 20px;
+            background: var(--bg-branch);
+            border-radius: 10px;
+        }
+
+        .decomposition-scope .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .decomposition-scope .legend-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            border: 2px solid var(--white);
+        }
+
+        .decomposition-scope .legend-green { background: #90EE90; }
+        .decomposition-scope .legend-pink { background: #FFB6C1; }
+        .decomposition-scope .legend-white { background: #ffffff; border: 2px solid var(--gray); }
+
+        .decomposition-scope .template-box {
+            background: linear-gradient(135deg, rgba(255,0,255,0.1) 0%, rgba(255,215,0,0.1) 100%);
+            padding: 40px;
+            margin: 40px 0;
+            border-radius: 15px;
+            border: 3px dashed var(--magenta);
+        }
+
+        .decomposition-scope .template-box h3 {
+            color: var(--magenta-light);
+            font-size: 2rem;
+            margin-bottom: 25px;
+        }
+
+        .decomposition-scope .template-content {
+            background: var(--bg-dark);
+            padding: 30px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .decomposition-scope .complexity-decision {
+            background: var(--bg-tree);
+            padding: 40px;
+            margin: 50px 0;
+            border-radius: 15px;
+            border: 3px solid var(--magenta);
+        }
+
+        .decomposition-scope .complexity-decision h2 {
+            color: var(--magenta);
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .decomposition-scope .phase-card {
+            background: var(--bg-branch);
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-left: 5px solid var(--gold);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .decomposition-scope .phase-card:hover {
+            transform: translateX(10px);
+            box-shadow: -5px 5px 20px rgba(255,215,0,0.3);
+        }
+
+        .decomposition-scope .phase-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--magenta) 0%, var(--gold) 100%);
+            color: var(--bg-dark);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .decomposition-scope .phase-title {
+            color: var(--gold);
+            font-size: 1.4rem;
+            display: inline;
+            vertical-align: middle;
+        }
+
+        .decomposition-scope .footer-nav {
+            margin-top: 80px;
+            padding: 40px;
+            background: var(--bg-tree);
+            border-radius: 15px;
+            border-top: 5px solid var(--gold);
+        }
+
+        .decomposition-scope .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .decomposition-scope .tag {
+            background: linear-gradient(135deg, var(--magenta-dark) 0%, var(--magenta) 100%);
+            color: var(--white);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .decomposition-scope a {
+            color: var(--magenta-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .decomposition-scope a:hover {
+            color: var(--gold);
+        }
+
+        @media (max-width: 768px) {
+            .decomposition-scope .technique-section {
+                padding-left: 20px;
+            }
+
+            .decomposition-scope .tree-diagram {
+                padding: 20px;
+            }
+
+            .decomposition-scope .example-breakdown {
+                padding: 20px;
+            }
+
+            .decomposition-scope .legend {
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body class="decomposition-scope">
+    <div class="container">
+        <header class="tree-header">
+            <h1>🧩 Decomposição de Problemas Complexos</h1>
+            <p style="font-size: 1.2rem; color: var(--gray-light); position: relative; z-index: 1;">Transformando o Impossível em Gerenciável</p>
+        </header>
+
+        <section class="intro-box">
+            <h2>Introdução</h2>
+            <p style="font-size: 1.1rem;">Problemas complexos paralisam. Decomposição torna o impossível possível. Este guia ensina frameworks de quebra sistemática.</p>
+        </section>
+
+        <section class="technique-section">
+            <h2 class="technique-title">Técnica 1: Divide & Conquer</h2>
+
+            <div class="tree-diagram">
+                <div class="mermaid-container">
+                    <pre class="mermaid">
+graph TD
+    A[Problema Grande] --> B[Subproblema 1]
+    A --> C[Subproblema 2]
+    A --> D[Subproblema 3]
+    
+    B --> B1[Tarefa 1.1]
+    B --> B2[Tarefa 1.2]
+    
+    C --> C1[Tarefa 2.1]
+    C --> C2[Tarefa 2.2]
+    
+    D --> D1[Tarefa 3.1]
+    D --> D2[Tarefa 3.2]
+    
+    style A fill:#f9f,stroke:#333
+    style B1 fill:#bfb,stroke:#333
+    style B2 fill:#bfb,stroke:#333
+    style C1 fill:#bfb,stroke:#333
+    style C2 fill:#bfb,stroke:#333
+    style D1 fill:#bfb,stroke:#333
+    style D2 fill:#bfb,stroke:#333
+                    </pre>
+                </div>
+            </div>
+
+            <div class="example-breakdown">
+                <div class="example-title">Exemplo: Refatorar Sistema Legado</div>
+                <div class="tree-structure">
+<span class="root">Problema: Refatorar sistema legado de 100k linhas</span>
+
+<span class="branch">├── 1. Análise (2 semanas)</span>
+<span class="leaf">│   ├── 1.1 Mapear dependências</span>
+<span class="leaf">│   ├── 1.2 Identificar módulos</span>
+<span class="leaf">│   └── 1.3 Priorizar por risco</span>
+<span class="branch">├── 2. Infraestrutura (3 semanas)</span>
+<span class="leaf">│   ├── 2.1 Setup CI/CD</span>
+<span class="leaf">│   ├── 2.2 Testes de integração</span>
+<span class="leaf">│   └── 2.3 Feature flags</span>
+<span class="branch">└── 3. Refatoração Incremental (12 semanas)</span>
+<span class="leaf">    ├── 3.1 Módulo Auth (3 sem)</span>
+<span class="leaf">    ├── 3.2 Módulo Payment (4 sem)</span>
+<span class="leaf">    └── 3.3 Módulo Reports (5 sem)</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="technique-section">
+            <h2 class="technique-title">Técnica 2: Dependency Mapping</h2>
+
+            <div class="dependency-map">
+                <h3>Mapeamento de Dependências</h3>
+
+                <div class="mermaid-container">
+                    <pre class="mermaid">
+graph LR
+    A[Task A] --> C[Task C]
+    A --> D[Task D]
+    B[Task B] --> D
+    B --> E[Task E]
+    C --> F[Task F]
+    D --> F
+    E --> F
+    
+    style A fill:#90EE90,stroke:#333,color:#000
+    style B fill:#90EE90,stroke:#333,color:#000
+    style F fill:#FFB6C1,stroke:#333,color:#000
+                    </pre>
+                </div>
+
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color legend-green"></div>
+                        <span>Pode começar imediatamente (sem dependências)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color legend-white"></div>
+                        <span>Depende de outros</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color legend-pink"></div>
+                        <span>Task final (depende de tudo)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="technique-section">
+            <h2 class="technique-title">Técnica 3: Critical Path Method</h2>
+
+            <div class="tree-diagram">
+                <div class="mermaid-container">
+                    <pre class="mermaid">
+gantt
+    title Critical Path Analysis
+    dateFormat  YYYY-MM-DD
+    section Critical Path
+    Setup Infra           :crit, a1, 2024-01-01, 2w
+    Refactor Auth        :crit, a2, after a1, 3w
+    Deploy to Prod       :crit, a3, after a2, 1w
+    
+    section Parallel Tasks
+    Write Tests          :b1, 2024-01-01, 4w
+    Update Docs          :b2, 2024-01-15, 2w
+                    </pre>
+                </div>
+
+                <div style="background: var(--bg-branch); padding: 25px; margin-top: 25px; border-radius: 10px;">
+                    <p><strong style="color: var(--magenta);">Caminho crítico:</strong> Setup → Refactor → Deploy <span style="color: var(--gold);">(6 semanas)</span></p>
+                    <p><strong style="color: var(--magenta);">Paralelizável:</strong> Tests, Docs <span style="color: var(--green);">(economiza tempo)</span></p>
+                </div>
+            </div>
+        </section>
+
+        <section class="technique-section">
+            <h2 class="technique-title">Técnica 4: Work Breakdown Structure (WBS)</h2>
+
+            <div class="tree-diagram">
+                <div class="mermaid-container">
+                    <pre class="mermaid">
+mindmap
+  root((Migração Cloud))
+    Preparação
+      Análise Custos
+      Escolha Provider
+      Training Time
+    Infraestrutura
+      Setup VPC
+      Configurar K8s
+      CI/CD Pipeline
+    Migração Dados
+      Backup
+      Transfer
+      Validação
+    Aplicação
+      Containerização
+      Deploy Blue/Green
+      Rollback Plan
+    Pós-Deploy
+      Monitoring
+      Otimização
+      Documentação
+                    </pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="template-box">
+            <h3>Template de Decomposição</h3>
+            <div class="template-content">
+<span style="color: var(--magenta);"># Problema:</span> [Nome do Problema Grande]
+
+<span style="color: var(--gold);">## 1. Análise Inicial</span>
+- Tamanho estimado: [X semanas/meses]
+- Complexidade: [Alta/Média/Baixa]
+- Risco: [Alto/Médio/Baixo]
+
+<span style="color: var(--gold);">## 2. Decomposição (3-5 níveis)</span>
+[WBS aqui]
+
+<span style="color: var(--gold);">## 3. Dependency Map</span>
+[Diagrama de dependências]
+
+<span style="color: var(--gold);">## 4. Critical Path</span>
+[Gantt chart]
+
+<span style="color: var(--gold);">## 5. Fases de Execução</span>
+- Fase 1: [Quick Wins - 2 semanas]
+- Fase 2: [Foundation - 4 semanas]
+- Fase 3: [Core - 8 semanas]
+- Fase 4: [Polish - 2 semanas]
+
+<span style="color: var(--gold);">## 6. Checkpoints</span>
+- Checkpoint 1 (Semana 2): [Critério de sucesso]
+- Checkpoint 2 (Semana 6): [Critério de sucesso]
+- Checkpoint 3 (Semana 14): [Critério de sucesso]
+            </div>
+        </section>
+
+        <section class="complexity-decision">
+            <h2>Quando Problema é "Complexo Demais"?</h2>
+
+            <div class="mermaid-container">
+                <pre class="mermaid">
+flowchart TD
+    A[Problema] --> B{Estimativa?}
+    B -->|>3 meses| C[COMPLEXO]
+    B -->|<3 meses| D{Dependências?}
+    
+    D -->|>5 times| C
+    D -->|<5| E{Incerteza?}
+    
+    E -->|Alta| C
+    E -->|Baixa| F[GERENCIÁVEL]
+    
+    C --> G[Decompor Mais]
+    F --> H[Executar]
+    style A fill:#ff00ff,stroke:#ffd700,color:#fff
+    style C fill:#ff4444,stroke:#fff,color:#fff
+    style F fill:#44ff44,stroke:#fff,color:#000
+                </pre>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <div class="phase-card">
+                    <span class="phase-number">1</span>
+                    <span class="phase-title">Se >3 meses: DECOMPOR</span>
+                </div>
+                <div class="phase-card">
+                    <span class="phase-number">2</span>
+                    <span class="phase-title">Se >5 times dependentes: DECOMPOR</span>
+                </div>
+                <div class="phase-card">
+                    <span class="phase-number">3</span>
+                    <span class="phase-title">Se incerteza alta: DECOMPOR</span>
+                </div>
+                <div class="phase-card">
+                    <span class="phase-number">✓</span>
+                    <span class="phase-title">Caso contrário: EXECUTAR</span>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer-nav">
+            <h3 style="color: var(--gold); margin-bottom: 20px; font-size: 1.5rem;">Relacionados:</h3>
+            <p style="margin: 10px 0;"><a href="./01-metodologias-analise-profunda.html">→ Metodologias de Análise Profunda</a></p>
+            <p style="margin: 10px 0;"><a href="../4-workflows/01-workflow-analise-problemas.html">→ Workflow de Análise de Problemas</a></p>
+            <p style="margin: 10px 0;"><a href="./00-INDEX.html">← Voltar ao Índice</a></p>
+
+            <div class="tags">
+                <span class="tag">#decomposicao</span>
+                <span class="tag">#divide-conquer</span>
+                <span class="tag">#critical-path</span>
+                <span class="tag">#wbs</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            themeVariables: {
+                primaryColor: '#ff00ff',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#ffd700',
+                lineColor: '#ffd700',
+                secondaryColor: '#ffd700',
+                tertiaryColor: '#1a1a1a',
+                background: '#0a0a0a',
+                mainBkg: '#1a1a1a'
+            }
+        });
+    </script>
+</body>
+</html>

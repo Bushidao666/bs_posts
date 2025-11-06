@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layer 2: Engineering - Índice</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        /* Scoped CSS for Engineering Index - Navigation Grid Design */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #1a0a1f 0%, #000000 100%);
+            border-bottom: 3px solid #ff0080;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 0, 128, 0.03) 2px, rgba(255, 0, 128, 0.03) 4px);
+            pointer-events: none;
+        }
+
+        .hero-title {
+            font-size: 3.5em;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff0080, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-size: 1.4em;
+            color: #ffd700;
+            margin-bottom: 30px;
+        }
+
+        .hero-description {
+            font-size: 1.1em;
+            color: #cccccc;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .pyramid-section {
+            margin: 60px 0;
+            padding: 40px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a1f 100%);
+            border-radius: 20px;
+            border: 2px solid #ff0080;
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: #ffd700;
+            margin-bottom: 30px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .guides-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+
+        .guide-card {
+            background: linear-gradient(135deg, #1a0a1f 0%, #0d0515 100%);
+            border: 2px solid #ff0080;
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .guide-card::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, #ff0080, #ffd700, #ff0080);
+            border-radius: 15px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .guide-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(255, 0, 128, 0.3);
+        }
+
+        .guide-card:hover::before { opacity: 0.5; }
+
+        .guide-number {
+            font-size: 3em;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff0080, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .guide-title {
+            font-size: 1.6em;
+            color: #ffd700;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .guide-description {
+            color: #cccccc;
+            font-size: 1.05em;
+            margin-bottom: 20px;
+        }
+
+        .guide-link {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(45deg, #ff0080, #ff0080);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid #ff0080;
+        }
+
+        .guide-link:hover {
+            background: linear-gradient(45deg, #ffd700, #ffd700);
+            border-color: #ffd700;
+            color: #000000;
+            transform: scale(1.05);
+        }
+
+        .navigation-footer {
+            margin-top: 80px;
+            padding: 40px;
+            background: #0a0a0a;
+            border-radius: 15px;
+            border: 2px solid #ffd700;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .nav-link {
+            padding: 15px 25px;
+            background: #1a0a1f;
+            color: #ffd700;
+            text-decoration: none;
+            border-radius: 8px;
+            border: 2px solid #ffd700;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .nav-link:hover {
+            background: #ffd700;
+            color: #000000;
+            transform: translateX(5px);
+        }
+
+        .tags {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 8px 15px;
+            background: rgba(255, 0, 128, 0.2);
+            color: #ff0080;
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 0.9em;
+            border: 1px solid #ff0080;
+        }
+
+        .mermaid {
+            background: #0a0a0a;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.2em; }
+            .hero-subtitle { font-size: 1.1em; }
+            .guides-grid { grid-template-columns: 1fr; }
+            .nav-links { flex-direction: column; }
+            .guide-number { font-size: 2em; }
+            .guide-title { font-size: 1.3em; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title { font-size: 1.8em; }
+            .container { padding: 20px 15px; }
+            .pyramid-section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1 class="hero-title">🔧 Layer 2: Engineering</h1>
+            <p class="hero-subtitle">Índice de Guias Técnicos</p>
+            <p class="hero-description">
+                Bem-vindo à camada de <strong>engenharia</strong>! Aqui você aprende técnicas avançadas para
+                <strong>construir sistemas</strong> de prompts escaláveis e reutilizáveis.
+            </p>
+        </div>
+
+        <div class="pyramid-section">
+            <h2 class="section-title">O Que é Prompt Engineering Avançado?</h2>
+            <p style="text-align: center; color: #cccccc; margin-bottom: 30px;">
+                Esta camada foca em criar <strong>sistemas de prompts</strong> profissionais, não apenas prompts isolados.
+            </p>
+            <div class="mermaid">
+%%{init: {'theme':'dark'}}%%
+pyramid
+    title Pirâmide do Conhecimento
+    "Meta-Learning" : 10
+    "Workflows" : 20
+    "Advanced Thinking" : 30
+    "Engineering" : 40
+    "Fundamentals" : 50
+            </div>
+        </div>
+
+        <h2 class="section-title">📚 Guias Disponíveis</h2>
+        <div class="guides-grid">
+            <div class="guide-card">
+                <div class="guide-number">01</div>
+                <h3 class="guide-title">Design de Templates Universais</h3>
+                <p class="guide-description">
+                    Como criar templates abstratos e reutilizáveis para qualquer contexto
+                </p>
+                <a href="./01-design-templates-universais.html" class="guide-link">Acessar Guia →</a>
+            </div>
+
+            <div class="guide-card">
+                <div class="guide-number">02</div>
+                <h3 class="guide-title">Arquitetura de Prompts Complexos</h3>
+                <p class="guide-description">
+                    Técnicas para estruturar prompts complexos e composições avançadas
+                </p>
+                <a href="./02-arquitetura-prompts-complexos.html" class="guide-link">Acessar Guia →</a>
+            </div>
+
+            <div class="guide-card">
+                <div class="guide-number">03</div>
+                <h3 class="guide-title">Checklists e Validações</h3>
+                <p class="guide-description">
+                    Frameworks para validar qualidade e completude de prompts e respostas
+                </p>
+                <a href="./03-checklists-validacoes.html" class="guide-link">Acessar Guia →</a>
+            </div>
+        </div>
+
+        <div class="navigation-footer">
+            <h3 style="color: #ffd700; margin-bottom: 20px; text-align: center;">Navegação</h3>
+            <div class="nav-links">
+                <a href="../1-fundamentals/00-INDEX.html" class="nav-link">← Layer 1: Fundamentals</a>
+                <a href="../3-thinking/00-INDEX.html" class="nav-link">Layer 3: Advanced Thinking →</a>
+            </div>
+            <p style="text-align: center; margin-top: 30px; color: #cccccc;">
+                <strong>Pré-requisitos:</strong> Domínio de Layer 1: Fundamentals<br>
+                <strong>Próximos Passos:</strong> Avance para Layer 3: Advanced Thinking
+            </p>
+        </div>
+
+        <div class="tags">
+            <span class="tag">#engineering</span>
+            <span class="tag">#templates</span>
+            <span class="tag">#architecture</span>
+            <span class="tag">#validation</span>
+            <span class="tag">#scalability</span>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            themeVariables: {
+                primaryColor: '#ff0080',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#ffd700',
+                lineColor: '#ff0080',
+                secondaryColor: '#ffd700',
+                tertiaryColor: '#1a0a1f'
+            }
+        });
+    </script>
+</body>
+</html>

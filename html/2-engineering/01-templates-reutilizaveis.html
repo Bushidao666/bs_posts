@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Templates Reutilizáveis</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        /* Scoped CSS - Library/Catalog Style for Templates */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            line-height: 1.7;
+        }
+
+        .container { max-width: 1300px; margin: 0 auto; padding: 40px 20px; }
+
+        /* Library Header */
+        .library-header {
+            background: linear-gradient(135deg, #0d0515 0%, #1a0a1f 100%);
+            padding: 50px;
+            border-radius: 20px;
+            border: 3px solid #ffd700;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .library-header h1 {
+            font-size: 3em;
+            background: linear-gradient(45deg, #ffd700, #ff0080);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .library-header .tagline {
+            font-size: 1.3em;
+            color: #ff0080;
+            font-weight: 600;
+        }
+
+        /* Catalog Sections */
+        .catalog-section {
+            margin: 50px 0;
+        }
+
+        .catalog-title {
+            font-size: 2.2em;
+            color: #ffd700;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #ff0080;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Template Library Cards */
+        .template-library {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .template-item {
+            background: linear-gradient(135deg, #1a0a1f 0%, #0a0a0a 100%);
+            border: 2px solid #ff0080;
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .template-item::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(45deg, rgba(255, 0, 128, 0.1), rgba(255, 215, 0, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 15px;
+        }
+
+        .template-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(255, 0, 128, 0.3);
+        }
+
+        .template-item:hover::before { opacity: 1; }
+
+        .template-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .template-icon {
+            font-size: 2.5em;
+        }
+
+        .template-badge {
+            background: #ff0080;
+            color: #000;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.75em;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .template-name {
+            font-size: 1.5em;
+            color: #ffd700;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .template-description {
+            color: #cccccc;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+
+        .template-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            background: rgba(255, 0, 128, 0.2);
+            color: #ff0080;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            border: 1px solid #ff0080;
+        }
+
+        .template-features {
+            list-style: none;
+            padding: 0;
+        }
+
+        .template-features li {
+            padding: 8px 0;
+            color: #cccccc;
+            font-size: 0.9em;
+        }
+
+        .template-features li::before {
+            content: '✓';
+            color: #00ff88;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* Code Preview */
+        .code-preview {
+            background: #0a0a0a;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+
+        .code-preview pre {
+            color: #00ff88;
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        /* Comparison Table */
+        .comparison-table {
+            background: #0a0a0a;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 30px 0;
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th {
+            background: #ff0080;
+            color: #000;
+            padding: 15px;
+            font-weight: 700;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #333;
+            color: #cccccc;
+        }
+
+        .comparison-table tr:hover {
+            background: #1a0a1f;
+        }
+
+        /* Benefits Grid */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .benefit-card {
+            background: linear-gradient(135deg, #1a0a1f 0%, #0d0515 100%);
+            border: 2px solid #ffd700;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .benefit-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .benefit-title {
+            color: #ffd700;
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .benefit-desc {
+            color: #cccccc;
+            font-size: 0.9em;
+        }
+
+        /* Checklist */
+        .checklist {
+            background: linear-gradient(135deg, #0d0515 0%, #0a0a0a 100%);
+            border-left: 5px solid #ffd700;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .checklist h3 {
+            color: #ffd700;
+            margin-bottom: 15px;
+        }
+
+        .checklist ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            padding: 10px 0;
+            color: #cccccc;
+        }
+
+        .checklist li::before {
+            content: '☐';
+            color: #ff0080;
+            font-size: 1.5em;
+            margin-right: 12px;
+            vertical-align: middle;
+        }
+
+        /* Section Divider */
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff0080, #ffd700, #ff0080, transparent);
+            margin: 60px 0;
+        }
+
+        /* Tags */
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 30px 0;
+        }
+
+        .tag {
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid #ffd700;
+            font-size: 0.9em;
+        }
+
+        /* Navigation */
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 60px;
+            gap: 20px;
+        }
+
+        .nav-link {
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #ff0080, #ffd700);
+            color: #000;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 0, 128, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .library-header h1 { font-size: 2em; }
+            .template-library { grid-template-columns: 1fr; }
+            .benefits-grid { grid-template-columns: 1fr; }
+            .nav-container { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="library-header">
+            <h1>🔧 Templates Reutilizáveis</h1>
+            <p class="tagline">Nunca Mais Escreva o Mesmo Prompt Duas Vezes</p>
+        </div>
+
+        <div class="catalog-section">
+            <h2 class="catalog-title">📊 O Problema da Repetição</h2>
+            <p style="color: #cccccc; font-size: 1.1em; margin-bottom: 25px;">
+                Se toda vez você escrever um prompt do zero, está <strong style="color: #ff0080;">desperdiçando 80% do seu tempo</strong> reinventando a roda.
+            </p>
+
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">⏱️</div>
+                    <div class="benefit-title">Economizam Tempo</div>
+                    <div class="benefit-desc">Escrever template: 10-15min (uma vez)<br>Usar: 1-2min (sempre)</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🎯</div>
+                    <div class="benefit-title">Garantem Consistência</div>
+                    <div class="benefit-desc">Sempre inclui partes importantes<br>Resultados previsíveis</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">📈</div>
+                    <div class="benefit-title">Facilitam Evolução</div>
+                    <div class="benefit-desc">Melhorias beneficiam todos os usos<br>Versionamento claro</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🧠</div>
+                    <div class="benefit-title">Reduzem Carga Cognitiva</div>
+                    <div class="benefit-desc">Foca no problema<br>Não na estrutura</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="catalog-section">
+            <h2 class="catalog-title">📚 Biblioteca de Templates Prontos</h2>
+
+            <div class="template-library">
+                <!-- Template 1 -->
+                <div class="template-item">
+                    <div class="template-header">
+                        <span class="template-icon">📝</span>
+                        <span class="template-badge">v2.0</span>
+                    </div>
+                    <h3 class="template-name">Code Review Completo</h3>
+                    <p class="template-description">
+                        Review profundo de PRs, análise de código legado com foco em segurança, performance e manutenibilidade.
+                    </p>
+                    <div class="template-meta">
+                        <span class="meta-item">⏱️ ~2min</span>
+                        <span class="meta-item">📊 Score 4.8/5</span>
+                        <span class="meta-item">🔧 89 usos</span>
+                    </div>
+                    <ul class="template-features">
+                        <li>Análise multi-aspecto (segurança, performance, qualidade)</li>
+                        <li>Score geral com justificativas</li>
+                        <li>Código refatorado para problemas críticos</li>
+                        <li>Priorização clara de problemas</li>
+                    </ul>
+                </div>
+
+                <!-- Template 2 -->
+                <div class="template-item">
+                    <div class="template-header">
+                        <span class="template-icon">🐛</span>
+                        <span class="template-badge">v1.0</span>
+                    </div>
+                    <h3 class="template-name">Debugging Sistemático</h3>
+                    <p class="template-description">
+                        Para bugs intermitentes, erros de produção. Análise científica e metódica.
+                    </p>
+                    <div class="template-meta">
+                        <span class="meta-item">⏱️ ~3min</span>
+                        <span class="meta-item">📊 Score 4.6/5</span>
+                        <span class="meta-item">🔧 47 usos</span>
+                    </div>
+                    <ul class="template-features">
+                        <li>Identificação de causa raiz</li>
+                        <li>Análise de por quê é intermitente</li>
+                        <li>Passos para reprodução</li>
+                        <li>Estratégias de prevenção</li>
+                    </ul>
+                </div>
+
+                <!-- Template 3 -->
+                <div class="template-item">
+                    <div class="template-header">
+                        <span class="template-icon">📚</span>
+                        <span class="template-badge">v1.0</span>
+                    </div>
+                    <h3 class="template-name">Documentação de API</h3>
+                    <p class="template-description">
+                        Documentar endpoints REST para desenvolvedores com formato padronizado.
+                    </p>
+                    <div class="template-meta">
+                        <span class="meta-item">⏱️ ~2min</span>
+                        <span class="meta-item">📊 Score 4.9/5</span>
+                        <span class="meta-item">🔧 123 usos</span>
+                    </div>
+                    <ul class="template-features">
+                        <li>Headers, query params, body documentados</li>
+                        <li>Exemplos de request/response</li>
+                        <li>Códigos de erro explicados</li>
+                        <li>Exemplo com curl</li>
+                    </ul>
+                </div>
+
+                <!-- Template 4 -->
+                <div class="template-item">
+                    <div class="template-header">
+                        <span class="template-icon">⚡</span>
+                        <span class="template-badge">v1.0</span>
+                    </div>
+                    <h3 class="template-name">Otimização de Performance</h3>
+                    <p class="template-description">
+                        Código lento, queries demoradas, identificação e correção de bottlenecks.
+                    </p>
+                    <div class="template-meta">
+                        <span class="meta-item">⏱️ ~3min</span>
+                        <span class="meta-item">📊 Score 4.7/5</span>
+                        <span class="meta-item">🔧 64 usos</span>
+                    </div>
+                    <ul class="template-features">
+                        <li>Identificação de bottleneck principal</li>
+                        <li>Código otimizado com justificativa</li>
+                        <li>Ganho esperado quantificado</li>
+                        <li>Trade-offs explícitos</li>
+                    </ul>
+                </div>
+
+                <!-- Template 5 -->
+                <div class="template-item">
+                    <div class="template-header">
+                        <span class="template-icon">🏗️</span>
+                        <span class="template-badge">v2.0</span>
+                    </div>
+                    <h3 class="template-name">Design de Arquitetura</h3>
+                    <p class="template-description">
+                        Novos sistemas, refatoração arquitetural com decisões justificadas.
+                    </p>
+                    <div class="template-meta">
+                        <span class="meta-item">⏱️ ~5min</span>
+                        <span class="meta-item">📊 Score 4.8/5</span>
+                        <span class="meta-item">🔧 32 usos</span>
+                    </div>
+                    <ul class="template-features">
+                        <li>Diagrama de componentes</li>
+                        <li>Stack tecnológico justificado</li>
+                        <li>Decisões arquiteturais explicadas</li>
+                        <li>Plano de implementação em fases</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="catalog-section">
+            <h2 class="catalog-title">✅ Checklist de Qualidade de Template</h2>
+            <div class="checklist">
+                <h3>Clareza</h3>
+                <ul>
+                    <li>Placeholders são autodescritivos?</li>
+                    <li>Instruções são claras?</li>
+                    <li>Há exemplo de uso?</li>
+                </ul>
+            </div>
+
+            <div class="checklist">
+                <h3>Completude</h3>
+                <ul>
+                    <li>Cobre todos aspectos necessários?</li>
+                    <li>Formato de saída está definido?</li>
+                    <li>Critérios de sucesso estão claros?</li>
+                </ul>
+            </div>
+
+            <div class="checklist">
+                <h3>Flexibilidade</h3>
+                <ul>
+                    <li>Serve para múltiplos contextos?</li>
+                    <li>Não é específico demais?</li>
+                    <li>Tem placeholders opcionais para casos especiais?</li>
+                </ul>
+            </div>
+
+            <div class="checklist">
+                <h3>Manutenibilidade</h3>
+                <ul>
+                    <li>Versionado?</li>
+                    <li>Changelog documentado?</li>
+                    <li>Metadados completos?</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="catalog-section">
+            <h2 class="catalog-title">🌱 Reflexão Final</h2>
+            <div style="background: linear-gradient(135deg, rgba(255, 0, 128, 0.1), rgba(255, 215, 0, 0.1)); padding: 30px; border-radius: 15px; border: 2px solid #ffd700;">
+                <p style="font-size: 1.1em; color: #cccccc; margin-bottom: 20px;">
+                    Templates são como <strong style="color: #ffd700;">ferramentas especializadas</strong>. Você não precisa de 100 templates - precisa dos <strong style="color: #ff0080;">certos</strong> para seu domínio.
+                </p>
+                <p style="font-size: 1.1em; color: #cccccc;">
+                    <strong style="color: #ffd700;">Comece hoje:</strong>
+                </p>
+                <ol style="margin-left: 25px; margin-top: 15px; color: #cccccc;">
+                    <li>Identifique 1 tarefa que você faz toda semana</li>
+                    <li>Documente como você faz (vire template)</li>
+                    <li>Use 5+ vezes, refine conforme necessário</li>
+                    <li>Compartilhe com seu time</li>
+                </ol>
+                <p style="margin-top: 20px; font-size: 1.1em; color: #00ff88; font-weight: 600;">
+                    Em 3 meses, você terá uma biblioteca que economiza horas por semana.
+                </p>
+            </div>
+        </div>
+
+        <div class="tags">
+            <span class="tag">#templates</span>
+            <span class="tag">#reusability</span>
+            <span class="tag">#productivity</span>
+            <span class="tag">#DRY</span>
+            <span class="tag">#engineering</span>
+        </div>
+
+        <div class="nav-container">
+            <a href="./00-INDEX.html" class="nav-link">← Voltar ao Índice</a>
+            <a href="./02-arquitetura-prompts-complexos.html" class="nav-link">Próximo: Arquitetura →</a>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+    </script>
+</body>
+</html>

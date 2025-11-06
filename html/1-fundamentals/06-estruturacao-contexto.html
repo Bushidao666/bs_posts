@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>� Estruturação de Contexto: A Arte de Fornecer a Informação Certa</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div id="kb-guide-wrapper" style="all: initial; * { all: unset; }">
+        <style>
+            #kb-guide-wrapper {
+                --color-bg: #000000;
+                --color-surface: #0a0a0a;
+                --color-surface-elevated: #111111;
+                --color-border: #1a1a1a;
+                --color-text: #ffffff;
+                --color-text-secondary: #a3a3a3;
+                --color-text-tertiary: #737373;
+                --color-magenta: #ff0080;
+                --color-magenta-dim: #8b0046;
+                --color-gold: #ffd700;
+                --color-gold-dim: #8b7500;
+                --color-success: #00ff88;
+                --color-error: #ff3366;
+
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                background: var(--color-bg);
+                color: var(--color-text);
+                line-height: 1.7;
+                font-size: 16px;
+            }
+
+            #kb-guide-wrapper .kb-container {
+                max-width: 900px;
+                margin: 0 auto;
+                padding: 80px 24px;
+            }
+
+            #kb-guide-wrapper .kb-header {
+                margin-bottom: 64px;
+                padding-bottom: 32px;
+                border-bottom: 1px solid var(--color-border);
+            }
+
+            #kb-guide-wrapper .kb-title {
+                font-size: 48px;
+                font-weight: 800;
+                line-height: 1.1;
+                margin-bottom: 24px;
+                background: linear-gradient(135deg, var(--color-text) 0%, var(--color-text-secondary) 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                letter-spacing: -0.02em;
+            }
+
+            #kb-guide-wrapper .kb-emoji {
+                display: inline-block;
+                font-size: 56px;
+                margin-right: 16px;
+                vertical-align: middle;
+            }
+
+            #kb-guide-wrapper .kb-lead {
+                font-size: 20px;
+                line-height: 1.6;
+                color: var(--color-text-secondary);
+                margin-top: 16px;
+            }
+
+            #kb-guide-wrapper h2 {
+                font-size: 36px;
+                font-weight: 700;
+                margin: 64px 0 24px 0;
+                letter-spacing: -0.01em;
+                color: var(--color-text);
+            }
+
+            #kb-guide-wrapper h3 {
+                font-size: 24px;
+                font-weight: 600;
+                margin: 48px 0 16px 0;
+                color: var(--color-text);
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            #kb-guide-wrapper h3::before {
+                content: '';
+                width: 4px;
+                height: 24px;
+                background: linear-gradient(180deg, var(--color-magenta) 0%, var(--color-magenta-dim) 100%);
+                border-radius: 2px;
+            }
+
+            #kb-guide-wrapper p {
+                margin: 16px 0;
+                color: var(--color-text-secondary);
+                font-size: 17px;
+            }
+
+            #kb-guide-wrapper strong {
+                color: var(--color-text);
+                font-weight: 600;
+            }
+
+            #kb-guide-wrapper ul, #kb-guide-wrapper ol {
+                margin: 16px 0;
+                padding-left: 24px;
+                color: var(--color-text-secondary);
+            }
+
+            #kb-guide-wrapper li {
+                margin: 8px 0;
+                padding-left: 8px;
+            }
+
+            #kb-guide-wrapper .kb-code-block {
+                background: var(--color-surface);
+                border: 1px solid var(--color-border);
+                border-radius: 8px;
+                padding: 20px;
+                margin: 20px 0;
+                overflow-x: auto;
+                font-family: 'Fira Code', 'Courier New', monospace;
+                font-size: 14px;
+                line-height: 1.6;
+                color: var(--color-text-secondary);
+            }
+
+            #kb-guide-wrapper .kb-code-block code {
+                color: var(--color-text-secondary);
+                white-space: pre-wrap;
+                word-wrap: break-word;
+            }
+
+            #kb-guide-wrapper .kb-inline-code {
+                background: var(--color-surface-elevated);
+                color: var(--color-magenta);
+                padding: 2px 8px;
+                border-radius: 4px;
+                font-family: 'Fira Code', monospace;
+                font-size: 14px;
+            }
+
+            #kb-guide-wrapper .kb-footer {
+                margin-top: 80px;
+                padding-top: 32px;
+                border-top: 1px solid var(--color-border);
+            }
+
+            #kb-guide-wrapper .kb-tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin-top: 24px;
+            }
+
+            #kb-guide-wrapper .kb-tag {
+                background: var(--color-surface-elevated);
+                color: var(--color-text-secondary);
+                padding: 6px 12px;
+                border-radius: 6px;
+                font-size: 13px;
+                border: 1px solid var(--color-border);
+            }
+
+            #kb-guide-wrapper .mermaid {
+                background: var(--color-surface-elevated);
+                border: 1px solid var(--color-border);
+                border-radius: 12px;
+                padding: 32px;
+                margin: 32px 0;
+            }
+
+            @media (max-width: 768px) {
+                #kb-guide-wrapper .kb-container {
+                    padding: 40px 20px;
+                }
+
+                #kb-guide-wrapper .kb-title {
+                    font-size: 36px;
+                }
+
+                #kb-guide-wrapper h2 {
+                    font-size: 28px;
+                }
+            }
+        </style>
+
+        <div class="kb-container">
+            <header class="kb-header">
+                <h1 class="kb-title">
+                    <span class="kb-emoji">�</span>
+                    � Estruturação de Contexto: A Arte de Fornecer a Informação Certa
+                </h1>
+                <p class="kb-lead">Imagine que você ligou para o suporte técnico e disse:</p>
+            </header>
+
+            <main>
+                <p>---</p>
+<p>guide_id: "estruturacao-contexto"</p>
+<p>version: 1.0.0</p>
+<p>status: complete</p>
+<p>updated: 2025-11-06</p>
+<p>layer: 1-fundamentals</p>
+<p>tags: [contexto, estrutura, informacao, signal-noise]</p>
+<p>related_guides: ["03-contexto-e-role-playing", "05-ciclo-de-trabalho-com-ia"]</p>
+<p>prerequisites: ["01-o-que-e-prompt-engineering", "03-contexto-e-role-playing"]</p>
+<p>next_steps: ["07-especificacao-requisitos", "../2-engineering/01-templates-reutilizaveis"]</p>
+<p>concepts_defined: ["contexto-minimo-viavel", "progressao-detalhes", "signal-to-noise", "contexto-estruturado"]</p>
+<p>concepts_referenced: ["contexto", "placeholders", "role-playing"]</p>
+<p>---</p>
+
+<h1>📋 Estruturação de Contexto: A Arte de Fornecer a Informação Certa</h1>
+
+<h2>Introdução: O Dilema do Contexto</h2>
+
+<p>Imagine que você ligou para o suporte técnico e disse:</p>
+
+<p>> <strong>Opção A:</strong> "Não funciona."</p>
+
+<p>> <strong>Opção B:</strong> [10 minutos de histórico detalhado sobre tudo que você já fez no computador nos últimos 6 meses]</p>
+
+<p>> <strong>Opção C:</strong> "Não consigo fazer login no sistema X. Navegador Chrome versão 120, erro 'invalid credentials' mesmo com senha correta, começou hoje após atualização."</p>
+
+<p><strong>Qual atendente conseguiria te ajudar melhor?</strong></p>
+
+<p>Com IA é a mesma coisa:</p><ul><li><strong>Contexto insuficiente</strong> → Resposta genérica, inútil</li><li><strong>Contexto excessivo</strong> → IA se perde, foca no errado</li><li><strong>Contexto estruturado</strong> → Resposta precisa, acion</li>
+
+<p>ável</p>
+
+<p>Este guia ensina como fornecer <strong>contexto na medida certa, estruturado de forma eficiente</strong>.</p>
+
+<h2>O Conceito de "Contexto Mínimo Viável" (CMV)</h2>
+
+<p>Inspirado em MVP (Minimum Viable Product), o CMV é:</p>
+
+<p>> <strong>A menor quantidade de contexto que permite à IA gerar uma resposta útil</strong></p>
+
+<h3>Por Que Começar com CMV?</h3>
+
+<p>1. <strong>Economiza tempo</strong> - Não escrever contexto desnecessário</p>
+<p>2. <strong>Facilita iteração</strong> - Adicione detalhes apenas se necessário</p>
+<p>3. <strong>Clareza</strong> - Menos ruído, mais sinal</p>
+<p>4. <strong>Diagnóstico</strong> - Se falhar com CMV, você sabe o que falta</p>
+
+<h3>Template de CMV</h3>
+
+<p>``<span class="kb-inline-code">markdown</p>
+<p><strong>O QUÊ:</strong> [O que você quer / o que está quebrado] (1-2 linhas)</p>
+<p><strong>STACK:</strong> [Tecnologias principais] (1 linha)</p>
+<p><strong>EXEMPLO:</strong> [Um caso concreto] (código/dados/screenshot)</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<h3>Exemplo Comparativo</h3>
+
+<p><strong>❌ Contexto Insuficiente:</strong></p>
+<p></span>`<span class="kb-inline-code"></p>
+<p>"Como fazer autenticação?"</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p><strong>✅ CMV:</strong></p>
+<p></span>`<span class="kb-inline-code"></p>
+<p><strong>O QUÊ:</strong> Implementar autenticação para API REST</p>
+<p><strong>STACK:</strong> Node.js + Express + PostgreSQL</p>
+<p><strong>EXEMPLO:</strong> Endpoint POST /api/login que recebe {email, password}</p>
+<p>e retorna JWT</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p><strong>🔧 Contexto Expandido</strong> (se CMV não for suficiente):</p>
+<p></span>`<span class="kb-inline-code"></p>
+<p>[CMV acima +]</p>
+
+<p><strong>ESCALA:</strong> 10k usuários, 50 logins/minuto</p>
+<p><strong>SEGURANÇA:</strong> Precisa atender OWASP top 10, rate limiting obrigatório</p>
+<p><strong>INFRAESTRUTURA:</strong> Rodando em AWS Lambda (stateless)</p>
+<p><strong>CONSTRAINTS:</strong> Não pode usar bibliotecas GPL (licença), JWT expira em 15min</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p>---</p>
+
+<h2>Progressão de Detalhes: Do Geral ao Específico</h2>
+
+<p>Pense em contexto como <strong>zoom de câmera</strong>:</p>
+
+<p></span>`<span class="kb-inline-code"></p>
+<p>┌─────────────────────────────────────┐</p>
+<p>│  NÍVEL 1: Visão Geral (CMV)        │  ← Começa aqui</p>
+<p>│  "O que, Stack, Exemplo"            │</p>
+<p>└─────────────┬───────────────────────┘</p>
+<p>              ↓ (Se resposta genérica)</p>
+<p>┌─────────────────────────────────────┐</p>
+<p>│  NÍVEL 2: Contexto Técnico          │</p>
+<p>│  "Escala, Performance, Infra"       │</p>
+<p>└─────────────┬───────────────────────┘</p>
+<p>              ↓ (Se ainda não específico)</p>
+<p>┌─────────────────────────────────────┐</p>
+<p>│  NÍVEL 3: Constraints & Histórico   │</p>
+<p>│  "Limitações, Tentativas, Decisões" │</p>
+<p>└─────────────┬───────────────────────┘</p>
+<p>              ↓ (Se precisar ainda mais)</p>
+<p>┌─────────────────────────────────────┐</p>
+<p>│  NÍVEL 4: Contexto Completo         │</p>
+<p>│  "Stakeholders, Política, Legado"   │</p>
+<p>└─────────────────────────────────────┘</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<h3>Quando Adicionar Cada Nível?</h3>
+
+<p><strong>NÍVEL 1 (CMV):</strong> Sempre. Todo prompt começa aqui.</p>
+
+<p><strong>NÍVEL 2:</strong> Quando a resposta é:</p><li>Genérica demais</li><li>Ignora aspectos de escala/performance</li><li>Propõe soluções que não funcionam na sua infra</li>
+
+<p><strong>NÍVEL 3:</strong> Quando a resposta:</p><li>Sugere algo que você já tentou</li><li>Ignora limitações importantes</li><li>Não considera restrições técnicas/legais</li>
+
+<p><strong>NÍVEL 4:</strong> Quando a resposta:</p><li>Ignora aspectos políticos/organizacionais</li><li>Propõe mudanças inviáveis (reescrever tudo)</li><li>Não considera legado/dívida técnica</li>
+
+<h3>Exemplo de Progressão</h3>
+
+<p><strong>Prompt Inicial (CMV):</strong></p>
+<p></span>`<span class="kb-inline-code">markdown</p>
+<p><strong>O QUÊ:</strong> Query de relatório está lenta</p>
+<p><strong>STACK:</strong> PostgreSQL 14</p>
+<p><strong>EXEMPLO:</strong></p>
+<p></span>`<span class="kb-inline-code">sql</p>
+<p>SELECT * FROM orders WHERE created_at > '2024-01-01';</p>
+<p></span>`<span class="kb-inline-code"></p>
+<p>Demora 30s, timeout em 10s.</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p><strong>Resposta da IA:</strong> "Crie um índice em </span>created_at<span class="kb-inline-code">"</p>
+
+<p><strong>Avaliação:</strong> Solução genérica, não considerou escala.</p>
+
+<p>---</p>
+
+<p><strong>Prompt Refinado (Nível 2):</strong></p>
+<p></span>`<span class="kb-inline-code">markdown</p>
+<p>[Contexto CMV +]</p>
+
+<p><strong>ESCALA:</strong></p><li>Tabela orders: 50M registros</li><li>Crescimento: +5M/mês</li><li>Carga: 100 queries simultâneas deste tipo no horário de pico</li>
+
+<p><strong>INFRAESTRUTURA:</strong></p><li>PostgreSQL 14 em AWS RDS (db.r5.large)</li><li>100GB de dados, 16GB RAM, 4 vCPUs</li><li>Índices atuais: orders(id), orders(user_id)</li>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p><strong>Resposta da IA:</strong> Solução mais específica considerando volume e recursos.</p>
+
+<p>---</p>
+
+<p><strong>Prompt Expandido (Nível 3)</strong> (se ainda não resolver):</p>
+<p></span>`<span class="kb-inline-code">markdown</p>
+<p>[Contexto Nível 2 +]</p>
+
+<p><strong>TENTATIVAS ANTERIORES:</strong></p><li>Criamos índice em created_at → Melhorou para 15s (ainda insuficiente)</li><li>Tentamos LIMIT 1000 → Não serve (precisam de todos dados)</li><li>Consideramos cache → Compliance não permite (dados sensíveis)</li>
+
+<p><strong>CONSTRAINTS:</strong></p><li>Não podemos fazer downtime para manutenção (sistema 24/7)</li><li>Budget: não pode escalar hardware agora</li><li>Query precisa ser real-time (não pode ser batch/async)</li>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p><strong>Resposta da IA:</strong> Solução que considera histórico e limitações.</p>
+
+<p>---</p>
+
+<h2>Signal-to-Noise Ratio: Maximizando Relevância</h2>
+
+<p><strong>Signal</strong> = Informação relevante que ajuda a IA</p>
+<p><strong>Noise</strong> = Informação irrelevante que distrai</p>
+
+<h3>Como Maximizar Signal</h3>
+
+<p>#### 1. <strong>Seja Específico, Não Verboso</strong></p>
+
+<p><strong>❌ Noise:</strong></p>
+<p></span>`<span class="kb-inline-code"></p>
+<p>"Estou trabalhando em um projeto muito interessante de e-commerce</p>
+<p>que começou há 2 anos quando a empresa decidiu entrar no mercado</p>
+<p>digital. Tivemos várias reuniões com stakeholders..."</p>
+<p>[3 parágrafos de história]</p>
+<p>"...e agora preciso otimizar uma query."</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p><strong>✅ Signal:</strong></p>
+<p></span>`<span class="kb-inline-code"></p>
+<p><strong>Projeto:</strong> E-commerce (2 anos em produção)</p>
+<p><strong>Problema:</strong> Query de relatório demora 30s</p>
+<p><strong>Impacto:</strong> Clientes não conseguem ver histórico de pedidos</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p>#### 2. <strong>Use Dados Quantitativos</strong></p>
+
+<p><strong>❌ Vago:</strong></p>
+<p></span>`<span class="kb-inline-code"></p>
+<p>"O sistema tem muitos usuários e está lento"</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p><strong>✅ Específico:</strong></p>
+<p></span>`<span class="kb-inline-code"></p>
+<p>"Sistema tem 10k usuários ativos/dia, latência p95: 5s (target: <500ms)"</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p>#### 3. <strong>Priorize Informação Acionável</strong></p>
+
+<p><strong>❌ Não acionável:</strong></p>
+<p></span>`<span class="kb-inline-code"></p>
+<p>"A arquitetura é complexa e tem vários microsserviços</p>
+<p>que se comunicam de formas diferentes."</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p><strong>✅ Acionável:</strong></p>
+<p></span>`<span class="kb-inline-code"></p>
+<p>"Arquitetura: 5 microsserviços comunicando via REST + RabbitMQ.</p>
+<p>Problema: Fila de orders processamento está acumulando (1000 msgs/min,</p>
+<p>consumindo 100 msgs/min)."</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p>#### 4. <strong>Elimine Redundância</strong></p>
+
+<p><strong>❌ Redundante:</strong></p>
+<p></span>`<span class="kb-inline-code"></p>
+<p>"O banco de dados que estamos usando é PostgreSQL.</p>
+<p>PostgreSQL é um banco relacional. Usamos PostgreSQL versão 14."</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p><strong>✅ Conciso:</strong></p>
+<p></span>`<span class="kb-inline-code"></p>
+<p>"Stack: PostgreSQL 14"</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p>---</p>
+
+<h2>Estruturando Contexto com Placeholders</h2>
+
+<p>Placeholders ajudam a <strong>organizar</strong> contexto de forma consistente.</p>
+
+<h3>Template de Estrutura</h3>
+
+<p></span>`<span class="kb-inline-code">markdown</p>
+<h2>🎯 OBJETIVO</h2>
+<p>[O_QUE_VOCE_QUER]</p>
+
+<h2>🛠️ STACK TÉCNICO</h2><li>Backend: [LINGUAGEM_FRAMEWORK]</li><li>Database: [DB_VERSAO]</li><li>Infra: [CLOUD_PROVIDER_SERVICO]</li><li>[OUTRAS_TECNOLOGIAS_RELEVANTES]</li>
+
+<h2>📊 ESCALA & PERFORMANCE</h2><li>Usuários: [QUANTIDADE]</li><li>Carga: [REQUESTS_TRANSACOES_POR_PERIODO]</li><li>Dados: [VOLUME]</li><li>Target: [METRICAS_DESEJADAS]</li>
+
+<h2>🚧 CONSTRAINTS</h2><li>[LIMITACAO_1]</li><li>[LIMITACAO_2]</li><li>[LIMITACAO_3]</li>
+
+<h2>📌 CONTEXTO ADICIONAL</h2>
+<p>[HISTORICO, TENTATIVAS, DECISOES_PASSADAS]</p>
+
+<h2>💻 CÓDIGO/DADOS</h2>
+<p></span>`<span class="kb-inline-code">[LINGUAGEM]</p>
+<p>[CODIGO_EXEMPLO_OU_DADOS]</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<h2>✅ CRITÉRIOS DE SUCESSO</h2><li>[CRITERIO_1]</li><li>[CRITERIO_2]</li><li>[CRITERIO_3]</li>
+<p></span>`<span class="kb-inline-code"></p>
+
+<h3>Exemplo Preenchido</h3>
+
+<p></span>`<span class="kb-inline-code">markdown</p>
+<h2>🎯 OBJETIVO</h2>
+<p>Otimizar endpoint de checkout que está causando timeouts</p>
+
+<h2>🛠️ STACK TÉCNICO</h2><li>Backend: Node.js 18 + Express</li><li>Database: PostgreSQL 14 + Redis 7 (cache)</li><li>Infra: AWS ECS Fargate (2 vCPUs, 4GB RAM por container)</li><li>Payment: Integração com Stripe API</li>
+
+<h2>📊 ESCALA & PERFORMANCE</h2><li>Usuários: 50k/dia, pico de 200 usuários simultâneos</li><li>Carga: 500 checkouts/hora no pico</li><li>Dados: 1M pedidos, 100k usuários</li><li>Target: p95 < 2s (atual: 8s, timeout em 10s)</li>
+
+<h2>🚧 CONSTRAINTS</h2><li>Não pode perder transação (dinheiro envolvido)</li><li>Não pode fazer downtime (SLA 99.9%)</li><li>Integração Stripe não pode mudar (contrato)</li>
+
+<h2>📌 CONTEXTO ADICIONAL</h2><li>Problema começou após Black Friday (volume 5x normal)</li><li>Adicionamos cache em Redis mas não resolveu completamente</li><li>Profiling mostra: 60% do tempo em queries, 30% em Stripe API</li>
+
+<h2>💻 CÓDIGO</h2>
+<p></span>`<span class="kb-inline-code">javascript</p>
+<p>async function checkout(req, res) {</p>
+<p>  // 1. Validar carrinho (3 queries)</p>
+<p>  const cart = await db.query('SELECT * FROM cart WHERE user_id = $1', [userId]);</p>
+<p>  const items = await db.query('SELECT * FROM cart_items WHERE cart_id = $1', [cart.id]);</p>
+<p>  const products = await db.query('SELECT * FROM products WHERE id IN ($1)', [itemIds]);</p>
+
+<p>  // 2. Criar pedido (5 queries em sequência)</p>
+<p>  const order = await db.query('INSERT INTO orders ...');</p>
+<p>  for (const item of items) {</p>
+<p>    await db.query('INSERT INTO order_items ...');</p>
+<p>  }</p>
+
+<p>  // 3. Processar pagamento (chamada externa - 2-3s)</p>
+<p>  const payment = await stripe.charges.create({...});</p>
+
+<p>  // 4. Atualizar inventário (N queries)</p>
+<p>  for (const item of items) {</p>
+<p>    await db.query('UPDATE products SET stock = stock - $1 WHERE id = $2', ...);</p>
+<p>  }</p>
+
+<p>  return res.json({ orderId: order.id });</p>
+<p>}</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<h2>✅ CRITÉRIOS DE SUCESSO</h2><li>Latência p95 < 2s</li><li>Zero perda de transações (idempotência)</li><li>Funciona com carga 2x maior (crescimento planejado)</li>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p>---</p>
+
+<h2>Antipadrões de Estruturação</h2>
+
+<h3>🚫 Antipadrão 1: Enterrar Informação Crítica</h3>
+
+<p><strong>❌ Problema:</strong></p>
+<p></span>`<span class="kb-inline-code"></p>
+<p>[10 parágrafos de contexto]</p>
+<p>...</p>
+<p>"Ah, e por favor não use biblioteca X porque temos restrição de licença."</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p><strong>✅ Solução:</strong></p>
+<p></span>`<span class="kb-inline-code"></p>
+<h2>🚧 CONSTRAINTS (no início)</h2><li>Não pode usar GPL/AGPL (restrição de licença)</li>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p>---</p>
+
+<h3>🚫 Antipadrão 2: Contexto Desorganizado</h3>
+
+<p><strong>❌ Problema:</strong></p>
+<p></span>`<span class="kb-inline-code"></p>
+<p>Usamos Node.js e o sistema tem 10k usuários e está lento</p>
+<p>e a query demora 30s e usamos PostgreSQL e não podemos</p>
+<p>fazer downtime e já tentamos cache...</p>
+<p>[parede de texto sem estrutura]</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p><strong>✅ Solução:</strong></p>
+<p>Use seções claras (🎯 Objetivo, 🛠️ Stack, 📊 Escala, etc)</p>
+
+<p>---</p>
+
+<h3>🚫 Antipadrão 3: Informação Implícita</h3>
+
+<p><strong>❌ Problema:</strong></p>
+<p></span>`<span class="kb-inline-code"></p>
+<p>"O endpoint está lento"</p>
+<p>[Assume que IA sabe: qual endpoint? Quão lento? Por quê isso importa?]</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p><strong>✅ Solução:</strong></p>
+<p>Explicite tudo:</p>
+<p></span>`<span class="kb-inline-code"></p>
+<p>"Endpoint POST /api/checkout demora 8s (p95), causando timeouts (limite: 10s).</p>
+<p>Impacto: 15% dos checkouts falham = perda de receita."</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p>---</p>
+
+<h3>🚫 Antipadrão 4: Contexto "Tribal Knowledge"</h3>
+
+<p><strong>❌ Problema:</strong></p>
+<p></span>`<span class="kb-inline-code"></p>
+<p>"Você sabe, aquele sistema que a gente usa... a tabela grande lá...</p>
+<p>o problema de sempre..."</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p><strong>Problema:</strong> IA não tem contexto compartilhado com você.</p>
+
+<p><strong>✅ Solução:</strong></p>
+<p>Trate cada prompt como se fosse para alguém externo ao projeto.</p>
+
+<p>---</p>
+
+<h2>Técnicas Avançadas de Estruturação</h2>
+
+<h3>Técnica 1: <strong>Contexto em Camadas (Onion Model)</strong></h3>
+
+<p></span>`<span class="kb-inline-code"></p>
+<p>┌─────────────────────────────────┐</p>
+<p>│ NÚCLEO: Problema + Objetivo      │</p>
+<p>└──────────────┬──────────────────┘</p>
+<p>               │</p>
+<p>    ┌──────────▼──────────┐</p>
+<p>    │ CAMADA 2: Stack + Exemplo │</p>
+<p>    └──────────┬──────────┘</p>
+<p>               │</p>
+<p>       ┌───────▼───────┐</p>
+<p>       │ CAMADA 3: Escala │</p>
+<p>       └───────┬───────┘</p>
+<p>               │</p>
+<p>          ┌────▼────┐</p>
+<p>          │ CAMADA 4: │</p>
+<p>          │ Constraints │</p>
+<p>          └─────────┘</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p><strong>Ordem de leitura:</strong> De dentro pra fora.</p>
+<p><strong>Benefício:</strong> Núcleo sempre visível, detalhes opcionais por camada.</p>
+
+<p>---</p>
+
+<h3>Técnica 2: <strong>Contexto Incremental (Delta)</strong></h3>
+
+<p>Em iterações, não repita tudo - adicione apenas o <strong>delta</strong>:</p>
+
+<p><strong>Primeira iteração:</strong></p>
+<p></span>`<span class="kb-inline-code"></p>
+<p>[Contexto completo CMV]</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p><strong>Segunda iteração:</strong></p>
+<p></span>`<span class="kb-inline-code"></p>
+<p>"Baseado na sua resposta anterior, adicione ao contexto:</p><li>Índice em created_at não resolveu (ainda 15s)</li><li>Profiling mostra: 80% do tempo em JOIN com users</li><li>Tabela users tem 5M registros</li>
+
+<p>Considerando isso, qual próxima otimização?"</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p><strong>Benefício:</strong> Não desperdiça tokens/espaço, mantém foco.</p>
+
+<p>---</p>
+
+<h3>Técnica 3: <strong>Contexto por Referência</strong></h3>
+
+<p>Se o contexto é muito grande (logs, código extenso), forneça por <strong>referência</strong>:</p>
+
+<p></span>`<span class="kb-inline-code">markdown</p>
+<p><strong>CÓDIGO:</strong> Ver arquivo </span>api/checkout.js<span class="kb-inline-code"> (linhas 150-200)</p>
+<p><strong>LOGS:</strong> Ver anexo </span>error.log<span class="kb-inline-code"> (últimas 50 linhas)</p>
+<p><strong>DIAGRAMA:</strong> Ver </span>architecture.png<span class="kb-inline-code"></p>
+
+<p>Resumo do problema:</p>
+<p>[Descrição concisa]</p>
+<p></span>`<span class="kb-inline-code"></p>
+
+<p><strong>Benefício:</strong> Contexto rico sem poluir o prompt principal.</p>
+
+<p>---</p>
+
+<h3>Técnica 4: <strong>Contexto Hierárquico (Para Sistemas Complexos)</strong></h3>
+
+<p></span>`<span class="kb-inline-code">markdown</p>
+<h2>CONTEXTO GLOBAL (Todo o Sistema)</h2><li>Arquitetura: Microservices (5 serviços)</li><li>Stack comum: Node.js, PostgreSQL, Redis, RabbitMQ</li><li>Infra: AWS, Kubernetes</li>
+
+<h2>CONTEXTO DO SERVIÇO (Order Service)</h2><li>Responsabilidade: Gerenciar ciclo de vida de pedidos</li><li>APIs: REST (externa) + gRPC (interna)</li><li>Database: PostgreSQL (orders, order_items)</li>
+
+<h2>CONTEXTO DO PROBLEMA (Endpoint específico)</h2><li>Endpoint: POST /api/checkout</li><li>Função: </span>checkout()<span class="kb-inline-code"> em </span>src/controllers/order.controller.js<span class="kb-inline-code"></li><li>Issue: Timeout após 8s</li>
+<p></span>``</p>
+
+<p><strong>Benefício:</strong> Clareza de escopo, entendimento de hierarquia.</p>
+
+<p>---</p>
+
+<h2>Checklist de Contexto Bem Estruturado</h2>
+
+<p>Antes de enviar o prompt, valide:</p>
+
+<p>✓ <strong>Clareza:</strong></p><li>[ ] Problema está claro em 1-2 linhas?</li><li>[ ] Não há ambiguidades?</li>
+
+<p>✓ <strong>Completude:</strong></p><li>[ ] Incluí stack tecnológico?</li><li>[ ] Dei exemplo concreto (código/dados)?</li><li>[ ] Mencionei critérios de sucesso?</li>
+
+<p>✓ <strong>Relevância:</strong></p><li>[ ] Toda informação é necessária?</li><li>[ ] Não há "história" desnecessária?</li><li>[ ] Dados quantitativos quando aplicável?</li>
+
+<p>✓ <strong>Organização:</strong></p><li>[ ] Seções claras?</li><li>[ ] Fácil de escanear visualmente?</li><li>[ ] Informação mais importante no topo?</li>
+
+<p>✓ <strong>Acionabilidade:</strong></p><li>[ ] IA tem dados suficientes para agir?</li><li>[ ] Não está implícito ou ambíguo?</li><li>[ ] Constraints estão explícitas?</li>
+
+<p>---</p>
+
+<h2>Próximos Passos</h2>
+
+<p>Domine estruturação de contexto e explore:</p><li><strong>[07-especificacao-requisitos.md]</strong> - Como transformar contexto em specs precisas</li><li><strong>[../2-engineering/01-templates-reutilizaveis.md]</strong> - Capture estruturas de contexto em templates</li><li><strong>[../4-workflows/01-workflow-analise-problemas.md]</strong> - Aplique estruturação em workflows reais</li>
+
+<h2>🌱 Reflexão Final</h2>
+
+<p>Estruturar contexto é como <strong>organizar uma mochila para trilha</strong>:</p><li>Leve o essencial (CMV)</li><li>Organize por prioridade (camadas)</li><li>Deixe acessível o que usa mais (núcleo no topo)</li><li>Só leve o extra se a jornada exigir (progressão)</li>
+
+<p><strong>Comece hoje:</strong></p>
+<p>1. Pegue um prompt que você escreveu recentemente</p>
+<p>2. Identifique: qual é o CMV? Há ruído (noise)?</p>
+<p>3. Reestruture usando as seções deste guia</p>
+<p>4. Compare os resultados (antes vs depois)</p>
+
+<p>A diferença será notável.</p>
+
+<p>---</p>
+
+<p><strong>Tags:</strong> #contexto #estrutura #signal-noise #CMV #organizacao</p>
+
+<p><strong>Relacionados:</strong></p><li>[[03-contexto-e-role-playing]] - Tipos de contexto (técnico, negócio, etc)</li><li>[[05-ciclo-de-trabalho-com-ia]] - Fase 2 do ciclo (Preparar Contexto)</li><li>[[07-especificacao-requisitos]] - Próximo passo natural</li><li>[[../2-engineering/01-templates-reutilizaveis]] - Templates com estruturas prontas</li></ul>
+
+            </main>
+
+            <footer class="kb-footer">
+                
+                <div class="kb-tags">
+                    <span class="kb-tag">#contexto</span>
+                    <span class="kb-tag">#estrutura</span>
+                    <span class="kb-tag">#signal-noise</span>
+                    <span class="kb-tag">#CMV</span>
+                    <span class="kb-tag">#organizacao</span>
+                </div>
+                
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Mermaid for diagrams
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            themeVariables: {
+                primaryColor: '#ff0080',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#ff0080',
+                lineColor: '#ffd700',
+                secondaryColor: '#ffd700',
+                tertiaryColor: '#0a0a0a'
+            }
+        });
+    </script>
+</body>
+</html>
